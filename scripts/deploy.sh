@@ -15,17 +15,20 @@ if [ -z "$EXIST_BLUE" ]; then
   sudo docker image prune -af
   echo "green 중단 완료 : $(date +%Y)-$(date +%m)-$(date +%d) $(date +%H):$(date +%M):$(date +%S)" >> /home/ec2-user/deploy.log
 
+  sudo sed -i 's/set $active_upstream .*/set $active_upstream blue;/' /etc/nginx/nginx.conf
+  sudo nginx -s reload
+
 else
 	echo "green 배포 시작 : $(date +%Y)-$(date +%m)-$(date +%d) $(date +%H):$(date +%M):$(date +%S)" >> /home/ec2-user/deploy.log
 	sudo docker-compose -p ${DOCKER_APP_NAME}-green -f docker-compose.green.yml up -d --build
-
   sleep 30
-
   echo "blue 중단 시작 : $(date +%Y)-$(date +%m)-$(date +%d) $(date +%H):$(date +%M):$(date +%S)" >> /home/ec2-user/deploy.log
   sudo docker-compose -p ${DOCKER_APP_NAME}-blue -f docker-compose.blue.yml down
   sudo docker image prune -af
-
   echo "blue 중단 완료 : $(date +%Y)-$(date +%m)-$(date +%d) $(date +%H):$(date +%M):$(date +%S)" >> /home/ec2-user/deploy.log
+
+  sudo sed -i 's/set $active_upstream .*/set $active_upstream green;/' /etc/nginx/nginx.conf
+  sudo nginx -s reload
 fi
 
 echo "배포 종료  : $(date +%Y)-$(date +%m)-$(date +%d) $(date +%H):$(date +%M):$(date +%S)" >> /home/ec2-user/deploy.log
