@@ -1,0 +1,7 @@
+version : '3'
+services:
+  coupon-system:
+    build: .
+    ports:
+      - "8082:80"
+    container_name: spring-green
