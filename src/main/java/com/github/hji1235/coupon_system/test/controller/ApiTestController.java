@@ -10,7 +10,7 @@ public class ApiTestController {
 
     @GetMapping("/test1")
     public String test1() {
-        return "test success!";
+        return "test success!!!!!";
     }
 
     @PostMapping("/test2/{testId}")
