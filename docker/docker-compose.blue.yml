@@ -2,5 +2,5 @@ services:
   coupon-system:
     build: .
     ports:
-      - "8081:80"
+      - "8081:8080"
     container_name: spring-blue
