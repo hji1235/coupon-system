@@ -20,4 +20,9 @@ public class ApiTestController {
         System.out.println("testId = " + testId);
         return new TestResponseDto(requestDto.getName(), requestDto.getAge());
     }
+
+    @GetMapping("/test3")
+    public String test3() {
+        return "hello cmh";
+    }
 }
