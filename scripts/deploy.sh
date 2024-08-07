@@ -1,5 +1,6 @@
 #!/bin/bash
 
+export TZ="Asia/Seoul"
 cd /home/ec2-user/app
 DOCKER_APP_NAME=spring
 
