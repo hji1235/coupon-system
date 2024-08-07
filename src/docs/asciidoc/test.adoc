@@ -1,0 +1,8 @@
+== 1. ApiTestController
+
+=== 1-1. 테스트 API 1 입니다.
+
+operation::api-test-controller-test/test1[snippets="http-request,http-response"]
+
+=== 1-2. 테스트 API 2 입니다.
+operation::api-test-controller-test/test2[snippets="path-parameters,request-fields,http-request,response-fields,http-response"]

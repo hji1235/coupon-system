@@ -1,0 +1,13 @@
+package com.github.hji1235.coupon_system;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class CouponSystemApplicationTests {
+
+	@Test
+	void contextLoads() {
+	}
+
+}
