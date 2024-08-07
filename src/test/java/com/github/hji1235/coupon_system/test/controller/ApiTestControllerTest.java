@@ -2,6 +2,7 @@ package com.github.hji1235.coupon_system.test.controller;
 
 import com.github.hji1235.config.AbstractRestDocsTests;
 import com.github.hji1235.coupon_system.test.dto.TestRequestDto;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -54,5 +55,11 @@ class ApiTestControllerTest extends AbstractRestDocsTests {
                                 fieldWithPath("age").type(JsonFieldType.NUMBER).description("나이")
                         )
                 ));
+    }
+
+    @Test
+    void test3() {
+        ApiTestController apiTestController = new ApiTestController();
+        Assertions.assertThat(apiTestController.test3()).isEqualTo("hello cmh"); //실패
     }
 }
