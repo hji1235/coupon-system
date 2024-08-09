@@ -60,6 +60,6 @@ class ApiTestControllerTest extends AbstractRestDocsTests {
     @Test
     void test3() {
         ApiTestController apiTestController = new ApiTestController();
-        Assertions.assertThat(apiTestController.test3()).isEqualTo("hello cmh"); //실패
+        Assertions.assertThat(apiTestController.test3()).isEqualTo("hello 성공!!!!!"); //성공
     }
 }
