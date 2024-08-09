@@ -23,6 +23,6 @@ public class ApiTestController {
 
     @GetMapping("/test3")
     public String test3() {
-        return "hello cmh";
+        return "hello 성공!!!!!";
     }
 }
