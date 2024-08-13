@@ -1,5 +1,6 @@
 package com.github.hji1235.coupon_system.domain.store;
 
+import com.github.hji1235.coupon_system.domain.BaseEntity;
 import com.github.hji1235.coupon_system.domain.store.Store;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Menu {
+public class Menu extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

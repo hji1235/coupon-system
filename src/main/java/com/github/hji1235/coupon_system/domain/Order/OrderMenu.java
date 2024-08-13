@@ -1,5 +1,6 @@
 package com.github.hji1235.coupon_system.domain.Order;
 
+import com.github.hji1235.coupon_system.domain.BaseEntity;
 import com.github.hji1235.coupon_system.domain.store.Menu;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderMenu {
+public class OrderMenu extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

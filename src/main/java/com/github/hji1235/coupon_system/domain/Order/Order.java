@@ -1,5 +1,6 @@
 package com.github.hji1235.coupon_system.domain.Order;
 
+import com.github.hji1235.coupon_system.domain.BaseEntity;
 import com.github.hji1235.coupon_system.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "orders")
-public class Order {
+public class Order extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

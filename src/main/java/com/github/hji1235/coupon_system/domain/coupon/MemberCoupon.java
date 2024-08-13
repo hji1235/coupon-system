@@ -1,5 +1,6 @@
 package com.github.hji1235.coupon_system.domain.coupon;
 
+import com.github.hji1235.coupon_system.domain.BaseEntity;
 import com.github.hji1235.coupon_system.domain.Order.Payment;
 import com.github.hji1235.coupon_system.domain.member.Member;
 import jakarta.persistence.*;
@@ -13,7 +14,7 @@ import java.util.UUID;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberCoupon {
+public class MemberCoupon extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
