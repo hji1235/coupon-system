@@ -26,4 +26,10 @@ public class Menu extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
     private Store store;
+
+    public Menu(String name, Integer price, Store store) {
+        this.name = name;
+        this.price = price;
+        this.store = store;
+    }
 }

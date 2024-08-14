@@ -24,4 +24,10 @@ public class Admin extends BaseEntity {
 
     @Column(name = "nickname", nullable = false)
     private String nickname;
+
+    public Admin(String email, String password, String nickname) {
+        this.email = email;
+        this.password = password;
+        this.nickname = nickname;
+    }
 }

@@ -22,4 +22,9 @@ public class Store extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id")
     private Brand brand;
+
+    public Store(String name, Brand brand) {
+        this.name = name;
+        this.brand = brand;
+    }
 }
