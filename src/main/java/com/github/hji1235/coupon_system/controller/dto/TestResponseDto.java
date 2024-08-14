@@ -1,4 +1,4 @@
-package com.github.hji1235.coupon_system.test.dto;
+package com.github.hji1235.coupon_system.controller.dto;
 
 import lombok.Data;
 

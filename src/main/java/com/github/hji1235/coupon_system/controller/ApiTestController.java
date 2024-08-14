@@ -1,7 +1,8 @@
-package com.github.hji1235.coupon_system.test.controller;
+package com.github.hji1235.coupon_system.controller;
 
-import com.github.hji1235.coupon_system.test.dto.TestRequestDto;
-import com.github.hji1235.coupon_system.test.dto.TestResponseDto;
+import com.github.hji1235.coupon_system.global.ApiResponse;
+import com.github.hji1235.coupon_system.controller.dto.TestRequestDto;
+import com.github.hji1235.coupon_system.controller.dto.TestResponseDto;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,11 +15,11 @@ public class ApiTestController {
     }
 
     @PostMapping("/test2/{testId}")
-    public TestResponseDto test2(
+    public ApiResponse<TestResponseDto> test2(
             @PathVariable Long testId,
             @RequestBody TestRequestDto requestDto) {
         System.out.println("testId = " + testId);
-        return new TestResponseDto(requestDto.getName(), requestDto.getAge());
+        return ApiResponse.success(new TestResponseDto(requestDto.getName(), requestDto.getAge()));
     }
 
     @GetMapping("/test3")

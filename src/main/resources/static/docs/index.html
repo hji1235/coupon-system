@@ -542,15 +542,18 @@ API test1 호출 성공!</code></pre>
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">POST /api/v1/test2/1 HTTP/1.1
 Content-Type: application/json;charset=UTF-8
-Content-Length: 23
+Content-Length: 37
 Host: localhost:8080
 
-{"name":"CMH","age":27}</code></pre>
+{
+  "name" : "CMH",
+  "age" : 27
+}</code></pre>
 </div>
 </div>
 </div>
 <div class="sect3">
-<h4 id="_1_2_테스트_api_2_입니다_response_fields">Response fields</h4>
+<h4 id="_1_2_테스트_api_2_입니다_response_fields-data">Response fields-data</h4>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 33.3333%;">
@@ -584,9 +587,17 @@ Host: localhost:8080
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code class="language-http hljs" data-lang="http">HTTP/1.1 200 OK
 Content-Type: application/json;charset=UTF-8
-Content-Length: 23
+Content-Length: 145
 
-{"name":"CMH","age":27}</code></pre>
+{
+  "success" : true,
+  "data" : {
+    "name" : "CMH",
+    "age" : 27
+  },
+  "error" : null,
+  "serverDateTime" : "2024-08-14 19:05:13"
+}</code></pre>
 </div>
 </div>
 </div>

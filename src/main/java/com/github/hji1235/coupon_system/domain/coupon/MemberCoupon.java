@@ -1,7 +1,7 @@
 package com.github.hji1235.coupon_system.domain.coupon;
 
 import com.github.hji1235.coupon_system.domain.BaseEntity;
-import com.github.hji1235.coupon_system.domain.Order.Payment;
+import com.github.hji1235.coupon_system.domain.order.Payment;
 import com.github.hji1235.coupon_system.domain.member.Member;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
