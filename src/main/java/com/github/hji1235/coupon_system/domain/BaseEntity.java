@@ -1,5 +1,6 @@
 package com.github.hji1235.coupon_system.domain;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
@@ -15,8 +16,10 @@ import java.time.LocalDateTime;
 public class BaseEntity {
 
     @CreatedDate
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @LastModifiedDate
+    @Column(name = "last_modified_at")
     private LocalDateTime lastModifiedAt;
 }

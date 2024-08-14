@@ -1,4 +1,4 @@
-package com.github.hji1235.coupon_system.domain.Order;
+package com.github.hji1235.coupon_system.domain.order;
 
 import com.github.hji1235.coupon_system.domain.BaseEntity;
 import jakarta.persistence.*;
@@ -35,7 +35,7 @@ public class Payment extends BaseEntity {
     @Column(name = "discount_amount")
     private Integer discountAmount;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
 

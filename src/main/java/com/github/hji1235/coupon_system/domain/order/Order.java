@@ -1,4 +1,4 @@
-package com.github.hji1235.coupon_system.domain.Order;
+package com.github.hji1235.coupon_system.domain.order;
 
 import com.github.hji1235.coupon_system.domain.BaseEntity;
 import com.github.hji1235.coupon_system.domain.member.Member;
