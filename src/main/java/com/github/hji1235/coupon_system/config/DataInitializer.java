@@ -28,6 +28,7 @@ public class DataInitializer {
     @Transactional
     @Order(1)
     public void initializeAdmin() {
+        adminRepository.save(new Admin("COUPON@gmial.com", "456456", "COUPON-ADMIN"));
         adminRepository.save(new Admin("bhc@gmial.com", "456456", "BHC"));
         adminRepository.save(new Admin("kyochon@gmial.com", "456456", "KYOCHON"));
         adminRepository.save(new Admin("bbq@gmial.com", "456456", "BBQ"));
