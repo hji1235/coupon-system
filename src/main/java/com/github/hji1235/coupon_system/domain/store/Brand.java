@@ -19,4 +19,7 @@ public class Brand extends BaseEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
+    public Brand(String name) {
+        this.name = name;
+    }
 }
