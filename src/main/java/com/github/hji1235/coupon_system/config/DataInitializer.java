@@ -1,15 +1,14 @@
 package com.github.hji1235.coupon_system.config;
 
 import com.github.hji1235.coupon_system.domain.admin.Admin;
+import com.github.hji1235.coupon_system.domain.member.Member;
 import com.github.hji1235.coupon_system.domain.store.Brand;
 import com.github.hji1235.coupon_system.domain.store.Menu;
 import com.github.hji1235.coupon_system.domain.store.Store;
-import com.github.hji1235.coupon_system.repository.AdminRepository;
-import com.github.hji1235.coupon_system.repository.BrandRepository;
-import com.github.hji1235.coupon_system.repository.MenuRepository;
-import com.github.hji1235.coupon_system.repository.StoreRepository;
+import com.github.hji1235.coupon_system.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -17,12 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
+@Profile("!test")
 public class DataInitializer {
 
     private final AdminRepository adminRepository;
     private final BrandRepository brandRepository;
     private final StoreRepository storeRepository;
     private final MenuRepository menuRepository;
+    private final MemberRepository memberRepository;
 
     @EventListener(ApplicationReadyEvent.class)
     @Transactional
@@ -57,5 +58,7 @@ public class DataInitializer {
                 }
             }
         }
+
+        memberRepository.save(new Member("hji1235@naver.com", "456456", "CMH"));
     }
 }
