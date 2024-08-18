@@ -1,14 +1,12 @@
 package com.github.hji1235.coupon_system.controller;
 
+import com.github.hji1235.coupon_system.controller.dto.BrandFindResponse;
 import com.github.hji1235.coupon_system.controller.dto.BrandSaveRequest;
 import com.github.hji1235.coupon_system.global.ApiResponse;
 import com.github.hji1235.coupon_system.service.BrandService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,5 +21,11 @@ public class BrandController {
     public ApiResponse<Void> brandSave(@Valid @RequestBody BrandSaveRequest brandSaveRequest) {
         brandService.saveBrand(brandSaveRequest);
         return ApiResponse.success();
+    }
+
+    @GetMapping("/{brandId}")
+    public ApiResponse<BrandFindResponse> brandDetails(@PathVariable Long brandId) {
+        BrandFindResponse findBrand = brandService.findBrand(brandId);
+        return ApiResponse.success(findBrand);
     }
 }
