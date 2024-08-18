@@ -2,6 +2,7 @@ package com.github.hji1235.coupon_system.controller;
 
 import com.github.hji1235.coupon_system.controller.dto.BrandFindResponse;
 import com.github.hji1235.coupon_system.controller.dto.BrandSaveRequest;
+import com.github.hji1235.coupon_system.controller.dto.BrandUpdateRequest;
 import com.github.hji1235.coupon_system.global.ApiResponse;
 import com.github.hji1235.coupon_system.service.BrandService;
 import jakarta.validation.Valid;
@@ -27,5 +28,20 @@ public class BrandController {
     public ApiResponse<BrandFindResponse> brandDetails(@PathVariable Long brandId) {
         BrandFindResponse findBrand = brandService.findBrand(brandId);
         return ApiResponse.success(findBrand);
+    }
+
+    @PatchMapping("/{brandId}")
+    public ApiResponse<Void> brandModify(
+            @PathVariable Long brandId,
+            @Valid @RequestBody BrandUpdateRequest brandUpdateRequest
+            ) {
+        brandService.modifyBrand(brandId, brandUpdateRequest);
+        return ApiResponse.success();
+    }
+
+    @DeleteMapping("/{brandId}")
+    public ApiResponse<Void> brandRemove(@PathVariable Long brandId) {
+        brandService.removeBrand(brandId);
+        return ApiResponse.success();
     }
 }
