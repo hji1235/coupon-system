@@ -4,7 +4,8 @@ import lombok.Getter;
 
 @Getter
 public enum ErrorCode {
-    BRAND_NOT_FOUND(400, "TEST", "Can not find a Brand for id");
+    BRAND_NOT_FOUND(400, "TEST1", "Can not find a Brand for id"),
+    STORE_NOT_FOUND(400, "TEST2", "Can not find a Brand for id");
 
 
     private final int status;

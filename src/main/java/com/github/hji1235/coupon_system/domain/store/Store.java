@@ -27,4 +27,8 @@ public class Store extends BaseEntity {
         this.name = name;
         this.brand = brand;
     }
+
+    public void changeName(String name) {
+        this.name = name;
+    }
 }
