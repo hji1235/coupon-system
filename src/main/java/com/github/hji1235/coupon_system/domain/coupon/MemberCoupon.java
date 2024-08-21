@@ -44,4 +44,12 @@ public class MemberCoupon extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public MemberCoupon(Coupon coupon, Member member) {
+        this.coupon = coupon;
+        this.member = member;
+        this.couponCode = UUID.randomUUID();
+        this.expirationPeriod = coupon.getExpirationPolicy().newExpirationPeriod();
+        this.used = false;
+    }
 }

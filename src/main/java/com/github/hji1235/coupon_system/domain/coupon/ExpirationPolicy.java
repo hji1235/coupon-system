@@ -27,4 +27,26 @@ public class ExpirationPolicy {
 
     @Column(name = "days_from_issuance")
     private Integer daysFromIssuance;
+
+    private ExpirationPolicy(ExpirationPolicyType expirationPolicyType, LocalDateTime startAt, LocalDateTime expiredAt, Integer daysFromIssuance) {
+        this.expirationPolicyType = expirationPolicyType;
+        this.startAt = startAt;
+        this.expiredAt = expiredAt;
+        this.daysFromIssuance = daysFromIssuance;
+    }
+
+    public static ExpirationPolicy newByAfterIssueDate(Integer daysFromIssuance) {
+        return new ExpirationPolicy(ExpirationPolicyType.AFTER_ISSUE_DATE, null, null, daysFromIssuance);
+    }
+
+    public static ExpirationPolicy newByPeriod(LocalDateTime startAt, LocalDateTime expiredAt) {
+        return new ExpirationPolicy(ExpirationPolicyType.PERIOD, startAt, expiredAt, null);
+    }
+
+    public ExpirationPeriod newExpirationPeriod() {
+        if (expirationPolicyType == ExpirationPolicyType.AFTER_ISSUE_DATE) {
+            return new ExpirationPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(daysFromIssuance));
+        }
+        return new ExpirationPeriod(startAt, expiredAt);
+    }
 }
