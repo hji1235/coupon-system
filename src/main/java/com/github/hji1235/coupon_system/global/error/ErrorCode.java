@@ -5,7 +5,8 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
     BRAND_NOT_FOUND(400, "TEST1", "Can not find a Brand for id"),
-    STORE_NOT_FOUND(400, "TEST2", "Can not find a Brand for id");
+    STORE_NOT_FOUND(400, "TEST2", "Can not find a Store for id"),
+    MENU_NOT_FOUND(400, "TEST3", "Can not find a Menu for id");
 
 
     private final int status;

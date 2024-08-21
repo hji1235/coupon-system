@@ -32,4 +32,9 @@ public class Menu extends BaseEntity {
         this.price = price;
         this.store = store;
     }
+
+    public void changeNameAndPrice(String name, Integer price) {
+        this.name = name;
+        this.price = price;
+    }
 }
