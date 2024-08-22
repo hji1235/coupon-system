@@ -18,4 +18,9 @@ public class ExpirationPeriod {
 
     @Column(name = "expired_at", nullable = false)
     private LocalDateTime expiredAt;
+
+    public ExpirationPeriod(LocalDateTime startAt, LocalDateTime expiredAt) {
+        this.startAt = startAt;
+        this.expiredAt = expiredAt;
+    }
 }

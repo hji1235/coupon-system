@@ -6,7 +6,11 @@ import lombok.Getter;
 public enum ErrorCode {
     BRAND_NOT_FOUND(400, "TEST1", "Can not find a Brand for id"),
     STORE_NOT_FOUND(400, "TEST2", "Can not find a Store for id"),
-    MENU_NOT_FOUND(400, "TEST3", "Can not find a Menu for id");
+    MENU_NOT_FOUND(400, "TEST3", "Can not find a Menu for id"),
+    MEMBER_NOT_FOUND(400, "TEST4", "Can not find a Member for id"),
+    COUPON_NOT_FOUND(400, "TEST5", "Can not find a Coupon for id"),
+    COUPON_MAX_COUNT_OVER(400, "TEST6", "Can not issue coupon. coupon maxCount : %d, allocatedCount : %d, requestCount : %d"),
+    COUPON_MAX_COUNT_FOR_MEMBER_OVER(400, "TEST7", "Can not issue coupon. coupon maxCountPerMember : %d, currentCount : %d");
 
 
     private final int status;
