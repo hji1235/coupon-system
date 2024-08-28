@@ -42,6 +42,8 @@ public class CouponSaveRequest {
     @NotNull
     private IssuerType issuerType;
 
+    private Long issuerId;
+
     @NotNull
     private ExpirationPolicyType expirationPolicyType;
 

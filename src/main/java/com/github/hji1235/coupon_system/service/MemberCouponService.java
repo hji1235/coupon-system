@@ -1,18 +1,19 @@
 package com.github.hji1235.coupon_system.service;
 
+import com.github.hji1235.coupon_system.controller.dto.MemberCouponCheckDto;
+import com.github.hji1235.coupon_system.controller.dto.MemberCouponCheckResponse;
 import com.github.hji1235.coupon_system.domain.coupon.Coupon;
 import com.github.hji1235.coupon_system.domain.coupon.MemberCoupon;
 import com.github.hji1235.coupon_system.domain.member.Member;
-import com.github.hji1235.coupon_system.global.exception.CouponMaxCountOverException;
-import com.github.hji1235.coupon_system.global.exception.CouponMaxCountPerMemberOverException;
-import com.github.hji1235.coupon_system.global.exception.CouponNotFoundException;
-import com.github.hji1235.coupon_system.global.exception.MemberNotFoundException;
-import com.github.hji1235.coupon_system.repository.CouponRepository;
-import com.github.hji1235.coupon_system.repository.MemberCouponRepository;
-import com.github.hji1235.coupon_system.repository.MemberRepository;
+import com.github.hji1235.coupon_system.domain.order.Order;
+import com.github.hji1235.coupon_system.domain.store.Store;
+import com.github.hji1235.coupon_system.global.exception.*;
+import com.github.hji1235.coupon_system.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -22,6 +23,8 @@ public class MemberCouponService {
     private final MemberCouponRepository memberCouponRepository;
     private final MemberRepository memberRepository;
     private final CouponRepository couponRepository;
+    private final OrderRepository orderRepository;
+    private final StoreRepository storeRepository;
 
     @Transactional
     public void saveMemberCoupon(Long memberId, Long couponId) {
@@ -39,5 +42,27 @@ public class MemberCouponService {
         }
         memberCouponRepository.save(new MemberCoupon(coupon, member));
         coupon.increaseAllocatedCount(issuanceCount);
+    }
+
+    public MemberCouponCheckResponse checkMemberCoupons(Long memberId, Long storeId, Long orderId) {
+        memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(memberId));
+        Store store = storeRepository.findStore(storeId)
+                .orElseThrow(() -> new StoreNotFoundException(storeId));
+        Order order = orderRepository.findOrder(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        int paymentAmount = order.calculateTotalPayment();
+        List<MemberCouponCheckDto> checkedMemberCoupons = memberCouponRepository.findAllMemberCouponByMemberId(memberId).stream()
+                .map((memberCoupon -> createMemberCouponCheckDto(memberCoupon, store, paymentAmount)))
+                .toList();
+        return new MemberCouponCheckResponse(checkedMemberCoupons);
+    }
+
+    public MemberCouponCheckDto createMemberCouponCheckDto(MemberCoupon memberCoupon, Store store, int paymentAmount) {
+        Long issuerId = store.getId();
+        if (memberCoupon.getCoupon().isBrandCoupon()) {
+            issuerId = store.getBrand().getId();
+        }
+        return new MemberCouponCheckDto(memberCoupon, issuerId, paymentAmount);
     }
 }

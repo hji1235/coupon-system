@@ -25,6 +25,7 @@ public class CouponConverter {
                 .allocatedCount(0)
                 .discountType(dto.getDiscountType())
                 .issuerType(dto.getIssuerType())
+                .issuerId(dto.getIssuerId())
                 .expirationPolicy(expirationPolicy)
                 .build();
     }
