@@ -34,4 +34,11 @@ public class OrderController {
     /*
     주문 상세 조회는 멤버쿠폰을 사용하여 결제와 연관관계가 생겼을 시점에 만들기(현재 서로 연관 관계가 없어서 조회가 불가능)
      */
+    @GetMapping("/orders/{orderId}")
+    public ApiResponse<OrderFindResponse> orderDetails(
+            @PathVariable Long orderId
+    ) {
+        OrderFindResponse orderFindResponse = orderService.findOrder(orderId);
+        return ApiResponse.success(orderFindResponse);
+    }
 }

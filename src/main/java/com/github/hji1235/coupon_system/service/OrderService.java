@@ -49,4 +49,10 @@ public class OrderService {
                 .map(SimpleOrderResponse::new).toList();
         return new OrderFindAllResponse(simpleOrderResponses);
     }
+
+    public OrderFindResponse findOrder(Long orderId) {
+        Order order = orderRepository.findOrderDetails(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+        return new OrderFindResponse(order);
+    }
 }
