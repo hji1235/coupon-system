@@ -59,4 +59,15 @@ public class Payment extends BaseEntity {
             order.prepareOrder();
         }
     }
+
+    public void setMemberCoupon(MemberCoupon memberCoupon) {
+        if (memberCoupon == null) {
+            if (this.memberCoupon != null) {
+                this.memberCoupon.setPayment(null);
+            }
+        } else {
+            memberCoupon.setPayment(this);
+        }
+        this.memberCoupon = memberCoupon;
+    }
 }

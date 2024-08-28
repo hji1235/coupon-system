@@ -29,4 +29,10 @@ public class PaymentController {
         return ApiResponse.success();
     }
 
+    @DeleteMapping("/payments/{paymentId}")
+    public ApiResponse<Void> paymentCancel(@PathVariable Long paymentId) {
+        paymentService.cancelPayment(paymentId);
+        return ApiResponse.success();
+    }
+
 }

@@ -30,8 +30,9 @@ public class PaymentService {
                 .orElseThrow(() -> new OrderNotFoundException(orderId));
         int paymentAmount = order.calculateTotalPayment();
         int discountAmount = 0;
+        MemberCoupon memberCoupon = null;
         if (paymentSaveRequest.getMemberCouponId() != null) {
-            MemberCoupon memberCoupon = memberCouponRepository.findMemberCoupon(paymentSaveRequest.getMemberCouponId())
+            memberCoupon = memberCouponRepository.findMemberCoupon(paymentSaveRequest.getMemberCouponId())
                     .orElseThrow(() -> new MemberCouponNotFoundException(paymentSaveRequest.getMemberCouponId()));
             discountAmount = memberCoupon.getDiscountAmount();
             if (memberCoupon.getCoupon().getDiscountType() == DiscountType.PERCENT) {
@@ -39,6 +40,7 @@ public class PaymentService {
             }
         }
         Payment payment = new Payment(paymentSaveRequest.getPaymentMethod(), paymentAmount, discountAmount, order);
+        payment.setMemberCoupon(memberCoupon);
         paymentRepository.save(payment);
     }
 
@@ -46,6 +48,18 @@ public class PaymentService {
     public void completePayment(Long paymentId) {
         Payment payment = paymentRepository.findPayment(paymentId)
                 .orElseThrow(() -> new PaymentNotFoundException(paymentId));
+        MemberCoupon memberCoupon = payment.getMemberCoupon();
+        if (memberCoupon != null) {
+            memberCoupon.use();
+        }
         payment.completePaymentAndPrepareOrder();
+    }
+
+    @Transactional
+    public void cancelPayment(Long paymentId) {
+        Payment payment = paymentRepository.findPayment(paymentId)
+                .orElseThrow(() -> new PaymentNotFoundException(paymentId));
+        payment.setMemberCoupon(null);
+        paymentRepository.delete(payment);
     }
 }
