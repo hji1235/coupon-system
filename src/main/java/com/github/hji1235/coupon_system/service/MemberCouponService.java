@@ -1,7 +1,9 @@
 package com.github.hji1235.coupon_system.service;
 
+import com.github.hji1235.coupon_system.controller.dto.MemberCouponAllocateRequest;
 import com.github.hji1235.coupon_system.controller.dto.MemberCouponCheckDto;
 import com.github.hji1235.coupon_system.controller.dto.MemberCouponCheckResponse;
+import com.github.hji1235.coupon_system.controller.dto.MemberCouponCodeSaveRequest;
 import com.github.hji1235.coupon_system.domain.coupon.Coupon;
 import com.github.hji1235.coupon_system.domain.coupon.MemberCoupon;
 import com.github.hji1235.coupon_system.domain.member.Member;
@@ -14,6 +16,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
+import java.util.stream.IntStream;
 
 @Service
 @RequiredArgsConstructor
@@ -64,5 +68,30 @@ public class MemberCouponService {
             issuerId = store.getBrand().getId();
         }
         return new MemberCouponCheckDto(memberCoupon, issuerId, paymentAmount);
+    }
+
+    @Transactional
+    public void saveMemberCouponCodes(Long couponId, MemberCouponCodeSaveRequest memberCouponCodeSaveRequest) {
+        Coupon coupon = couponRepository.findById(couponId)
+                .orElseThrow(() -> new CouponNotFoundException(couponId));
+        int issuanceCount = memberCouponCodeSaveRequest.getQuantity();
+        if (!coupon.canIssueCoupon(issuanceCount)) {
+            throw new CouponMaxCountOverException(coupon.getMaxCount(), coupon.getAllocatedCount(), issuanceCount);
+        }
+        List<MemberCoupon> memberCoupons = IntStream.range(0, issuanceCount)
+                .mapToObj(op -> new MemberCoupon(coupon, null))
+                .toList();
+        int saveSize = memberCouponRepository.saveAll(memberCoupons).size();
+        coupon.increaseAllocatedCount(saveSize);
+    }
+
+    @Transactional
+    public void allocateMemberCoupon(Long memberId, MemberCouponAllocateRequest memberCouponAllocateRequest) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(memberId));
+        UUID couponCode = memberCouponAllocateRequest.getCouponCode();
+        MemberCoupon memberCoupon = memberCouponRepository.findByCouponCode(couponCode)
+                .orElseThrow(() -> new MemberCouponNotFoundException(couponCode));
+        memberCoupon.allocateMember(member);
     }
 }

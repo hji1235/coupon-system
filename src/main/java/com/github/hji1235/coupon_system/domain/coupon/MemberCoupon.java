@@ -94,4 +94,8 @@ public class MemberCoupon extends BaseEntity {
     public void setPayment(Payment payment) {
         this.payment = payment;
     }
+
+    public void allocateMember(Member member) {
+        this.member = member;
+    }
 }

@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CouponSaveRequest {
+public class StoreCouponSaveRequest {
 
     @NotEmpty
     @Size(min = 2, max = 50)
@@ -38,11 +38,6 @@ public class CouponSaveRequest {
 
     @NotNull
     private DiscountType discountType;
-
-    @NotNull
-    private IssuerType issuerType;
-
-    private Long issuerId;
 
     @NotNull
     private ExpirationPolicyType expirationPolicyType;
