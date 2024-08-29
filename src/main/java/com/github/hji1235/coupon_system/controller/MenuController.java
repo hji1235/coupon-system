@@ -18,6 +18,9 @@ public class MenuController {//#
 
     private final MenuService menuService;
 
+    /*
+    메뉴 생성
+     */
     @PostMapping("/stores/{storeId}/menus")
     public ApiResponse<Void> menuSave(
             @PathVariable Long storeId,
@@ -27,6 +30,9 @@ public class MenuController {//#
         return ApiResponse.success();
     }
 
+    /*
+    메뉴 단일 조회
+     */
     @GetMapping("/stores/{storeId}/menus/{menuId}")
     public ApiResponse<MenuFindResponse> menuDetails(
             @PathVariable Long storeId,
@@ -36,12 +42,18 @@ public class MenuController {//#
         return ApiResponse.success(findMenu);
     }
 
+    /*
+    메뉴 다중 조회
+     */
     @GetMapping("/stores/{storeId}/menus")
     public ApiResponse<List<MenuFindResponse>> menuListForStore(@PathVariable Long storeId) {
         List<MenuFindResponse> findMenus = menuService.findAllMenusByStoreId(storeId);
         return ApiResponse.success(findMenus);
     }
 
+    /*
+    메뉴 이름 및 가격 수정
+     */
     @PatchMapping("/stores/{storeId}/menus/{menuId}")
     public ApiResponse<Void> menuModify(
             @PathVariable Long storeId,
@@ -52,6 +64,9 @@ public class MenuController {//#
         return ApiResponse.success();
     }
 
+    /*
+    메뉴 삭제
+     */
     @DeleteMapping("/stores/{storeId}/menus/{menuId}")
     public ApiResponse<Void> menuRemove(
             @PathVariable Long storeId,

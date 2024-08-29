@@ -9,10 +9,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class CouponSaveRequest {
+public class StoreCouponSaveRequest {
 
     @NotEmpty
     @Size(min = 2, max = 50)
@@ -35,14 +36,8 @@ public class CouponSaveRequest {
     @Min(1)
     private Integer maxCountPerMember;
 
-
     @NotNull
     private DiscountType discountType;
-
-    @NotNull
-    private IssuerType issuerType;
-
-    private Long issuerId;
 
     @NotNull
     private ExpirationPolicyType expirationPolicyType;
@@ -55,4 +50,10 @@ public class CouponSaveRequest {
     @Max(365)
     @Min(0)
     private Integer daysFromIssuance;
+
+    private boolean timeLimit;
+
+    private LocalTime timeLimitStartAt;
+
+    private LocalTime timeLimitEndAt;
 }

@@ -49,11 +49,14 @@ public class Coupon extends BaseEntity {
     @Embedded
     private ExpirationPolicy expirationPolicy;
 
+    @Embedded
+    private TimeLimitPolicy timeLimitPolicy;
+
     @Builder
     public Coupon(String name, Integer discountAmount, Integer minOrderPrice,
                   Integer maxCount, Integer maxCountPerMember, Integer allocatedCount,
                   DiscountType discountType, IssuerType issuerType, Long issuerId,
-                  ExpirationPolicy expirationPolicy) {
+                  ExpirationPolicy expirationPolicy, TimeLimitPolicy timeLimitPolicy) {
         this.name = name;
         this.discountAmount = discountAmount;
         this.minOrderPrice = minOrderPrice;
@@ -64,6 +67,7 @@ public class Coupon extends BaseEntity {
         this.issuerType = issuerType;
         this.issuerId = issuerId;
         this.expirationPolicy = expirationPolicy;
+        this.timeLimitPolicy = timeLimitPolicy;
     }
 
     public boolean canIssueCoupon(int count) {

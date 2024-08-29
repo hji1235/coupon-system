@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long> {
 
@@ -18,4 +19,8 @@ public interface MemberCouponRepository extends JpaRepository<MemberCoupon, Long
 
     @Query("select mc from MemberCoupon mc join mc.coupon c where mc.member.id = :memberId and mc.used = false")
     List<MemberCoupon> findAllMemberCouponByMemberId(@Param("memberId") Long memberId);
+
+//    @Query("select mc from MemberCoupon mc where mc.couponCode = :couponCode")
+//    Optional<MemberCoupon> findByCouponCode(@Param("couponCode") UUID couponCode);
+    Optional<MemberCoupon> findByCouponCode(@Param("couponCode") UUID couponCode);
 }

@@ -1,7 +1,8 @@
 package com.github.hji1235.coupon_system.service;
 
 import com.github.hji1235.coupon_system.controller.converter.CouponConverter;
-import com.github.hji1235.coupon_system.controller.dto.CouponSaveRequest;
+import com.github.hji1235.coupon_system.controller.dto.AdminCouponSaveRequest;
+import com.github.hji1235.coupon_system.controller.dto.StoreCouponSaveRequest;
 import com.github.hji1235.coupon_system.repository.CouponRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,12 @@ public class CouponService {
     private final CouponConverter couponConverter;
 
     @Transactional
-    public void couponSave(CouponSaveRequest couponSaveRequest) {
-        couponRepository.save(couponConverter.convertToCoupon(couponSaveRequest));
+    public void adminCouponSave(AdminCouponSaveRequest adminCouponSaveRequest) {
+        couponRepository.save(couponConverter.convertToAdminCoupon(adminCouponSaveRequest));
+    }
+
+    @Transactional
+    public void storeCouponSave(Long storeId, StoreCouponSaveRequest storeCouponSaveRequest) {
+        couponRepository.save(couponConverter.convertToStoreCoupon(storeId, storeCouponSaveRequest));
     }
 }

@@ -19,10 +19,10 @@ public class ExpirationPolicy {
     @Column(name = "expiration_policy_type", nullable = false)
     private ExpirationPolicyType expirationPolicyType;
 
-    @Column(name = "start_at", nullable = false)
+    @Column(name = "start_at")
     private LocalDateTime startAt;
 
-    @Column(name = "expired_at", nullable = false)
+    @Column(name = "expired_at")
     private LocalDateTime expiredAt;
 
     @Column(name = "days_from_issuance")
