@@ -16,25 +16,9 @@ public class MemberCouponController {
 
     private final MemberCouponService memberCouponService;
 
-    @PostMapping("/members/{memberId}/coupons/{couponId}/issue")
-    public ApiResponse<Void> memberCouponSave(
-            @PathVariable Long memberId,
-            @PathVariable Long couponId
-    ) {
-        memberCouponService.saveMemberCoupon(memberId, couponId);
-        return ApiResponse.success();
-    }
-
-    @GetMapping("/members/{memberId}/stores/{storeId}/orders/{orderId}/member-coupons/check")
-    public ApiResponse<MemberCouponCheckResponse> memberCouponCheck(
-            @PathVariable Long memberId,
-            @PathVariable Long storeId,
-            @PathVariable Long orderId
-    ) {
-        MemberCouponCheckResponse memberCouponCheckResponse = memberCouponService.checkMemberCoupons(memberId, storeId, orderId);
-        return ApiResponse.success(memberCouponCheckResponse);
-    }
-
+    /*
+    미할당 쿠폰 생성
+     */
     @PostMapping("/coupons/{couponId}/issue-code")
     public ApiResponse<Void> issueCouponCodes(
             @PathVariable Long couponId,
@@ -44,6 +28,21 @@ public class MemberCouponController {
         return ApiResponse.success();
     }
 
+    /*
+    쿠폰 할당(클릭)
+     */
+    @PostMapping("/members/{memberId}/coupons/{couponId}/issue")
+    public ApiResponse<Void> memberCouponSave(
+            @PathVariable Long memberId,
+            @PathVariable Long couponId
+    ) {
+        memberCouponService.saveMemberCoupon(memberId, couponId);
+        return ApiResponse.success();
+    }
+
+    /*
+    쿠폰 할당(쿠폰 코드)
+     */
     @PatchMapping("/members/{memberId}/member-coupons")
     public ApiResponse<Void> memberCouponAllocate(
             @PathVariable Long memberId,
@@ -51,5 +50,18 @@ public class MemberCouponController {
     ) {
         memberCouponService.allocateMemberCoupon(memberId, memberCouponAllocateRequest);
         return ApiResponse.success();
+    }
+
+    /*
+    사용 가능 쿠폰 조회
+     */
+    @GetMapping("/members/{memberId}/stores/{storeId}/orders/{orderId}/member-coupons/check")
+    public ApiResponse<MemberCouponCheckResponse> memberCouponCheck(
+            @PathVariable Long memberId,
+            @PathVariable Long storeId,
+            @PathVariable Long orderId
+    ) {
+        MemberCouponCheckResponse memberCouponCheckResponse = memberCouponService.checkMemberCoupons(memberId, storeId, orderId);
+        return ApiResponse.success(memberCouponCheckResponse);
     }
 }

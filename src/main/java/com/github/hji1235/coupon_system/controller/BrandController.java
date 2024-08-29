@@ -16,20 +16,28 @@ public class BrandController {
 
     private final BrandService brandService;
 
-    // 생성, 단일조회, 다중조회, 수정, 삭제
-
+    
+    /*
+    브랜드 생성
+     */
     @PostMapping("")
     public ApiResponse<Void> brandSave(@Valid @RequestBody BrandSaveRequest brandSaveRequest) {
         brandService.saveBrand(brandSaveRequest);
         return ApiResponse.success();
     }
 
+    /*
+    브랜드 단일 조회
+     */
     @GetMapping("/{brandId}")
     public ApiResponse<BrandFindResponse> brandDetails(@PathVariable Long brandId) {
         BrandFindResponse findBrand = brandService.findBrand(brandId);
         return ApiResponse.success(findBrand);
     }
 
+    /*
+    브랜드 이름 수정
+     */
     @PatchMapping("/{brandId}")
     public ApiResponse<Void> brandModify(
             @PathVariable Long brandId,
@@ -39,6 +47,9 @@ public class BrandController {
         return ApiResponse.success();
     }
 
+    /*
+    브랜드 삭제
+     */
     @DeleteMapping("/{brandId}")
     public ApiResponse<Void> brandRemove(@PathVariable Long brandId) {
         brandService.removeBrand(brandId);

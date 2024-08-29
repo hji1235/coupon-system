@@ -16,6 +16,9 @@ public class OrderController {
 
     private final OrderService orderService;
 
+    /*
+    주문 생성
+     */
     @PostMapping("/orders/members/{memberId}")
     public ApiResponse<Void> orderSave(
             @PathVariable Long memberId,
@@ -25,14 +28,8 @@ public class OrderController {
         return ApiResponse.success();
     }
 
-    @GetMapping("/orders/members/{memberId}")
-    public ApiResponse<OrderFindAllResponse> orderFindAll(@PathVariable Long memberId) {
-        OrderFindAllResponse orderFindAllResponse = orderService.findAllOrders(memberId);
-        return ApiResponse.success(orderFindAllResponse);
-    }
-
     /*
-    주문 상세 조회는 멤버쿠폰을 사용하여 결제와 연관관계가 생겼을 시점에 만들기(현재 서로 연관 관계가 없어서 조회가 불가능)
+    주문 상세 조회
      */
     @GetMapping("/orders/{orderId}")
     public ApiResponse<OrderFindResponse> orderDetails(
@@ -40,5 +37,14 @@ public class OrderController {
     ) {
         OrderFindResponse orderFindResponse = orderService.findOrder(orderId);
         return ApiResponse.success(orderFindResponse);
+    }
+
+    /*
+    주문 리스트 조회
+     */
+    @GetMapping("/orders/members/{memberId}")
+    public ApiResponse<OrderFindAllResponse> orderFindAll(@PathVariable Long memberId) {
+        OrderFindAllResponse orderFindAllResponse = orderService.findAllOrders(memberId);
+        return ApiResponse.success(orderFindAllResponse);
     }
 }

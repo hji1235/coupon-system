@@ -14,6 +14,9 @@ public class PaymentController {
 
     private final PaymentService paymentService;
 
+    /*
+    결제 생성
+     */
     @PostMapping("/orders/{orderId}/payments")
     public ApiResponse<Void> paymentSave(
             @PathVariable Long orderId,
@@ -23,12 +26,18 @@ public class PaymentController {
         return ApiResponse.success();
     }
 
+    /*
+    결제 완료
+     */
     @PatchMapping("/payments/{paymentId}")
     public ApiResponse<Void> paymentComplete(@PathVariable Long paymentId) {
         paymentService.completePayment(paymentId);
         return ApiResponse.success();
     }
 
+    /*
+    결제 취소
+     */
     @DeleteMapping("/payments/{paymentId}")
     public ApiResponse<Void> paymentCancel(@PathVariable Long paymentId) {
         paymentService.cancelPayment(paymentId);

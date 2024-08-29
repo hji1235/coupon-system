@@ -15,12 +15,18 @@ public class CouponController {
 
     private final CouponService couponService;
 
+    /*
+    어드민 쿠폰 생성(어드민 쿠폰, 브랜드 쿠폰)
+     */
     @PostMapping("/admin/coupons")
     public ApiResponse<Void> adminCouponSave(@Valid @RequestBody AdminCouponSaveRequest adminCouponSaveRequest) {
         couponService.adminCouponSave(adminCouponSaveRequest);
         return ApiResponse.success();
     }
 
+    /*
+    스토어 쿠폰 생성(스토어 쿠폰)
+     */
     @PostMapping("/stores/{storeId}/coupons")
     public ApiResponse<Void> storeCouponSave(
             @PathVariable Long storeId,

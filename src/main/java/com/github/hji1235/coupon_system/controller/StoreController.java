@@ -18,24 +18,36 @@ public class StoreController {
 
     private final StoreService storeService;
 
+    /*
+    스토어 생성
+     */
     @PostMapping("")
     public ApiResponse<Void> storeSave(@Valid @RequestBody StoreSaveRequest storeSaveRequest) {
         storeService.saveStore(storeSaveRequest);
         return ApiResponse.success();
     }
 
+    /*
+    스토어 단일 조회
+     */
     @GetMapping("/{storeId}")
     public ApiResponse<StoreFindResponse> storeDetails(@PathVariable Long storeId) {
         StoreFindResponse findStore = storeService.findStore(storeId);
         return ApiResponse.success(findStore);
     }
 
+    /*
+    스토어 다중 조회
+     */
     @GetMapping("")
     public ApiResponse<List<StoreFindResponse>> storeList() {
         List<StoreFindResponse> findStores = storeService.findAllStores();
         return ApiResponse.success(findStores);
     }
 
+    /*
+    스토어 이름 수정
+     */
     @PatchMapping("/{storeId}")
     public ApiResponse<Void> storeModify(
             @PathVariable Long storeId,
@@ -45,6 +57,9 @@ public class StoreController {
         return ApiResponse.success();
     }
 
+    /*
+    스토어 삭제
+     */
     @DeleteMapping("/{storeId}")
     public ApiResponse<Void> storeRemove(@PathVariable Long storeId) {
         storeService.removeStore(storeId);
