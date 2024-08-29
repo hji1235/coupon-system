@@ -63,7 +63,7 @@ public class MemberCoupon extends BaseEntity {
     }
 
     public boolean isAvailable(Long issuerId, int paymentAmount) {
-        if (isExpired() || isIssuerMismatch(issuerId) || isBelowMinOrderPrice(paymentAmount) || isUsed()) {
+        if (isExpired() || isIssuerMismatch(issuerId) || isBelowMinOrderPrice(paymentAmount) || isUsed() || isUnavailableTime()) {
             return false;
         }
         return true;
@@ -85,6 +85,13 @@ public class MemberCoupon extends BaseEntity {
             return false;
         }
         return paymentAmount < coupon.getMinOrderPrice();
+    }
+
+    private boolean isUnavailableTime() {
+        if (coupon.getTimeLimitPolicy().isTimeLimit()) {
+            return coupon.getTimeLimitPolicy().isUnavailableTime();
+        }
+        return false;
     }
 
     private boolean isUsed() {

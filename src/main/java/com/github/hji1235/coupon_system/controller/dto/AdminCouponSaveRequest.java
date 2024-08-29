@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -55,4 +56,10 @@ public class AdminCouponSaveRequest {
     @Max(365)
     @Min(0)
     private Integer daysFromIssuance;
+
+    private boolean timeLimit;
+
+    private LocalTime timeLimitStartAt;
+
+    private LocalTime timeLimitEndAt;
 }

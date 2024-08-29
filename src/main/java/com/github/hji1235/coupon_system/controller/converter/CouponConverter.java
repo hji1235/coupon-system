@@ -2,10 +2,7 @@ package com.github.hji1235.coupon_system.controller.converter;
 
 import com.github.hji1235.coupon_system.controller.dto.AdminCouponSaveRequest;
 import com.github.hji1235.coupon_system.controller.dto.StoreCouponSaveRequest;
-import com.github.hji1235.coupon_system.domain.coupon.Coupon;
-import com.github.hji1235.coupon_system.domain.coupon.ExpirationPolicy;
-import com.github.hji1235.coupon_system.domain.coupon.ExpirationPolicyType;
-import com.github.hji1235.coupon_system.domain.coupon.IssuerType;
+import com.github.hji1235.coupon_system.domain.coupon.*;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -18,6 +15,12 @@ public class CouponConverter {
         } else {
             expirationPolicy = ExpirationPolicy.newByAfterIssueDate(dto.getDaysFromIssuance());
         }
+        TimeLimitPolicy timeLimitPolicy;
+        if (dto.isTimeLimit()) {
+            timeLimitPolicy = TimeLimitPolicy.newTimeLimitPolicy(dto.getTimeLimitStartAt(), dto.getTimeLimitEndAt());
+        } else {
+            timeLimitPolicy = TimeLimitPolicy.newTimeLimitPolicy();
+        }
         return Coupon.builder()
                 .name(dto.getName())
                 .discountAmount(dto.getDiscountAmount())
@@ -29,6 +32,7 @@ public class CouponConverter {
                 .issuerType(dto.getIssuerType())
                 .issuerId(dto.getIssuerId())
                 .expirationPolicy(expirationPolicy)
+                .timeLimitPolicy(timeLimitPolicy)
                 .build();
     }
 
@@ -38,6 +42,12 @@ public class CouponConverter {
             expirationPolicy = ExpirationPolicy.newByPeriod(dto.getStartAt(), dto.getExpiredAt());
         } else {
             expirationPolicy = ExpirationPolicy.newByAfterIssueDate(dto.getDaysFromIssuance());
+        }
+        TimeLimitPolicy timeLimitPolicy;
+        if (dto.isTimeLimit()) {
+            timeLimitPolicy = TimeLimitPolicy.newTimeLimitPolicy(dto.getTimeLimitStartAt(), dto.getTimeLimitEndAt());
+        } else {
+            timeLimitPolicy = TimeLimitPolicy.newTimeLimitPolicy();
         }
         return Coupon.builder()
                 .name(dto.getName())
@@ -50,6 +60,7 @@ public class CouponConverter {
                 .issuerType(IssuerType.STORE)
                 .issuerId(storeId)
                 .expirationPolicy(expirationPolicy)
+                .timeLimitPolicy(timeLimitPolicy)
                 .build();
     }
 
