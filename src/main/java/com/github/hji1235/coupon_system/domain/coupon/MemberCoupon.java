@@ -37,7 +37,7 @@ public class MemberCoupon extends BaseEntity {
     @JoinColumn(name = "coupon_id")
     private Coupon coupon;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "payment_id")
     private Payment payment;
 
@@ -51,5 +51,47 @@ public class MemberCoupon extends BaseEntity {
         this.couponCode = UUID.randomUUID();
         this.expirationPeriod = coupon.getExpirationPolicy().newExpirationPeriod();
         this.used = false;
+    }
+
+    public int getDiscountAmount() {
+        return coupon.getDiscountAmount();
+    }
+
+    public void use() {
+        this.used = true;
+        this.usedAt = LocalDateTime.now();
+    }
+
+    public boolean isAvailable(Long issuerId, int paymentAmount) {
+        if (isExpired() || isIssuerMismatch(issuerId) || isBelowMinOrderPrice(paymentAmount) || isUsed()) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isExpired() {
+        return expirationPeriod.isExpired();
+    }
+
+    private boolean isIssuerMismatch(Long issuerId) {
+        if (coupon.isAdminCoupon()) {
+            return false;
+        }
+        return coupon.getIssuerId().equals(issuerId);
+    }
+
+    private boolean isBelowMinOrderPrice(int paymentAmount) {
+        if (coupon.getMinOrderPrice() == null) {
+            return false;
+        }
+        return paymentAmount < coupon.getMinOrderPrice();
+    }
+
+    private boolean isUsed() {
+        return used;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
     }
 }

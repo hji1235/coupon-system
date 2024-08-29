@@ -23,4 +23,9 @@ public class ExpirationPeriod {
         this.startAt = startAt;
         this.expiredAt = expiredAt;
     }
+
+    public boolean isExpired() {
+        return LocalDateTime.now().isAfter(expiredAt);
+    }
+
 }

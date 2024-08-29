@@ -10,7 +10,10 @@ public enum ErrorCode {
     MEMBER_NOT_FOUND(400, "TEST4", "Can not find a Member for id"),
     COUPON_NOT_FOUND(400, "TEST5", "Can not find a Coupon for id"),
     COUPON_MAX_COUNT_OVER(400, "TEST6", "Can not issue coupon. coupon maxCount : %d, allocatedCount : %d, requestCount : %d"),
-    COUPON_MAX_COUNT_FOR_MEMBER_OVER(400, "TEST7", "Can not issue coupon. coupon maxCountPerMember : %d, currentCount : %d");
+    COUPON_MAX_COUNT_FOR_MEMBER_OVER(400, "TEST7", "Can not issue coupon. coupon maxCountPerMember : %d, currentCount : %d"),
+    ORDER_NOT_FOUND(400, "TEST7", "Can not find a Order for id"),
+    MEMBERCOUPON_NOT_FOUND(400, "TEST8", "Can not find a MemberCoupon for id"),
+    PAYMENT_NOT_FOUND(400, "TEST9", "Can not find a Payment for id");
 
 
     private final int status;

@@ -1,12 +1,10 @@
 package com.github.hji1235.coupon_system.controller;
 
+import com.github.hji1235.coupon_system.controller.dto.MemberCouponCheckResponse;
 import com.github.hji1235.coupon_system.global.ApiResponse;
 import com.github.hji1235.coupon_system.service.MemberCouponService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -22,5 +20,15 @@ public class MemberCouponController {
     ) {
         memberCouponService.saveMemberCoupon(memberId, couponId);
         return ApiResponse.success();
+    }
+
+    @GetMapping("/members/{memberId}/stores/{storeId}/orders/{orderId}/member-coupons/check")
+    public ApiResponse<MemberCouponCheckResponse> memberCouponCheck(
+            @PathVariable Long memberId,
+            @PathVariable Long storeId,
+            @PathVariable Long orderId
+    ) {
+        MemberCouponCheckResponse memberCouponCheckResponse = memberCouponService.checkMemberCoupons(memberId, storeId, orderId);
+        return ApiResponse.success(memberCouponCheckResponse);
     }
 }
