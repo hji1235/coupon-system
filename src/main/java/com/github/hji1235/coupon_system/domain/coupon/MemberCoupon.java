@@ -69,7 +69,7 @@ public class MemberCoupon extends BaseEntity {
         return true;
     }
 
-    private boolean isExpired() {
+    public boolean isExpired() {
         return expirationPeriod.isExpired();
     }
 
@@ -77,7 +77,7 @@ public class MemberCoupon extends BaseEntity {
         if (coupon.isAdminCoupon()) {
             return false;
         }
-        return coupon.getIssuerId().equals(issuerId);
+        return !coupon.getIssuerId().equals(issuerId);
     }
 
     private boolean isBelowMinOrderPrice(int paymentAmount) {

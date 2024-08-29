@@ -3,11 +3,14 @@ package com.github.hji1235.coupon_system.controller;
 import com.github.hji1235.coupon_system.controller.dto.MemberCouponAllocateRequest;
 import com.github.hji1235.coupon_system.controller.dto.MemberCouponCheckResponse;
 import com.github.hji1235.coupon_system.controller.dto.MemberCouponCodeSaveRequest;
+import com.github.hji1235.coupon_system.controller.dto.MemberCouponFindAllResponse;
 import com.github.hji1235.coupon_system.global.ApiResponse;
 import com.github.hji1235.coupon_system.service.MemberCouponService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -52,8 +55,14 @@ public class MemberCouponController {
         return ApiResponse.success();
     }
 
+    @GetMapping("/members/{memberId}/member-coupons")
+    public ApiResponse<List<MemberCouponFindAllResponse>> memberCouponFindAll(@PathVariable Long memberId) {
+        List<MemberCouponFindAllResponse> memberCoupons = memberCouponService.findAllMemberCoupons(memberId);
+        return ApiResponse.success(memberCoupons);
+    }
+
     /*
-    사용 가능 쿠폰 조회
+    주문 중 사용 가능 쿠폰 조회
      */
     @GetMapping("/members/{memberId}/stores/{storeId}/orders/{orderId}/member-coupons/check")
     public ApiResponse<MemberCouponCheckResponse> memberCouponCheck(

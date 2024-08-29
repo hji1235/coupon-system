@@ -1,9 +1,6 @@
 package com.github.hji1235.coupon_system.service;
 
-import com.github.hji1235.coupon_system.controller.dto.MemberCouponAllocateRequest;
-import com.github.hji1235.coupon_system.controller.dto.MemberCouponCheckDto;
-import com.github.hji1235.coupon_system.controller.dto.MemberCouponCheckResponse;
-import com.github.hji1235.coupon_system.controller.dto.MemberCouponCodeSaveRequest;
+import com.github.hji1235.coupon_system.controller.dto.*;
 import com.github.hji1235.coupon_system.domain.coupon.Coupon;
 import com.github.hji1235.coupon_system.domain.coupon.MemberCoupon;
 import com.github.hji1235.coupon_system.domain.member.Member;
@@ -93,5 +90,12 @@ public class MemberCouponService {
         MemberCoupon memberCoupon = memberCouponRepository.findByCouponCode(couponCode)
                 .orElseThrow(() -> new MemberCouponNotFoundException(couponCode));
         memberCoupon.allocateMember(member);
+    }
+
+    public List<MemberCouponFindAllResponse> findAllMemberCoupons(Long memberId) {
+        return memberCouponRepository.findAllMemberCouponByMemberId(memberId).stream()
+                .filter(memberCoupon -> !memberCoupon.isExpired())
+                .map(MemberCouponFindAllResponse::new)
+                .toList();
     }
 }
