@@ -18,15 +18,16 @@ public class BrandService {
     private final BrandRepository brandRepository;
 
     @Transactional
-    public void saveBrand(BrandSaveRequest brandSaveRequest) {
+    public Long saveBrand(BrandSaveRequest brandSaveRequest) {
         Brand newBrand = new Brand(brandSaveRequest.getName());
-        brandRepository.save(newBrand);
+        Brand savedBrand = brandRepository.save(newBrand);
+        return savedBrand.getId();
     }
 
     public BrandFindResponse findBrand(Long brandId) {
-        Brand brand = brandRepository.findById(brandId)
+        return brandRepository.findById(brandId)
+                .map(BrandFindResponse::new)
                 .orElseThrow(() -> new BrandNotFoundException(brandId));
-        return new BrandFindResponse(brand);
     }
 
     @Transactional

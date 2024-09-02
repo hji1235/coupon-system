@@ -20,9 +20,9 @@ public class BrandController {
     브랜드 생성
      */
     @PostMapping("/brands")
-    public ApiResponse<Void> brandSave(@Valid @RequestBody BrandSaveRequest brandSaveRequest) {
-        brandService.saveBrand(brandSaveRequest);
-        return ApiResponse.success();
+    public ApiResponse<Long> brandSave(@Valid @RequestBody BrandSaveRequest brandSaveRequest) {
+        Long savedBrandId = brandService.saveBrand(brandSaveRequest);
+        return ApiResponse.success(savedBrandId);
     }
 
     /*
