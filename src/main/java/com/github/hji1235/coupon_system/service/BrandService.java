@@ -31,14 +31,14 @@ public class BrandService {
     }
 
     @Transactional
-    public void modifyBrandName(Long brandId, BrandUpdateRequest brandUpdateRequest) {
+    public void updateBrand(Long brandId, BrandUpdateRequest brandUpdateRequest) {
         Brand brand = brandRepository.findById(brandId)
                 .orElseThrow(() -> new BrandNotFoundException(brandId));
         brand.updateName(brandUpdateRequest.getName());
     }
 
     @Transactional
-    public void removeBrand(Long brandId) {
+    public void deleteBrand(Long brandId) {
         Brand brand = brandRepository.findById(brandId)
                 .orElseThrow(() -> new BrandNotFoundException(brandId));
         brandRepository.delete(brand);
