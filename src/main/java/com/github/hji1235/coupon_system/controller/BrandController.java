@@ -16,21 +16,20 @@ public class BrandController {
 
     private final BrandService brandService;
 
-    
     /*
     브랜드 생성
      */
-    @PostMapping("")
-    public ApiResponse<Void> brandSave(@Valid @RequestBody BrandSaveRequest brandSaveRequest) {
-        brandService.saveBrand(brandSaveRequest);
-        return ApiResponse.success();
+    @PostMapping
+    public ApiResponse<Long> createBrand(@Valid @RequestBody BrandSaveRequest brandSaveRequest) {
+        Long savedBrandId = brandService.saveBrand(brandSaveRequest);
+        return ApiResponse.success(savedBrandId);
     }
 
     /*
     브랜드 단일 조회
      */
     @GetMapping("/{brandId}")
-    public ApiResponse<BrandFindResponse> brandDetails(@PathVariable Long brandId) {
+    public ApiResponse<BrandFindResponse> getBrand(@PathVariable Long brandId) {
         BrandFindResponse findBrand = brandService.findBrand(brandId);
         return ApiResponse.success(findBrand);
     }
@@ -39,11 +38,11 @@ public class BrandController {
     브랜드 이름 수정
      */
     @PatchMapping("/{brandId}")
-    public ApiResponse<Void> brandModify(
+    public ApiResponse<Void> updateBrand(
             @PathVariable Long brandId,
             @Valid @RequestBody BrandUpdateRequest brandUpdateRequest
-            ) {
-        brandService.modifyBrand(brandId, brandUpdateRequest);
+    ) {
+        brandService.updateBrand(brandId, brandUpdateRequest);
         return ApiResponse.success();
     }
 
@@ -51,8 +50,8 @@ public class BrandController {
     브랜드 삭제
      */
     @DeleteMapping("/{brandId}")
-    public ApiResponse<Void> brandRemove(@PathVariable Long brandId) {
-        brandService.removeBrand(brandId);
+    public ApiResponse<Void> deleteBrand(@PathVariable Long brandId) {
+        brandService.deleteBrand(brandId);
         return ApiResponse.success();
     }
 }
