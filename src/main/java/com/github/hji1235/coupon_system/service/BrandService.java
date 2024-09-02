@@ -19,28 +19,29 @@ public class BrandService {
 
     @Transactional
     public Long saveBrand(BrandSaveRequest brandSaveRequest) {
-        Brand brand = new Brand(brandSaveRequest.getName());
-        Brand savedBrand = brandRepository.save(brand);
-        return savedBrand.getId();
+        Brand brand = Brand.of(brandSaveRequest.getName());
+        return brandRepository.save(brand).getId();
     }
 
     public BrandFindResponse findBrand(Long brandId) {
-        return brandRepository.findById(brandId)
-                .map(BrandFindResponse::new)
-                .orElseThrow(() -> new BrandNotFoundException(brandId));
+        Brand brand = findBrandById(brandId);
+        return new BrandFindResponse(brand);
     }
 
     @Transactional
     public void updateBrand(Long brandId, BrandUpdateRequest brandUpdateRequest) {
-        Brand brand = brandRepository.findById(brandId)
-                .orElseThrow(() -> new BrandNotFoundException(brandId));
+        Brand brand = findBrandById(brandId);
         brand.updateName(brandUpdateRequest.getName());
     }
 
     @Transactional
     public void deleteBrand(Long brandId) {
-        Brand brand = brandRepository.findById(brandId)
-                .orElseThrow(() -> new BrandNotFoundException(brandId));
+        Brand brand = findBrandById(brandId);
         brandRepository.delete(brand);
+    }
+
+    private Brand findBrandById(Long brandId) {
+        return brandRepository.findById(brandId)
+                .orElseThrow(() -> new BrandNotFoundException(brandId));
     }
 }

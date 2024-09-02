@@ -48,7 +48,7 @@ public class MemberCouponService {
     public MemberCouponCheckResponse checkMemberCoupons(Long memberId, Long storeId, Long orderId) {
         memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException(memberId));
-        Store store = storeRepository.findStore(storeId)
+        Store store = storeRepository.findByIdWithBrand(storeId)
                 .orElseThrow(() -> new StoreNotFoundException(storeId));
         Order order = orderRepository.findOrder(orderId)
                 .orElseThrow(() -> new OrderNotFoundException(orderId));

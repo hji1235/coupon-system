@@ -24,36 +24,42 @@ public class StoreService {
     private final BrandRepository brandRepository;
 
     @Transactional
-    public void saveStore(StoreSaveRequest storeSaveRequest) {
-        Long brandId = storeSaveRequest.getBrandId();
-        Brand brand = brandRepository.findById(brandId)
-                .orElseThrow(() -> new BrandNotFoundException(brandId));
-        storeRepository.save(new Store(storeSaveRequest.getName(), brand));
+    public Long saveStore(StoreSaveRequest storeSaveRequest) {
+        Brand brand = findBrandById(storeSaveRequest.getBrandId());
+        Store store = Store.of(storeSaveRequest.getName(), brand);
+        return storeRepository.save(store).getId();
     }
 
     public StoreFindResponse findStore(Long storeId) {
-        Store store = storeRepository.findStore(storeId)
-                .orElseThrow(() -> new StoreNotFoundException(storeId));
+        Store store = findStoreById(storeId);
         return new StoreFindResponse(store);
     }
 
     public List<StoreFindResponse> findAllStores() {
-        return storeRepository.findAllStores().stream()
+        return storeRepository.findAll().stream()
                 .map(StoreFindResponse::new)
                 .toList();
     }
 
     @Transactional
-    public void modifyStore(Long storeId, StoreUpdateRequest storeUpdateRequest) {
-        Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new StoreNotFoundException(storeId));
-        store.changeName(storeUpdateRequest.getName());
+    public void updateStore(Long storeId, StoreUpdateRequest storeUpdateRequest) {
+        Store store = findStoreById(storeId);
+        store.updateName(storeUpdateRequest.getName());
     }
 
     @Transactional
-    public void removeStore(Long storeId) {
-        Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new StoreNotFoundException(storeId));
+    public void deleteStore(Long storeId) {
+        Store store = findStoreById(storeId);
         storeRepository.delete(store);
+    }
+
+    private Store findStoreById(Long storeId) {
+        return storeRepository.findById(storeId)
+                .orElseThrow(() -> new StoreNotFoundException(storeId));
+    }
+
+    private Brand findBrandById(Long brandId) {
+        return brandRepository.findById(brandId)
+                .orElseThrow(() -> new BrandNotFoundException(brandId));
     }
 }
