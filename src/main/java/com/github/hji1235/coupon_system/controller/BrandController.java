@@ -30,8 +30,8 @@ public class BrandController {
      */
     @GetMapping("/{brandId}")
     public ApiResponse<BrandFindResponse> getBrand(@PathVariable Long brandId) {
-        BrandFindResponse findBrand = brandService.findBrand(brandId);
-        return ApiResponse.success(findBrand);
+        BrandFindResponse brandFindResponse = brandService.findBrand(brandId);
+        return ApiResponse.success(brandFindResponse);
     }
 
     /*

@@ -13,11 +13,8 @@ public class StoreFindResponse {
 
     private String name;
 
-    private String brandName;
-
     public StoreFindResponse(Store store) {
         this.id = store.getId();
         this.name = store.getName();
-        this.brandName = store.getBrand().getName();
     }
 }

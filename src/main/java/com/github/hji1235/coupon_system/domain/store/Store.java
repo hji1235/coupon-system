@@ -23,12 +23,16 @@ public class Store extends BaseEntity {
     @JoinColumn(name = "brand_id")
     private Brand brand;
 
-    public Store(String name, Brand brand) {
+    private Store(String name, Brand brand) {
         this.name = name;
         this.brand = brand;
     }
 
-    public void changeName(String name) {
+    public static Store of(String storeName, Brand brand) {
+        return new Store(storeName, brand);
+    }
+
+    public void updateName(String name) {
         this.name = name;
     }
 }

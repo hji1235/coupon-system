@@ -21,39 +21,39 @@ public class StoreController {
     /*
     스토어 생성
      */
-    @PostMapping("")
-    public ApiResponse<Void> storeSave(@Valid @RequestBody StoreSaveRequest storeSaveRequest) {
-        storeService.saveStore(storeSaveRequest);
-        return ApiResponse.success();
+    @PostMapping
+    public ApiResponse<Long> createStore(@Valid @RequestBody StoreSaveRequest storeSaveRequest) {
+        Long savedStoreId = storeService.saveStore(storeSaveRequest);
+        return ApiResponse.success(savedStoreId);
     }
 
     /*
     스토어 단일 조회
      */
     @GetMapping("/{storeId}")
-    public ApiResponse<StoreFindResponse> storeDetails(@PathVariable Long storeId) {
-        StoreFindResponse findStore = storeService.findStore(storeId);
-        return ApiResponse.success(findStore);
+    public ApiResponse<StoreFindResponse> getStore(@PathVariable Long storeId) {
+        StoreFindResponse storeFindResponse = storeService.findStore(storeId);
+        return ApiResponse.success(storeFindResponse);
     }
 
     /*
     스토어 다중 조회
      */
-    @GetMapping("")
-    public ApiResponse<List<StoreFindResponse>> storeList() {
-        List<StoreFindResponse> findStores = storeService.findAllStores();
-        return ApiResponse.success(findStores);
+    @GetMapping
+    public ApiResponse<List<StoreFindResponse>> getAllStores() {
+        List<StoreFindResponse> storeFindResponses = storeService.findAllStores();
+        return ApiResponse.success(storeFindResponses);
     }
 
     /*
     스토어 이름 수정
      */
     @PatchMapping("/{storeId}")
-    public ApiResponse<Void> storeModify(
+    public ApiResponse<Void> updateStore(
             @PathVariable Long storeId,
             @Valid @RequestBody StoreUpdateRequest storeUpdateRequest
-            ) {
-        storeService.modifyStore(storeId, storeUpdateRequest);
+    ) {
+        storeService.updateStore(storeId, storeUpdateRequest);
         return ApiResponse.success();
     }
 
@@ -61,8 +61,8 @@ public class StoreController {
     스토어 삭제
      */
     @DeleteMapping("/{storeId}")
-    public ApiResponse<Void> storeRemove(@PathVariable Long storeId) {
-        storeService.removeStore(storeId);
+    public ApiResponse<Void> deleteStore(@PathVariable Long storeId) {
+        storeService.deleteStore(storeId);
         return ApiResponse.success();
     }
 }

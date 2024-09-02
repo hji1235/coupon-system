@@ -48,11 +48,11 @@ public class DataInitializer {
         int[] prices = new int[]{15000, 17000, 2000};
 
         for (String brandName : brands) {
-            Brand brand = new Brand(brandName);
+            Brand brand = Brand.of(brandName);
             brandRepository.save(brand);
 
             for (String branchName : branches) {
-                Store store = new Store(brandName + "-" + branchName, brand);
+                Store store = Store.of(brandName + "-" + branchName, brand);
                 storeRepository.save(store);
 
                 for (int i=0; i<menuNames.length; i++) {

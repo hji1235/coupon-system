@@ -19,8 +19,12 @@ public class Brand extends BaseEntity {
     @Column(name = "name", nullable = false)
     private String name;
 
-    public Brand(String name) {
+    private Brand(String name) {
         this.name = name;
+    }
+
+    public static Brand of(String brandName) {
+        return new Brand(brandName);
     }
 
     public void updateName(String name) {
