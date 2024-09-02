@@ -58,6 +58,7 @@ public class MemberCoupon extends BaseEntity {
     }
 
     public void use() {
+        // 쿠폰 사용 유효 체크 로직 (Exception 터트리는걸로)
         this.used = true;
         this.usedAt = LocalDateTime.now();
     }
