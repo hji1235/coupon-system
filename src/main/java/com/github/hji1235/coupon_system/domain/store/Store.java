@@ -6,6 +6,8 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -34,5 +36,18 @@ public class Store extends BaseEntity {
 
     public void updateName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Store store = (Store) o;
+        return Objects.equals(getId(), store.getId());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getBrand());
     }
 }
