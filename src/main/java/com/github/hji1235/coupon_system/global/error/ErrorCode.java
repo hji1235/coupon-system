@@ -13,7 +13,8 @@ public enum ErrorCode {
     COUPON_MAX_COUNT_FOR_MEMBER_OVER(400, "TEST7", "Can not issue coupon. coupon maxCountPerMember : %d, currentCount : %d"),
     ORDER_NOT_FOUND(400, "TEST7", "Can not find a Order for id"),
     MEMBERCOUPON_NOT_FOUND(400, "TEST8", "Can not find a MemberCoupon for id"),
-    PAYMENT_NOT_FOUND(400, "TEST9", "Can not find a Payment for id");
+    PAYMENT_NOT_FOUND(400, "TEST9", "Can not find a Payment for id"),
+    INVALID_MENU_ACCESS(400, "TEST10", "This Menu does not belong to the Store. storeId : %d, menuId : %d");
 
 
     private final int status;

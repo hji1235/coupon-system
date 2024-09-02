@@ -13,66 +13,66 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
-public class MenuController {//#
+@RequestMapping("/api/v1/stores/{storeId}/menus")
+public class MenuController {
 
     private final MenuService menuService;
 
     /*
     메뉴 생성
      */
-    @PostMapping("/stores/{storeId}/menus")
-    public ApiResponse<Void> menuSave(
+    @PostMapping
+    public ApiResponse<Long> createMenu(
             @PathVariable Long storeId,
             @Valid @RequestBody MenuSaveRequest menuSaveRequest
     ) {
-        menuService.saveMenu(storeId, menuSaveRequest);
-        return ApiResponse.success();
+        Long savedMenuId = menuService.saveMenu(storeId, menuSaveRequest);
+        return ApiResponse.success(savedMenuId);
     }
 
     /*
     메뉴 단일 조회
      */
-    @GetMapping("/stores/{storeId}/menus/{menuId}")
-    public ApiResponse<MenuFindResponse> menuDetails(
+    @GetMapping("/{menuId}")
+    public ApiResponse<MenuFindResponse> getMenu(
             @PathVariable Long storeId,
             @PathVariable Long menuId
     ) {
-        MenuFindResponse findMenu = menuService.findMenu(storeId, menuId);
-        return ApiResponse.success(findMenu);
+        MenuFindResponse menuFindResponse = menuService.findMenu(storeId, menuId);
+        return ApiResponse.success(menuFindResponse);
     }
 
     /*
     메뉴 다중 조회
      */
-    @GetMapping("/stores/{storeId}/menus")
-    public ApiResponse<List<MenuFindResponse>> menuListForStore(@PathVariable Long storeId) {
-        List<MenuFindResponse> findMenus = menuService.findAllMenusByStoreId(storeId);
-        return ApiResponse.success(findMenus);
+    @GetMapping
+    public ApiResponse<List<MenuFindResponse>> getAllMenus(@PathVariable Long storeId) {
+        List<MenuFindResponse> menuFindResponses = menuService.findAllMenus(storeId);
+        return ApiResponse.success(menuFindResponses);
     }
 
     /*
     메뉴 이름 및 가격 수정
      */
-    @PatchMapping("/stores/{storeId}/menus/{menuId}")
-    public ApiResponse<Void> menuModify(
+    @PatchMapping("/{menuId}")
+    public ApiResponse<Void> updateMenu(
             @PathVariable Long storeId,
             @PathVariable Long menuId,
             @Valid @RequestBody MenuUpdateRequest menuUpdateRequest
-            ) {
-        menuService.modifyMenu(storeId, menuId, menuUpdateRequest);
+    ) {
+        menuService.updateMenu(storeId, menuId, menuUpdateRequest);
         return ApiResponse.success();
     }
 
     /*
     메뉴 삭제
      */
-    @DeleteMapping("/stores/{storeId}/menus/{menuId}")
-    public ApiResponse<Void> menuRemove(
+    @DeleteMapping("/{menuId}")
+    public ApiResponse<Void> deleteMenu(
             @PathVariable Long storeId,
             @PathVariable Long menuId
     ) {
-        menuService.removeMenu(storeId, menuId);
+        menuService.deleteMenu(storeId, menuId);
         return ApiResponse.success();
     }
 }

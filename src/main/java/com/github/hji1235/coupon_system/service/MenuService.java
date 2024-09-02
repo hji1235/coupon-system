@@ -5,6 +5,7 @@ import com.github.hji1235.coupon_system.controller.dto.MenuSaveRequest;
 import com.github.hji1235.coupon_system.controller.dto.MenuUpdateRequest;
 import com.github.hji1235.coupon_system.domain.store.Menu;
 import com.github.hji1235.coupon_system.domain.store.Store;
+import com.github.hji1235.coupon_system.global.exception.InvalidMenuAccessException;
 import com.github.hji1235.coupon_system.global.exception.MenuNotFoundException;
 import com.github.hji1235.coupon_system.global.exception.StoreNotFoundException;
 import com.github.hji1235.coupon_system.repository.MenuRepository;
@@ -24,43 +25,56 @@ public class MenuService {
     private final StoreRepository storeRepository;
 
     @Transactional
-    public void saveMenu(Long storeId, MenuSaveRequest menuSaveRequest) {
-        Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new StoreNotFoundException(storeId));
-        menuRepository.save(new Menu(menuSaveRequest.getName(), menuSaveRequest.getPrice(), store));
+    public Long saveMenu(Long storeId, MenuSaveRequest menuSaveRequest) {
+        Store store = findStoreById(storeId);
+        Menu menu = Menu.of(menuSaveRequest.getName(), menuSaveRequest.getPrice(), store);
+        return menuRepository.save(menu).getId();
     }
 
     public MenuFindResponse findMenu(Long storeId, Long menuId) {
-        storeRepository.findById(storeId)
-                .orElseThrow(() -> new StoreNotFoundException(storeId));
-        Menu menu = menuRepository.findById(menuId)
-                .orElseThrow(() -> new MenuNotFoundException(menuId));
+        Menu menu = findAndVerifyMenu(storeId, menuId);
         return new MenuFindResponse(menu);
     }
 
-    public List<MenuFindResponse> findAllMenusByStoreId(Long storeId) {
-        storeRepository.findById(storeId)
-                .orElseThrow(() -> new StoreNotFoundException(storeId));
-        return menuRepository.findMenus(storeId).stream()
+    public List<MenuFindResponse> findAllMenus(Long storeId) {
+        Store store = findStoreById(storeId);
+        return menuRepository.findAllByStore(store).stream()
                 .map(MenuFindResponse::new)
                 .toList();
     }
 
     @Transactional
-    public void modifyMenu(Long storeId, Long menuId, MenuUpdateRequest menuUpdateRequest) {
-        storeRepository.findById(storeId)
-                .orElseThrow(() -> new StoreNotFoundException(storeId));
-        Menu menu = menuRepository.findById(menuId)
-                .orElseThrow(() -> new MenuNotFoundException(menuId));
-        menu.changeNameAndPrice(menuUpdateRequest.getName(), menuUpdateRequest.getPrice());
+    public void updateMenu(Long storeId, Long menuId, MenuUpdateRequest menuUpdateRequest) {
+        Menu menu = findAndVerifyMenu(storeId, menuId);
+        menu.updateMenu(menuUpdateRequest.getName(), menuUpdateRequest.getPrice());
     }
 
     @Transactional
-    public void removeMenu(Long storeId, Long menuId) {
-        storeRepository.findById(storeId)
-                .orElseThrow(() -> new StoreNotFoundException(storeId));
-        Menu menu = menuRepository.findById(menuId)
-                .orElseThrow(() -> new MenuNotFoundException(menuId));
+    public void deleteMenu(Long storeId, Long menuId) {
+        Menu menu = findAndVerifyMenu(storeId, menuId);
         menuRepository.delete(menu);
+    }
+
+    private Menu findAndVerifyMenu(Long storeId, Long menuId) {
+        Store store = findStoreById(storeId);
+        Menu menu = findMenuById(menuId);
+        verifyMenuBelongsToStore(store, menu);
+        return menu;
+    }
+
+    private Store findStoreById(Long storeId) {
+        return storeRepository.findById(storeId)
+                .orElseThrow(() -> new StoreNotFoundException(storeId));
+    }
+
+    private Menu findMenuById(Long menuId) {
+        return menuRepository.findById(menuId)
+                .orElseThrow(() -> new MenuNotFoundException(menuId));
+    }
+
+    private void verifyMenuBelongsToStore(Store store, Menu menu) {
+        if (!store.equals(menu.getStore())) {
+            throw new InvalidMenuAccessException(store.getId(), menu.getId());
+        }
     }
 }

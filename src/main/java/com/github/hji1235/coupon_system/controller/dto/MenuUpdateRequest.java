@@ -1,8 +1,6 @@
 package com.github.hji1235.coupon_system.controller.dto;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.PositiveOrZero;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,10 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MenuUpdateRequest {
 
-    @NotEmpty
+    @NotBlank
     @Size(min = 2, max = 50)
     private String name;
 
+    @NotNull
     @PositiveOrZero
     private Integer price;
 }

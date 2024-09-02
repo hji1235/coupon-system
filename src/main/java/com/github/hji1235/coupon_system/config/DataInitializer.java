@@ -56,7 +56,7 @@ public class DataInitializer {
                 storeRepository.save(store);
 
                 for (int i=0; i<menuNames.length; i++) {
-                    Menu menu = new Menu(menuNames[i], prices[i], store);
+                    Menu menu = Menu.of(menuNames[i], prices[i], store);
                     menuRepository.save(menu);
                 }
             }
