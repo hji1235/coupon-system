@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/brands")
 public class BrandController {
 
     private final BrandService brandService;
@@ -19,7 +19,7 @@ public class BrandController {
     /*
     브랜드 생성
      */
-    @PostMapping("/brands")
+    @PostMapping
     public ApiResponse<Long> brandSave(@Valid @RequestBody BrandSaveRequest brandSaveRequest) {
         Long savedBrandId = brandService.saveBrand(brandSaveRequest);
         return ApiResponse.success(savedBrandId);
@@ -28,7 +28,7 @@ public class BrandController {
     /*
     브랜드 단일 조회
      */
-    @GetMapping("/brands/{brandId}")
+    @GetMapping("/{brandId}")
     public ApiResponse<BrandFindResponse> brandDetails(@PathVariable Long brandId) {
         BrandFindResponse findBrand = brandService.findBrand(brandId);
         return ApiResponse.success(findBrand);
@@ -37,19 +37,19 @@ public class BrandController {
     /*
     브랜드 이름 수정
      */
-    @PatchMapping("/brands/{brandId}")
+    @PatchMapping("/{brandId}")
     public ApiResponse<Void> brandModify(
             @PathVariable Long brandId,
             @Valid @RequestBody BrandUpdateRequest brandUpdateRequest
-            ) {
-        brandService.modifyBrand(brandId, brandUpdateRequest);
+    ) {
+        brandService.modifyBrandName(brandId, brandUpdateRequest);
         return ApiResponse.success();
     }
 
     /*
     브랜드 삭제
      */
-    @DeleteMapping("/brands/{brandId}")
+    @DeleteMapping("/{brandId}")
     public ApiResponse<Void> brandRemove(@PathVariable Long brandId) {
         brandService.removeBrand(brandId);
         return ApiResponse.success();
