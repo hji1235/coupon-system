@@ -11,16 +11,15 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/brands")
+@RequestMapping("/api/v1")
 public class BrandController {
 
     private final BrandService brandService;
 
-    
     /*
     브랜드 생성
      */
-    @PostMapping("")
+    @PostMapping("/brands")
     public ApiResponse<Void> brandSave(@Valid @RequestBody BrandSaveRequest brandSaveRequest) {
         brandService.saveBrand(brandSaveRequest);
         return ApiResponse.success();
@@ -29,7 +28,7 @@ public class BrandController {
     /*
     브랜드 단일 조회
      */
-    @GetMapping("/{brandId}")
+    @GetMapping("/brands/{brandId}")
     public ApiResponse<BrandFindResponse> brandDetails(@PathVariable Long brandId) {
         BrandFindResponse findBrand = brandService.findBrand(brandId);
         return ApiResponse.success(findBrand);
@@ -38,7 +37,7 @@ public class BrandController {
     /*
     브랜드 이름 수정
      */
-    @PatchMapping("/{brandId}")
+    @PatchMapping("/brands/{brandId}")
     public ApiResponse<Void> brandModify(
             @PathVariable Long brandId,
             @Valid @RequestBody BrandUpdateRequest brandUpdateRequest
@@ -50,7 +49,7 @@ public class BrandController {
     /*
     브랜드 삭제
      */
-    @DeleteMapping("/{brandId}")
+    @DeleteMapping("/brands/{brandId}")
     public ApiResponse<Void> brandRemove(@PathVariable Long brandId) {
         brandService.removeBrand(brandId);
         return ApiResponse.success();

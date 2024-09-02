@@ -19,7 +19,8 @@ public class BrandService {
 
     @Transactional
     public void saveBrand(BrandSaveRequest brandSaveRequest) {
-        brandRepository.save(new Brand(brandSaveRequest.getName()));
+        Brand newBrand = new Brand(brandSaveRequest.getName());
+        brandRepository.save(newBrand);
     }
 
     public BrandFindResponse findBrand(Long brandId) {
