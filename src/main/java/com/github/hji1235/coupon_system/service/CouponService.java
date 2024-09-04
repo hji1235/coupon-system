@@ -2,7 +2,10 @@ package com.github.hji1235.coupon_system.service;
 
 import com.github.hji1235.coupon_system.controller.converter.CouponConverter;
 import com.github.hji1235.coupon_system.controller.dto.AdminCouponSaveRequest;
+import com.github.hji1235.coupon_system.controller.dto.StoreCouponDiscountDetailDto;
 import com.github.hji1235.coupon_system.controller.dto.StoreCouponSaveRequest;
+import com.github.hji1235.coupon_system.domain.coupon.Coupon;
+import com.github.hji1235.coupon_system.domain.coupon.ExpirationPolicy;
 import com.github.hji1235.coupon_system.repository.CouponRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,12 +20,16 @@ public class CouponService {
     private final CouponConverter couponConverter;
 
     @Transactional
-    public void adminCouponSave(AdminCouponSaveRequest adminCouponSaveRequest) {
-        couponRepository.save(couponConverter.convertToAdminCoupon(adminCouponSaveRequest));
+    public Long adminCouponSave(AdminCouponSaveRequest adminCouponSaveRequest) {
+        Coupon coupon = couponConverter.convertToAdminCoupon(adminCouponSaveRequest);
+        return couponRepository.save(coupon).getId();
     }
 
     @Transactional
     public void storeCouponSave(Long storeId, StoreCouponSaveRequest storeCouponSaveRequest) {
-        couponRepository.save(couponConverter.convertToStoreCoupon(storeId, storeCouponSaveRequest));
+        for (StoreCouponDiscountDetailDto dto : storeCouponSaveRequest.getDiscountDetails()) {
+            Coupon coupon = couponConverter.convertToStoreCoupon(storeId, storeCouponSaveRequest, dto);
+            couponRepository.save(coupon);
+        }
     }
 }
