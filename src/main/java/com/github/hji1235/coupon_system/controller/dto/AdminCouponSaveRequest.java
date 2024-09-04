@@ -13,11 +13,7 @@ import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class AdminCouponSaveRequest {
-
-    @NotEmpty
-    @Size(min = 2, max = 50)
-    private String name;
+public class AdminCouponSaveRequest extends CouponSaveRequest{
 
     @NotNull
     @Max(10000)
@@ -28,38 +24,8 @@ public class AdminCouponSaveRequest {
     @Max(100000)
     private Integer minOrderPrice;
 
-    @Max(1000000)
-    @Min(1)
-    private Integer maxCount;
-
-    @Max(10)
-    @Min(1)
-    private Integer maxCountPerMember;
-
-
-    @NotNull
-    private DiscountType discountType;
-
     @NotNull
     private IssuerType issuerType;
 
     private Long issuerId;
-
-    @NotNull
-    private ExpirationPolicyType expirationPolicyType;
-
-    private LocalDateTime startAt;
-
-    @FutureOrPresent
-    private LocalDateTime expiredAt;
-
-    @Max(365)
-    @Min(0)
-    private Integer daysFromIssuance;
-
-    private boolean timeLimit;
-
-    private LocalTime timeLimitStartAt;
-
-    private LocalTime timeLimitEndAt;
 }

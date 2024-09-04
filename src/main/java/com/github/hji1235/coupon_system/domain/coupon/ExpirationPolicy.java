@@ -35,11 +35,11 @@ public class ExpirationPolicy {
         this.daysFromIssuance = daysFromIssuance;
     }
 
-    public static ExpirationPolicy newByAfterIssueDate(Integer daysFromIssuance) {
+    public static ExpirationPolicy ofAfterIssueDate(Integer daysFromIssuance) {
         return new ExpirationPolicy(ExpirationPolicyType.AFTER_ISSUE_DATE, null, null, daysFromIssuance);
     }
 
-    public static ExpirationPolicy newByPeriod(LocalDateTime startAt, LocalDateTime expiredAt) {
+    public static ExpirationPolicy ofPeriod(LocalDateTime startAt, LocalDateTime expiredAt) {
         return new ExpirationPolicy(ExpirationPolicyType.PERIOD, startAt, expiredAt, null);
     }
 

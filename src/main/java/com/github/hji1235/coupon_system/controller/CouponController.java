@@ -19,16 +19,16 @@ public class CouponController {
     어드민 쿠폰 생성(어드민 쿠폰, 브랜드 쿠폰)
      */
     @PostMapping("/admin/coupons")
-    public ApiResponse<Void> adminCouponSave(@Valid @RequestBody AdminCouponSaveRequest adminCouponSaveRequest) {
-        couponService.adminCouponSave(adminCouponSaveRequest);
-        return ApiResponse.success();
+    public ApiResponse<Long> createAdminCoupon(@Valid @RequestBody AdminCouponSaveRequest adminCouponSaveRequest) {
+        Long savedCouponId = couponService.adminCouponSave(adminCouponSaveRequest);
+        return ApiResponse.success(savedCouponId);
     }
 
     /*
     스토어 쿠폰 생성(스토어 쿠폰)
      */
     @PostMapping("/stores/{storeId}/coupons")
-    public ApiResponse<Void> storeCouponSave(
+    public ApiResponse<Void> createStoreCoupons(
             @PathVariable Long storeId,
             @Valid @RequestBody StoreCouponSaveRequest storeCouponSaveRequest
     ) {
