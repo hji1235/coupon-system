@@ -31,11 +31,15 @@ public class OrderMenu extends BaseEntity {
     @JoinColumn(name = "menu_id")
     private Menu menu;
 
-    public OrderMenu(Integer quantity, Integer orderPrice, Order order, Menu menu) {
+    private OrderMenu(Integer quantity, Integer orderPrice, Order order, Menu menu) {
         this.quantity = quantity;
         this.orderPrice = orderPrice;
         this.order = order;
         this.menu = menu;
+    }
+
+    public static OrderMenu of(Integer quantity, Integer orderPrice, Order order, Menu menu) {
+        return new OrderMenu(quantity, orderPrice, order, menu);
     }
 
     public int menuPrice() {

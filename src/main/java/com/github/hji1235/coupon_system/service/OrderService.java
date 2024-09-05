@@ -6,6 +6,7 @@ import com.github.hji1235.coupon_system.domain.order.Order;
 import com.github.hji1235.coupon_system.domain.order.OrderMenu;
 import com.github.hji1235.coupon_system.domain.store.Menu;
 import com.github.hji1235.coupon_system.global.exception.MemberNotFoundException;
+import com.github.hji1235.coupon_system.global.exception.MenuNotBelongToStoreException;
 import com.github.hji1235.coupon_system.global.exception.MenuNotFoundException;
 import com.github.hji1235.coupon_system.global.exception.OrderNotFoundException;
 import com.github.hji1235.coupon_system.repository.MemberRepository;
@@ -29,30 +30,45 @@ public class OrderService {
     private final OrderMenuRepository orderMenuRepository;
 
     @Transactional
-    public void saveOrder(Long memberId, OrderSaveRequest orderSaveRequest) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(memberId));
-        Order order = new Order(member);
+    public void saveOrder(Long storeId, Long memberId, OrderSaveRequest orderSaveRequest) {
+        Member member = findMemberById(memberId);
+        Order order = Order.of(member);
         orderRepository.save(order);
         List<OrderMenuDto> orderMenus = orderSaveRequest.getOrderMenus();
         for (OrderMenuDto dto : orderMenus) {
-            Menu menu = menuRepository.findById(dto.getMenuId())
-                    .orElseThrow(() -> new MenuNotFoundException(dto.getMenuId()));
-            OrderMenu orderMenu = new OrderMenu(dto.getQuantity(), menu.getPrice(), order, menu);
+            Menu menu = findMenuByIdWithStore(dto.getMenuId());
+            if (!storeId.equals(menu.getStore().getId())) {
+                throw new MenuNotBelongToStoreException(menu.getId(), storeId);
+            }
+            OrderMenu orderMenu = OrderMenu.of(dto.getQuantity(), menu.getPrice(), order, menu);
             orderMenuRepository.save(orderMenu);
         }
     }
 
-    public OrderFindAllResponse findAllOrders(Long memberId) {
-        memberRepository.findById(memberId).orElseThrow(() -> new MemberNotFoundException(memberId));
-        List<SimpleOrderResponse> simpleOrderResponses = orderRepository.findOrders(memberId).stream()
-                .map(SimpleOrderResponse::new).toList();
-        return new OrderFindAllResponse(simpleOrderResponses);
+    public OrderFindResponse findOrder(Long orderId, Long memberId) {
+        Order order = findByOrderAndMemberWithPayment(orderId, memberId);
+        List<OrderMenu> orderMenus = orderMenuRepository.findByOrderId(orderId);
+        return new OrderFindResponse(order, orderMenus);
     }
 
-    public OrderFindResponse findOrder(Long orderId) {
-        Order order = orderRepository.findOrderDetails(orderId)
+    public List<SimpleOrderResponse> findAllOrders(Long memberId) {
+        return orderRepository.findAllByMemberId(memberId).stream()
+                .map(SimpleOrderResponse::new)
+                .toList();
+    }
+
+    private Member findMemberById(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(memberId));
+    }
+
+    private Menu findMenuByIdWithStore(Long menuId) {
+        return menuRepository.findByIdWithStore(menuId)
+                .orElseThrow(() -> new MenuNotFoundException(menuId));
+    }
+
+    private Order findByOrderAndMemberWithPayment(Long orderId, Long memberId) {
+        return orderRepository.findByOrderAndMemberWithPayment(orderId, memberId)
                 .orElseThrow(() -> new OrderNotFoundException(orderId));
-        return new OrderFindResponse(order);
     }
 }

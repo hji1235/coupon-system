@@ -15,7 +15,8 @@ public enum ErrorCode {
     MEMBERCOUPON_NOT_FOUND(400, "TEST8", "Can not find a MemberCoupon for id"),
     PAYMENT_NOT_FOUND(400, "TEST9", "Can not find a Payment for id"),
     INVALID_MENU_ACCESS(400, "TEST10", "This Menu does not belong to the Store. storeId : %d, menuId : %d"),
-    ALREADY_ALLOCATED_COUPON_CODE(400, "TEST11", "이미 할당된 쿠폰 코드입니다. couponCode : %s");
+    ALREADY_ALLOCATED_COUPON_CODE(400, "TEST11", "이미 할당된 쿠폰 코드입니다. couponCode : %s"),
+    MENU_NOT_BELONG_TO_STORE(400, "TEST12", "해당 메뉴가 매장에 속하지 않습니다. menuId : %d, storeId : %d");
 
 
     private final int status;

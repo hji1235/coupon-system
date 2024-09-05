@@ -22,9 +22,6 @@ public class Order extends BaseEntity {
     @Column(name = "order_id")
     private Long id;
 
-//    @Column(name = "start_at", nullable = false)
-//    private LocalDateTime startAt;
-
     @Enumerated(EnumType.STRING)
     @Column(name = "order_status", nullable = false)
     private OrderStatus orderStatus;
@@ -39,9 +36,13 @@ public class Order extends BaseEntity {
     @OneToMany(mappedBy = "order")
     private List<OrderMenu> orderMenus = new ArrayList<>();
 
-    public Order(Member member) {
-        this.orderStatus = OrderStatus.PENDING;
+    private Order(Member member) {
+        this.orderStatus = OrderStatus.CREATED;
         this.member = member;
+    }
+
+    public static Order of(Member member) {
+        return new Order(member);
     }
 
     public int calculateTotalPayment() {
