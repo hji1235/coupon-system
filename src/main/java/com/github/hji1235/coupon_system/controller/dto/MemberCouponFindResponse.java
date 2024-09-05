@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberCouponCheckDto {
+public class MemberCouponFindResponse {
 
     private DiscountType discountType;
 
@@ -22,14 +22,11 @@ public class MemberCouponCheckDto {
 
     private int minOrderPrice;
 
-    private boolean available;
-
-    public MemberCouponCheckDto(MemberCoupon memberCoupon, Long issuerId, int paymentAmount) {
+    public MemberCouponFindResponse(MemberCoupon memberCoupon) {
         this.discountType = memberCoupon.getCoupon().getDiscountType();
         this.discountAmount = memberCoupon.getDiscountAmount();
         this.couponName = memberCoupon.getCoupon().getName();
         this.expiredAt = memberCoupon.getExpirationPeriod().getExpiredAt();
         this.minOrderPrice = memberCoupon.getCoupon().getMinOrderPrice();
-        this.available = memberCoupon.isAvailable(issuerId, paymentAmount);
     }
 }

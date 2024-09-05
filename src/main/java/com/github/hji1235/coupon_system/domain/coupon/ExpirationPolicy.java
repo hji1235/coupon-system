@@ -45,8 +45,8 @@ public class ExpirationPolicy {
 
     public ExpirationPeriod newExpirationPeriod() {
         if (expirationPolicyType == ExpirationPolicyType.AFTER_ISSUE_DATE) {
-            return new ExpirationPeriod(LocalDateTime.now(), LocalDateTime.now().plusDays(daysFromIssuance));
+            return ExpirationPeriod.ofAfterIssueDate(daysFromIssuance);
         }
-        return new ExpirationPeriod(startAt, expiredAt);
+        return ExpirationPeriod.ofPeriod(startAt, expiredAt);
     }
 }

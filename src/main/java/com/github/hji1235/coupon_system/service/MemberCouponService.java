@@ -28,12 +28,24 @@ public class MemberCouponService {
     private final StoreRepository storeRepository;
 
     @Transactional
-    public void saveMemberCoupon(Long memberId, Long couponId) {
+    public void saveMemberCouponCodes(Long couponId, MemberCouponCodeSaveRequest memberCouponCodeSaveRequest) {
+        Coupon coupon = findCouponById(couponId);
+        int issuanceCount = memberCouponCodeSaveRequest.getQuantity();
+        if (!coupon.canIssueCoupon(issuanceCount)) {
+            throw new CouponMaxCountOverException(coupon.getMaxCount(), coupon.getAllocatedCount(), issuanceCount);
+        }
+        List<MemberCoupon> memberCoupons = IntStream.range(0, issuanceCount)
+                .mapToObj(op -> MemberCoupon.ofWithoutMember(coupon))
+                .toList();
+        int saveSize = memberCouponRepository.saveAll(memberCoupons).size();
+        coupon.increaseAllocatedCount(saveSize);
+    }
+
+    @Transactional
+    public void saveAndAllocateMemberCouponByClick(Long memberId, Long couponId) {
+        Member member = findMemberById(memberId);
+        Coupon coupon = findCouponById(couponId);
         int issuanceCount = 1;
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(memberId));
-        Coupon coupon = couponRepository.findById(couponId)
-                .orElseThrow(() -> new CouponNotFoundException(couponId));
         if (!coupon.canIssueCoupon(issuanceCount)) {
             throw new CouponMaxCountOverException(coupon.getMaxCount(), coupon.getAllocatedCount(), issuanceCount);
         }
@@ -41,61 +53,63 @@ public class MemberCouponService {
         if (!coupon.canIssueCouponToMember(memberCouponCount)) {
             throw new CouponMaxCountPerMemberOverException(coupon.getMaxCountPerMember(), memberCouponCount);
         }
-        memberCouponRepository.save(new MemberCoupon(coupon, member));
+        memberCouponRepository.save(MemberCoupon.ofWithMember(coupon, member));
         coupon.increaseAllocatedCount(issuanceCount);
     }
 
-    public MemberCouponCheckResponse checkMemberCoupons(Long memberId, Long storeId, Long orderId) {
-        memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(memberId));
-        Store store = storeRepository.findByIdWithBrand(storeId)
-                .orElseThrow(() -> new StoreNotFoundException(storeId));
-        Order order = orderRepository.findOrder(orderId)
-                .orElseThrow(() -> new OrderNotFoundException(orderId));
-        int paymentAmount = order.calculateTotalPayment();
-        List<MemberCouponCheckDto> checkedMemberCoupons = memberCouponRepository.findAllMemberCouponByMemberId(memberId).stream()
-                .map((memberCoupon -> createMemberCouponCheckDto(memberCoupon, store, paymentAmount)))
-                .toList();
-        return new MemberCouponCheckResponse(checkedMemberCoupons);
-    }
-
-    public MemberCouponCheckDto createMemberCouponCheckDto(MemberCoupon memberCoupon, Store store, int paymentAmount) {
-        Long issuerId = store.getId();
-        if (memberCoupon.getCoupon().isBrandCoupon()) {
-            issuerId = store.getBrand().getId();
-        }
-        return new MemberCouponCheckDto(memberCoupon, issuerId, paymentAmount);
-    }
-
     @Transactional
-    public void saveMemberCouponCodes(Long couponId, MemberCouponCodeSaveRequest memberCouponCodeSaveRequest) {
-        Coupon coupon = couponRepository.findById(couponId)
-                .orElseThrow(() -> new CouponNotFoundException(couponId));
-        int issuanceCount = memberCouponCodeSaveRequest.getQuantity();
-        if (!coupon.canIssueCoupon(issuanceCount)) {
-            throw new CouponMaxCountOverException(coupon.getMaxCount(), coupon.getAllocatedCount(), issuanceCount);
-        }
-        List<MemberCoupon> memberCoupons = IntStream.range(0, issuanceCount)
-                .mapToObj(op -> new MemberCoupon(coupon, null))
-                .toList();
-        int saveSize = memberCouponRepository.saveAll(memberCoupons).size();
-        coupon.increaseAllocatedCount(saveSize);
-    }
-
-    @Transactional
-    public void allocateMemberCoupon(Long memberId, MemberCouponAllocateRequest memberCouponAllocateRequest) {
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new MemberNotFoundException(memberId));
+    public void allocateMemberCouponByCode(Long memberId, MemberCouponAllocateRequest memberCouponAllocateRequest) {
+        Member member = findMemberById(memberId);
         UUID couponCode = memberCouponAllocateRequest.getCouponCode();
-        MemberCoupon memberCoupon = memberCouponRepository.findByCouponCode(couponCode)
-                .orElseThrow(() -> new MemberCouponNotFoundException(couponCode));
+        MemberCoupon memberCoupon = findMemberCouponByCouponCode(couponCode);
+        if (memberCoupon.isAllocated()) {
+            throw new AlreadyAllocatedCouponCodeException(couponCode);
+        }
         memberCoupon.allocateMember(member);
     }
 
-    public List<MemberCouponFindAllResponse> findAllMemberCoupons(Long memberId) {
-        return memberCouponRepository.findAllMemberCouponByMemberId(memberId).stream()
+    public List<MemberCouponFindResponse> findAllMemberCoupons(Long memberId) {
+        return memberCouponRepository.findAllByMemberId(memberId).stream()
                 .filter(memberCoupon -> !memberCoupon.isExpired())
-                .map(MemberCouponFindAllResponse::new)
+                .map(MemberCouponFindResponse::new)
                 .toList();
+    }
+
+    public List<MemberCouponAvailableCheckResponse> availableCheckMemberCoupons(Long memberId, Long storeId, Long orderId) {
+        Store store = findStoreByIdWithBrand(storeId);
+        Order order = findOrderByIdWithOrderMenus(orderId);
+        int paymentAmount = order.calculateTotalPayment();
+        return memberCouponRepository.findAllByMemberId(memberId).stream()
+                .filter(memberCoupon -> !memberCoupon.isExpired())
+                .map((memberCoupon -> {
+                    boolean isAvailable = memberCoupon.isAvailable(store, paymentAmount);
+                    return new MemberCouponAvailableCheckResponse(memberCoupon, isAvailable);
+                }))
+                .toList();
+    }
+
+    private Coupon findCouponById(Long couponId) {
+        return couponRepository.findById(couponId)
+                .orElseThrow(() -> new CouponNotFoundException(couponId));
+    }
+
+    private Member findMemberById(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new MemberNotFoundException(memberId));
+    }
+
+    private MemberCoupon findMemberCouponByCouponCode(UUID couponCode) {
+        return memberCouponRepository.findByCouponCode(couponCode)
+                .orElseThrow(() -> new MemberCouponNotFoundException(couponCode));
+    }
+
+    private Store findStoreByIdWithBrand(Long storeId) {
+        return storeRepository.findByIdWithBrand(storeId)
+                .orElseThrow(() -> new StoreNotFoundException(storeId));
+    }
+
+    private Order findOrderByIdWithOrderMenus(Long orderId) {
+        return orderRepository.findByIdWithOrderMenus(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
     }
 }

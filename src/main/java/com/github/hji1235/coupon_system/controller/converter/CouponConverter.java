@@ -60,9 +60,9 @@ public class CouponConverter {
     private TimeLimitPolicy createTimeLimitPolicy(CouponSaveRequest dto) {
         TimeLimitPolicy timeLimitPolicy;
         if (dto.isTimeLimit()) {
-            timeLimitPolicy = TimeLimitPolicy.newTimeLimitPolicy(dto.getTimeLimitStartAt(), dto.getTimeLimitEndAt());
+            timeLimitPolicy = TimeLimitPolicy.ofTimeLimit(dto.getTimeLimitStartAt(), dto.getTimeLimitEndAt());
         } else {
-            timeLimitPolicy = TimeLimitPolicy.newTimeLimitPolicy();
+            timeLimitPolicy = TimeLimitPolicy.ofNoTimeLimit();
         }
         return timeLimitPolicy;
     }
