@@ -19,13 +19,21 @@ public class ExpirationPeriod {
     @Column(name = "expired_at", nullable = false)
     private LocalDateTime expiredAt;
 
-    public ExpirationPeriod(LocalDateTime startAt, LocalDateTime expiredAt) {
+    private ExpirationPeriod(LocalDateTime startAt, LocalDateTime expiredAt) {
         this.startAt = startAt;
         this.expiredAt = expiredAt;
+    }
+
+    public static ExpirationPeriod ofAfterIssueDate(Integer daysFromIssuance) {
+        LocalDateTime now = LocalDateTime.now();
+        return new ExpirationPeriod(now, now.plusDays(daysFromIssuance));
+    }
+
+    public static ExpirationPeriod ofPeriod(LocalDateTime startAt, LocalDateTime expiredAt) {
+        return new ExpirationPeriod(startAt, expiredAt);
     }
 
     public boolean isExpired() {
         return LocalDateTime.now().isAfter(expiredAt);
     }
-
 }

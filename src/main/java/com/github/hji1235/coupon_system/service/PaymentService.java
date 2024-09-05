@@ -26,13 +26,13 @@ public class PaymentService {
 
     @Transactional
     public void savePayment(Long orderId, PaymentSaveRequest paymentSaveRequest) {
-        Order order = orderRepository.findOrder(orderId)
+        Order order = orderRepository.findByIdWithOrderMenus(orderId)
                 .orElseThrow(() -> new OrderNotFoundException(orderId));
         int paymentAmount = order.calculateTotalPayment();
         int discountAmount = 0;
         MemberCoupon memberCoupon = null;
         if (paymentSaveRequest.getMemberCouponId() != null) {
-            memberCoupon = memberCouponRepository.findMemberCoupon(paymentSaveRequest.getMemberCouponId())
+            memberCoupon = memberCouponRepository.findByIdWithCoupon(paymentSaveRequest.getMemberCouponId())
                     .orElseThrow(() -> new MemberCouponNotFoundException(paymentSaveRequest.getMemberCouponId()));
             discountAmount = memberCoupon.getDiscountAmount();
             if (memberCoupon.getCoupon().getDiscountType() == DiscountType.PERCENT) {

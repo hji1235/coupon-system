@@ -11,7 +11,7 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     @Query("select o from Order o join fetch o.orderMenus om where o.id = :orderId")
-    Optional<Order> findOrder(@Param("orderId") Long orderId);
+    Optional<Order> findByIdWithOrderMenus(@Param("orderId") Long orderId);
 
     @Query("select distinct o from Order o join fetch o.member m join fetch o.orderMenus om join fetch om.menu mn join fetch mn.store where o.member.id = :memberId")
     List<Order> findOrders(@Param("memberId") Long memberId);

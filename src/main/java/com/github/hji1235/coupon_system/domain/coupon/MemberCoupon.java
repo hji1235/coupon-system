@@ -3,6 +3,7 @@ package com.github.hji1235.coupon_system.domain.coupon;
 import com.github.hji1235.coupon_system.domain.BaseEntity;
 import com.github.hji1235.coupon_system.domain.order.Payment;
 import com.github.hji1235.coupon_system.domain.member.Member;
+import com.github.hji1235.coupon_system.domain.store.Store;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -45,12 +46,20 @@ public class MemberCoupon extends BaseEntity {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    public MemberCoupon(Coupon coupon, Member member) {
+    private MemberCoupon(Coupon coupon, Member member) {
         this.coupon = coupon;
         this.member = member;
         this.couponCode = UUID.randomUUID();
         this.expirationPeriod = coupon.getExpirationPolicy().newExpirationPeriod();
         this.used = false;
+    }
+
+    public static MemberCoupon ofWithoutMember(Coupon coupon) {
+        return new MemberCoupon(coupon, null);
+    }
+
+    public static MemberCoupon ofWithMember(Coupon coupon, Member member) {
+        return new MemberCoupon(coupon, member);
     }
 
     public int getDiscountAmount() {
@@ -63,11 +72,16 @@ public class MemberCoupon extends BaseEntity {
         this.usedAt = LocalDateTime.now();
     }
 
-    public boolean isAvailable(Long issuerId, int paymentAmount) {
-        if (isExpired() || isIssuerMismatch(issuerId) || isBelowMinOrderPrice(paymentAmount) || isUsed() || isUnavailableTime()) {
-            return false;
+    public boolean isAvailable(Store store, int paymentAmount) {
+        Long issuerId = getIssuerIdForCheck(store);
+        return !isIssuerMismatch(issuerId) && !isBelowMinOrderPrice(paymentAmount) && !isUnavailableTime();
+    }
+
+    private Long getIssuerIdForCheck(Store store) {
+        if (coupon.isBrandCoupon()) {
+            return store.getBrand().getId();
         }
-        return true;
+        return store.getId();
     }
 
     public boolean isExpired() {
@@ -89,10 +103,7 @@ public class MemberCoupon extends BaseEntity {
     }
 
     private boolean isUnavailableTime() {
-        if (coupon.getTimeLimitPolicy().isTimeLimit()) {
-            return coupon.getTimeLimitPolicy().isUnavailableTime();
-        }
-        return false;
+        return coupon.getTimeLimitPolicy().isUnavailableTime();
     }
 
     private boolean isUsed() {
@@ -105,5 +116,9 @@ public class MemberCoupon extends BaseEntity {
 
     public void allocateMember(Member member) {
         this.member = member;
+    }
+
+    public boolean isAllocated() {
+        return member != null;
     }
 }

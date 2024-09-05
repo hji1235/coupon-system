@@ -24,20 +24,16 @@ public class TimeLimitPolicy {
         this.timeLimitEndAt = timeLimitEndAt;
     }
 
-    public static TimeLimitPolicy newTimeLimitPolicy(LocalTime timeLimitStartAt, LocalTime timeLimitEndAt) {
+    public static TimeLimitPolicy ofTimeLimit(LocalTime timeLimitStartAt, LocalTime timeLimitEndAt) {
         return new TimeLimitPolicy(true, timeLimitStartAt, timeLimitEndAt);
     }
 
-    public static TimeLimitPolicy newTimeLimitPolicy() {
+    public static TimeLimitPolicy ofNoTimeLimit() {
         return new TimeLimitPolicy(false, null, null);
     }
 
     public boolean isUnavailableTime() {
         LocalTime currentTime = LocalTime.now();
-        if (currentTime.isBefore(timeLimitStartAt) || currentTime.isAfter(timeLimitEndAt)) {
-            return true;
-        } else {
-            return false;
-        }
+        return timeLimit && (currentTime.isBefore(timeLimitStartAt) || currentTime.isAfter(timeLimitEndAt));
     }
 }
