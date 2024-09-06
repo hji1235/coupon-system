@@ -1,4 +1,4 @@
-package com.github.hji1235.coupon_system.controller.dto;
+package com.github.hji1235.coupon_system.controller.dto.member;
 
 import com.github.hji1235.coupon_system.domain.member.Role;
 import lombok.AccessLevel;

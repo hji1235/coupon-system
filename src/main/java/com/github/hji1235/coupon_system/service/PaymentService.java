@@ -1,6 +1,6 @@
 package com.github.hji1235.coupon_system.service;
 
-import com.github.hji1235.coupon_system.controller.dto.PaymentSaveRequest;
+import com.github.hji1235.coupon_system.controller.dto.payment.PaymentSaveRequest;
 import com.github.hji1235.coupon_system.domain.coupon.DiscountType;
 import com.github.hji1235.coupon_system.domain.coupon.MemberCoupon;
 import com.github.hji1235.coupon_system.domain.order.Order;

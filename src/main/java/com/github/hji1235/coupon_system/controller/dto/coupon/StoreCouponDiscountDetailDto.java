@@ -1,4 +1,4 @@
-package com.github.hji1235.coupon_system.controller.dto;
+package com.github.hji1235.coupon_system.controller.dto.coupon;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

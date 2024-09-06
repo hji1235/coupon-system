@@ -1,4 +1,4 @@
-package com.github.hji1235.coupon_system.controller.dto;
+package com.github.hji1235.coupon_system.controller.dto.coupon;
 
 import com.github.hji1235.coupon_system.domain.coupon.DiscountType;
 import com.github.hji1235.coupon_system.domain.coupon.ExpirationPolicyType;

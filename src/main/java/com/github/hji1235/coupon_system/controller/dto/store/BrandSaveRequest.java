@@ -1,4 +1,4 @@
-package com.github.hji1235.coupon_system.controller.dto;
+package com.github.hji1235.coupon_system.controller.dto.store;
 
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;

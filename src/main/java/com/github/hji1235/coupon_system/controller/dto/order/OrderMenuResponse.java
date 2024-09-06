@@ -1,4 +1,4 @@
-package com.github.hji1235.coupon_system.controller.dto;
+package com.github.hji1235.coupon_system.controller.dto.order;
 
 import com.github.hji1235.coupon_system.domain.order.OrderMenu;
 import lombok.AccessLevel;

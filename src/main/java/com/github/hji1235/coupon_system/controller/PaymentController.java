@@ -1,6 +1,6 @@
 package com.github.hji1235.coupon_system.controller;
 
-import com.github.hji1235.coupon_system.controller.dto.PaymentSaveRequest;
+import com.github.hji1235.coupon_system.controller.dto.payment.PaymentSaveRequest;
 import com.github.hji1235.coupon_system.global.ApiResponse;
 import com.github.hji1235.coupon_system.service.PaymentService;
 import jakarta.validation.Valid;

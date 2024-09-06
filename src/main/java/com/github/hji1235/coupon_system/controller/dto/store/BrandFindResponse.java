@@ -1,4 +1,4 @@
-package com.github.hji1235.coupon_system.controller.dto;
+package com.github.hji1235.coupon_system.controller.dto.store;
 
 import com.github.hji1235.coupon_system.domain.store.Brand;
 import lombok.AccessLevel;

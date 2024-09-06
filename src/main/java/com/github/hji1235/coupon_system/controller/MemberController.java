@@ -1,12 +1,11 @@
 package com.github.hji1235.coupon_system.controller;
 
-import com.github.hji1235.coupon_system.controller.dto.MemberLoginRequest;
-import com.github.hji1235.coupon_system.controller.dto.MemberSaveRequest;
+import com.github.hji1235.coupon_system.controller.dto.member.MemberLoginRequest;
+import com.github.hji1235.coupon_system.controller.dto.member.MemberSaveRequest;
 import com.github.hji1235.coupon_system.global.ApiResponse;
 import com.github.hji1235.coupon_system.service.MemberService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

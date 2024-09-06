@@ -1,6 +1,9 @@
 package com.github.hji1235.coupon_system.service;
 
-import com.github.hji1235.coupon_system.controller.dto.*;
+import com.github.hji1235.coupon_system.controller.dto.coupon.MemberCouponAllocateRequest;
+import com.github.hji1235.coupon_system.controller.dto.coupon.MemberCouponAvailableCheckResponse;
+import com.github.hji1235.coupon_system.controller.dto.coupon.MemberCouponCodeSaveRequest;
+import com.github.hji1235.coupon_system.controller.dto.coupon.MemberCouponFindResponse;
 import com.github.hji1235.coupon_system.domain.coupon.Coupon;
 import com.github.hji1235.coupon_system.domain.coupon.MemberCoupon;
 import com.github.hji1235.coupon_system.domain.member.Member;

@@ -1,8 +1,8 @@
 package com.github.hji1235.coupon_system.service;
 
-import com.github.hji1235.coupon_system.controller.dto.BrandFindResponse;
-import com.github.hji1235.coupon_system.controller.dto.BrandSaveRequest;
-import com.github.hji1235.coupon_system.controller.dto.BrandUpdateRequest;
+import com.github.hji1235.coupon_system.controller.dto.store.BrandFindResponse;
+import com.github.hji1235.coupon_system.controller.dto.store.BrandSaveRequest;
+import com.github.hji1235.coupon_system.controller.dto.store.BrandUpdateRequest;
 import com.github.hji1235.coupon_system.domain.store.Brand;
 import com.github.hji1235.coupon_system.global.exception.BrandNotFoundException;
 import com.github.hji1235.coupon_system.repository.BrandRepository;
