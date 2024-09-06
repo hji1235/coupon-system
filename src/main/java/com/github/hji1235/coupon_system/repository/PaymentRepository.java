@@ -9,6 +9,6 @@ import java.util.Optional;
 
 public interface PaymentRepository extends JpaRepository<Payment, Long> {
 
-    @Query("select p from Payment p join fetch p.order left join fetch p.memberCoupon o where p.id = :paymentId")
-    Optional<Payment> findPayment(@Param("paymentId") Long paymentId);
+    @Query("select p from Payment p join fetch p.order o join fetch o.store left join fetch p.memberCoupon mc join fetch mc.coupon c where p.id = :paymentId")
+    Optional<Payment> findByIdWithOrderAndMemberCoupon(@Param("paymentId") Long paymentId);
 }

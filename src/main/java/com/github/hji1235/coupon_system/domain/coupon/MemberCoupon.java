@@ -4,6 +4,7 @@ import com.github.hji1235.coupon_system.domain.BaseEntity;
 import com.github.hji1235.coupon_system.domain.order.Payment;
 import com.github.hji1235.coupon_system.domain.member.Member;
 import com.github.hji1235.coupon_system.domain.store.Store;
+import com.github.hji1235.coupon_system.global.exception.*;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -66,10 +67,29 @@ public class MemberCoupon extends BaseEntity {
         return coupon.getDiscountAmount();
     }
 
-    public void use() {
-        // 쿠폰 사용 유효 체크 로직 (Exception 터트리는걸로)
+    public void use(Store store, Integer paymentAmount) {
+        validateCoupon(store, paymentAmount);
         this.used = true;
         this.usedAt = LocalDateTime.now();
+    }
+
+    private void validateCoupon(Store store, Integer paymentAmount) {
+        Long issuerId = getIssuerIdForCheck(store);
+        if (isUsed()) {
+            throw new AlreadyUsedCouponException(this.id);
+        }
+        if (isExpired()) {
+            throw new ExpiredCouponException(this.expirationPeriod.getExpiredAt());
+        }
+        if (isUnavailableTime()) {
+            throw new CouponTimeRestrictionException(this.coupon.getTimeLimitPolicy().getTimeLimitStartAt(), this.coupon.getTimeLimitPolicy().getTimeLimitEndAt());
+        }
+        if (isIssuerMismatch(issuerId)) {
+            throw new CouponIssuerMismatchException(this.coupon.getIssuerId(), issuerId);
+        }
+        if (isBelowMinOrderPrice(paymentAmount)) {
+            throw new OrderPriceBelowMinimumException(paymentAmount, this.coupon.getMinOrderPrice());
+        }
     }
 
     public boolean isAvailable(Store store, int paymentAmount) {

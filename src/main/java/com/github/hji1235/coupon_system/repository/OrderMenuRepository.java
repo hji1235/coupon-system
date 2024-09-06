@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface OrderMenuRepository extends JpaRepository<OrderMenu, Long> {
 
-    @Query("select om from OrderMenu om join fetch om.menu m join fetch m.store where om.order.id = :orderId")
+    @Query("select om from OrderMenu om join fetch om.menu m where om.order.id = :orderId")
     List<OrderMenu> findByOrderId(@Param("orderId") Long orderId);
 }

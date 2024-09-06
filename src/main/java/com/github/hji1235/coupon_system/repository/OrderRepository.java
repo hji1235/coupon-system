@@ -14,14 +14,12 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     Optional<Order> findByIdWithOrderMenus(@Param("orderId") Long orderId);
 
     @Query("select distinct o from Order o " +
-            "join fetch o.member m " +
-            "join fetch o.orderMenus om " +
-            "join fetch om.menu mn " +
-            "join fetch mn.store " +
+            "join fetch o.store " +
             "where o.member.id = :memberId and o.orderStatus != com.github.hji1235.coupon_system.domain.order.OrderStatus.CREATED")
     List<Order> findAllByMemberId(@Param("memberId") Long memberId);
 
     @Query("select o from Order o " +
+            "join fetch o.store s " +
             "left join fetch o.payment p " +
             "left join fetch p.memberCoupon mc " +
             "left join fetch mc.coupon " +

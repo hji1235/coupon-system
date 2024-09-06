@@ -18,7 +18,7 @@ public class SimpleOrderResponse {
 
     public SimpleOrderResponse(Order order) {
         this.orderDate = order.getLastModifiedAt();
-        this.storeName = order.getOrderMenus().get(0).getMenu().getStore().getName();
+        this.storeName = order.getStore().getName();
         this.orderStatus = order.getOrderStatus();
     }
 }

@@ -5,14 +5,9 @@ import com.github.hji1235.coupon_system.domain.member.Member;
 import com.github.hji1235.coupon_system.domain.order.Order;
 import com.github.hji1235.coupon_system.domain.order.OrderMenu;
 import com.github.hji1235.coupon_system.domain.store.Menu;
-import com.github.hji1235.coupon_system.global.exception.MemberNotFoundException;
-import com.github.hji1235.coupon_system.global.exception.MenuNotBelongToStoreException;
-import com.github.hji1235.coupon_system.global.exception.MenuNotFoundException;
-import com.github.hji1235.coupon_system.global.exception.OrderNotFoundException;
-import com.github.hji1235.coupon_system.repository.MemberRepository;
-import com.github.hji1235.coupon_system.repository.MenuRepository;
-import com.github.hji1235.coupon_system.repository.OrderMenuRepository;
-import com.github.hji1235.coupon_system.repository.OrderRepository;
+import com.github.hji1235.coupon_system.domain.store.Store;
+import com.github.hji1235.coupon_system.global.exception.*;
+import com.github.hji1235.coupon_system.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,11 +23,13 @@ public class OrderService {
     private final MemberRepository memberRepository;
     private final MenuRepository menuRepository;
     private final OrderMenuRepository orderMenuRepository;
+    private final StoreRepository storeRepository;
 
     @Transactional
     public void saveOrder(Long storeId, Long memberId, OrderSaveRequest orderSaveRequest) {
         Member member = findMemberById(memberId);
-        Order order = Order.of(member);
+        Store store = findStoreById(storeId);
+        Order order = Order.of(member, store);
         orderRepository.save(order);
         List<OrderMenuDto> orderMenus = orderSaveRequest.getOrderMenus();
         for (OrderMenuDto dto : orderMenus) {
@@ -70,5 +67,10 @@ public class OrderService {
     private Order findByOrderAndMemberWithPayment(Long orderId, Long memberId) {
         return orderRepository.findByOrderAndMemberWithPayment(orderId, memberId)
                 .orElseThrow(() -> new OrderNotFoundException(orderId));
+    }
+
+    private Store findStoreById(Long storeId) {
+        return storeRepository.findById(storeId)
+                .orElseThrow(() -> new StoreNotFoundException(storeId));
     }
 }
