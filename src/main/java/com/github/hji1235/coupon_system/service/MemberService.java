@@ -24,6 +24,7 @@ public class MemberService {
     private final BCryptPasswordEncoder encoder;
     private final JwtUtil jwtUtil;
 
+    @Transactional
     public void join(MemberSaveRequest memberSaveRequest) {
         validateDuplicateEmail(memberSaveRequest.getEmail());
         validateDuplicateNickname(memberSaveRequest.getNickname());
@@ -35,7 +36,6 @@ public class MemberService {
         memberRepository.save(member);
     }
 
-    @Transactional
     public String login(MemberLoginRequest memberLoginRequest) {
         Member member = findMemberByEmail(memberLoginRequest.getEmail());
         if (!encoder.matches(memberLoginRequest.getPassword(), member.getPassword())) {
