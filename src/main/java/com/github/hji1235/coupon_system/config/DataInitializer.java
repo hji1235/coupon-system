@@ -1,6 +1,5 @@
 package com.github.hji1235.coupon_system.config;
 
-import com.github.hji1235.coupon_system.domain.admin.Admin;
 import com.github.hji1235.coupon_system.domain.member.Member;
 import com.github.hji1235.coupon_system.domain.member.Role;
 import com.github.hji1235.coupon_system.domain.store.Brand;
@@ -21,26 +20,16 @@ import org.springframework.transaction.annotation.Transactional;
 @Profile("!test")
 public class DataInitializer {
 
-    private final AdminRepository adminRepository;
     private final BrandRepository brandRepository;
     private final StoreRepository storeRepository;
     private final MenuRepository menuRepository;
     private final MemberRepository memberRepository;
     private final BCryptPasswordEncoder encoder;
 
-    @EventListener(ApplicationReadyEvent.class)
-    @Transactional
-    @Order(1)
-    public void initializeAdmin() {
-        adminRepository.save(new Admin("COUPON@gmial.com", "456456", "COUPON-ADMIN"));
-        adminRepository.save(new Admin("bhc@gmial.com", "456456", "BHC"));
-        adminRepository.save(new Admin("kyochon@gmial.com", "456456", "KYOCHON"));
-        adminRepository.save(new Admin("bbq@gmial.com", "456456", "BBQ"));
-    }
 
     @EventListener(ApplicationReadyEvent.class)
     @Transactional
-    @Order(2)
+    @Order(1)
     public void initializeData() {
         String[] brands = new String[]{"BHC", "교촌", "BBQ"};
         String[] branches = new String[]{"부전점", "연산점", "해운대점", "시청점", "동래점"};
@@ -62,6 +51,6 @@ public class DataInitializer {
             }
         }
 
-        memberRepository.save(Member.of("hji1235@naver.com", encoder.encode("456456"), "CMH", Role.MEMBER));
+        memberRepository.save(Member.of("hji1235@naver.com", encoder.encode("456456456"), "CMH", Role.MEMBER));
     }
 }
