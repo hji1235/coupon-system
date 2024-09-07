@@ -26,10 +26,9 @@ public class StoreService {
 
     @Transactional
     public Long saveStore(StoreSaveRequest storeSaveRequest) {
-        String storeName = storeSaveRequest.getName();
-        validateDuplicateStoreName(storeName);
+        validateDuplicateStoreName(storeSaveRequest.getName());
         Brand brand = findBrandById(storeSaveRequest.getBrandId());
-        Store store = Store.of(storeName, brand);
+        Store store = Store.of(storeSaveRequest.getName(), brand);
         return storeRepository.save(store).getId();
     }
 
@@ -46,16 +45,21 @@ public class StoreService {
 
     @Transactional
     public void updateStore(Long storeId, StoreUpdateRequest storeUpdateRequest) {
-        String storeName = storeUpdateRequest.getName();
-        validateDuplicateStoreName(storeName);
+        validateDuplicateStoreName(storeUpdateRequest.getName());
         Store store = findStoreById(storeId);
-        store.updateStoreInfo(storeName);
+        store.updateStoreInfo(storeUpdateRequest.getName());
     }
 
     @Transactional
     public void deleteStore(Long storeId) {
         Store store = findStoreById(storeId);
         storeRepository.delete(store);
+    }
+
+    private void validateDuplicateStoreName(String storeName) {
+        if (storeRepository.existsByName(storeName)) {
+            throw new DuplicateStoreNameException(storeName);
+        }
     }
 
     private Store findStoreById(Long storeId) {
@@ -66,11 +70,5 @@ public class StoreService {
     private Brand findBrandById(Long brandId) {
         return brandRepository.findById(brandId)
                 .orElseThrow(() -> new BrandNotFoundException(brandId));
-    }
-
-    private void validateDuplicateStoreName(String storeName) {
-        if (storeRepository.existsByName(storeName)) {
-            throw new DuplicateStoreNameException(storeName);
-        }
     }
 }

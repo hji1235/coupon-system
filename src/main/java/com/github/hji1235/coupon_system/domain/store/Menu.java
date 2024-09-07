@@ -16,27 +16,26 @@ public class Menu extends BaseEntity {
     @Column(name = "menu_id")
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(nullable = false, length = 30)
     private String name;
 
-    @Column(name = "price", nullable = false)
-    private Integer price;
+    private int price;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
     private Store store;
 
-    private Menu(String name, Integer price, Store store) {
+    private Menu(String name, int price, Store store) {
         this.name = name;
         this.price = price;
         this.store = store;
     }
 
-    public static Menu of(String menuName, Integer price, Store store) {
+    public static Menu of(String menuName, int price, Store store) {
         return new Menu(menuName, price, store);
     }
 
-    public void updateMenu(String name, Integer price) {
+    public void updateMenuInfo(String name, int price) {
         this.name = name;
         this.price = price;
     }

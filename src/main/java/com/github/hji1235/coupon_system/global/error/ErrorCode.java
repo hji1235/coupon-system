@@ -23,7 +23,8 @@ public enum ErrorCode {
     COUPON_ISSUER_MISMATCH(400, " TEST16", "해당 쿠폰을 사용할 수 없는 매장입니다. currentStoreId: %d, memberCouponIssuerId: %d"),
     ORDER_PRICE_BELOW_MINIMUM(400, "TEST17", "주문 금액이 최소 주문 가격 미만입니다. currentOrderPrice : %d, couponMinOrderPrice : %d"),
     DUPLICATE_BRAND_NAME(400, "TEST18", "이미 존재하는 브랜드 이름입니다. brandName : %s"),
-    DUPLICATE_STORE_NAME(400, "TEST19", "이미 존재하는 매장 이름입니다. storeName : %s");
+    DUPLICATE_STORE_NAME(400, "TEST19", "이미 존재하는 매장 이름입니다. storeName : %s"),
+    DUPLICATE_MENU_NAME_IN_STORE(400, "TEST20", "이미 매장 내 존재하는 메뉴 이름입니다. menuName : %s");
 
 
     private final int status;

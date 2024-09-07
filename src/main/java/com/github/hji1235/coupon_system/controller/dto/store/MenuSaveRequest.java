@@ -10,10 +10,9 @@ import lombok.NoArgsConstructor;
 public class MenuSaveRequest {
 
     @NotBlank
-    @Size(min = 1, max = 50)
+    @Size(max = 30)
     private String name;
 
-    @NotNull
     @PositiveOrZero
-    private Integer price;
+    private int price;
 }

@@ -20,9 +20,8 @@ public class BrandService {
 
     @Transactional
     public Long saveBrand(BrandSaveRequest brandSaveRequest) {
-        String brandName = brandSaveRequest.getName();
-        validateDuplicateBrandName(brandName);
-        Brand brand = Brand.of(brandName);
+        validateDuplicateBrandName(brandSaveRequest.getName());
+        Brand brand = Brand.of(brandSaveRequest.getName());
         return brandRepository.save(brand).getId();
     }
 
@@ -33,10 +32,9 @@ public class BrandService {
 
     @Transactional
     public void updateBrand(Long brandId, BrandUpdateRequest brandUpdateRequest) {
-        String brandName = brandUpdateRequest.getName();
-        validateDuplicateBrandName(brandName);
+        validateDuplicateBrandName(brandUpdateRequest.getName());
         Brand brand = findBrandById(brandId);
-        brand.updateBrandInfo(brandName);
+        brand.updateBrandInfo(brandUpdateRequest.getName());
     }
 
     @Transactional
@@ -45,14 +43,14 @@ public class BrandService {
         brandRepository.delete(brand);
     }
 
-    private Brand findBrandById(Long brandId) {
-        return brandRepository.findById(brandId)
-                .orElseThrow(() -> new BrandNotFoundException(brandId));
-    }
-
     private void validateDuplicateBrandName(String brandName) {
         if (brandRepository.existsByName(brandName)) {
             throw new DuplicateBrandNameException(brandName);
         }
+    }
+
+    private Brand findBrandById(Long brandId) {
+        return brandRepository.findById(brandId)
+                .orElseThrow(() -> new BrandNotFoundException(brandId));
     }
 }
