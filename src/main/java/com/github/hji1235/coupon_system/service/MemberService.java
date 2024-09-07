@@ -4,6 +4,10 @@ import com.github.hji1235.coupon_system.controller.dto.CustomUserInfoDto;
 import com.github.hji1235.coupon_system.controller.dto.member.MemberLoginRequest;
 import com.github.hji1235.coupon_system.controller.dto.member.MemberSaveRequest;
 import com.github.hji1235.coupon_system.domain.member.Member;
+import com.github.hji1235.coupon_system.global.exception.DuplicateEmailException;
+import com.github.hji1235.coupon_system.global.exception.DuplicateNicknameException;
+import com.github.hji1235.coupon_system.global.exception.MemberNotFoundException;
+import com.github.hji1235.coupon_system.global.exception.PasswordMismatchException;
 import com.github.hji1235.coupon_system.global.jwt.JwtUtil;
 import com.github.hji1235.coupon_system.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,23 +25,40 @@ public class MemberService {
     private final JwtUtil jwtUtil;
 
     public void join(MemberSaveRequest memberSaveRequest) {
-        if (memberRepository.existsByEmail(memberSaveRequest.getEmail())) {
-            throw new IllegalArgumentException("회원 이미 존재"); // 새로 만들기
-        }
-        Member member = new Member(memberSaveRequest.getEmail(), encoder.encode(memberSaveRequest.getPassword()), memberSaveRequest.getNickname(), memberSaveRequest.getRole());
+        validateDuplicateEmail(memberSaveRequest.getEmail());
+        validateDuplicateNickname(memberSaveRequest.getNickname());
+        Member member = Member.of(
+                memberSaveRequest.getEmail(),
+                encoder.encode(memberSaveRequest.getPassword()),
+                memberSaveRequest.getNickname(),
+                memberSaveRequest.getRole());
         memberRepository.save(member);
     }
 
     @Transactional
     public String login(MemberLoginRequest memberLoginRequest) {
-        String email = memberLoginRequest.getEmail();
-        String password = memberLoginRequest.getPassword();
-        Member member = memberRepository.findByEmail(email)
-                .orElseThrow(() -> new IllegalArgumentException("회원 없음")); // 새로 만들기
-        if (!encoder.matches(password, member.getPassword())) {
-            throw new IllegalArgumentException("비밀번호 불일치"); // 새로 만들기
+        Member member = findMemberByEmail(memberLoginRequest.getEmail());
+        if (!encoder.matches(memberLoginRequest.getPassword(), member.getPassword())) {
+            throw new PasswordMismatchException();
         }
         CustomUserInfoDto info = new CustomUserInfoDto(member);
         return jwtUtil.createAccessToken(info);
+    }
+
+    private void validateDuplicateNickname(String nickname) {
+        if (memberRepository.existsByNickname(nickname)) {
+            throw new DuplicateNicknameException(nickname);
+        }
+    }
+
+    private void validateDuplicateEmail(String email) {
+        if (memberRepository.existsByEmail(email)) {
+            throw new DuplicateEmailException(email);
+        }
+    }
+
+    private Member findMemberByEmail(String email) {
+        return memberRepository.findByEmail(email)
+                .orElseThrow(() -> new MemberNotFoundException(email));
     }
 }

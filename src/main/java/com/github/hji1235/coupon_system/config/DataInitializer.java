@@ -62,6 +62,6 @@ public class DataInitializer {
             }
         }
 
-        memberRepository.save(new Member("hji1235@naver.com", encoder.encode("456456"), "CMH", Role.MEMBER));
+        memberRepository.save(Member.of("hji1235@naver.com", encoder.encode("456456"), "CMH", Role.MEMBER));
     }
 }

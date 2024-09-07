@@ -24,7 +24,10 @@ public enum ErrorCode {
     ORDER_PRICE_BELOW_MINIMUM(400, "TEST17", "주문 금액이 최소 주문 가격 미만입니다. currentOrderPrice : %d, couponMinOrderPrice : %d"),
     DUPLICATE_BRAND_NAME(400, "TEST18", "이미 존재하는 브랜드 이름입니다. brandName : %s"),
     DUPLICATE_STORE_NAME(400, "TEST19", "이미 존재하는 매장 이름입니다. storeName : %s"),
-    DUPLICATE_MENU_NAME_IN_STORE(400, "TEST20", "이미 매장 내 존재하는 메뉴 이름입니다. menuName : %s");
+    DUPLICATE_MENU_NAME_IN_STORE(400, "TEST20", "이미 매장 내 존재하는 메뉴 이름입니다. menuName : %s"),
+    DUPLICATE_EMAIL(400, "TEST21", "이미 존재하는 이메일입니다. email : %s"),
+    DUPLICATE_NICKNAME(400, "TEST22", "이미 존재하는 닉네임입니다. nickname : %s"),
+    PASSWORD_MISMATCH(400, "TEST23", "패스워드가 일치하지 않습니다.");
 
 
     private final int status;
