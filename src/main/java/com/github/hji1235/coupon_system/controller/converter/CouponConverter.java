@@ -13,7 +13,7 @@ public class CouponConverter {
     public Coupon convertToAdminCoupon(AdminCouponSaveRequest dto) {
         ExpirationPolicy expirationPolicy = createExpirationPolicy(dto);
         TimeLimitPolicy timeLimitPolicy = createTimeLimitPolicy(dto);
-        Long issuerId = setIssuerId(dto);
+        Long issuerId = determineIssuerId(dto);
         return Coupon.builder()
                 .name(dto.getName())
                 .discountAmount(dto.getDiscountAmount())
@@ -67,7 +67,7 @@ public class CouponConverter {
         return timeLimitPolicy;
     }
 
-    private Long setIssuerId(AdminCouponSaveRequest dto) {
+    private Long determineIssuerId(AdminCouponSaveRequest dto) {
         Long issuerId;
         if (dto.getIssuerType() == IssuerType.ADMIN) {
             issuerId = 0L;

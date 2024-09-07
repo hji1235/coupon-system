@@ -10,10 +10,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class AdminCouponSaveRequest extends CouponSaveRequest {
 
-    @NotNull
-    @Max(10000)
+    @Max(20000)
     @Min(5)
-    private Integer discountAmount;
+    private int discountAmount;
 
     @PositiveOrZero
     @Max(100000)
@@ -22,5 +21,6 @@ public class AdminCouponSaveRequest extends CouponSaveRequest {
     @NotNull
     private IssuerType issuerType;
 
+    @NotNull
     private Long issuerId;
 }

@@ -27,7 +27,8 @@ public enum ErrorCode {
     DUPLICATE_MENU_NAME_IN_STORE(400, "TEST20", "이미 매장 내 존재하는 메뉴 이름입니다. menuName : %s"),
     DUPLICATE_EMAIL(400, "TEST21", "이미 존재하는 이메일입니다. email : %s"),
     DUPLICATE_NICKNAME(400, "TEST22", "이미 존재하는 닉네임입니다. nickname : %s"),
-    PASSWORD_MISMATCH(400, "TEST23", "패스워드가 일치하지 않습니다.");
+    PASSWORD_MISMATCH(400, "TEST23", "패스워드가 일치하지 않습니다."),
+    DUPLICATE_STORE_COUPON_CONDITION(400, "TEST24", "동일한 할인 금액과 최소 주문 가격으로 매장 내 쿠폰을 발행할 수 없습니다. discountAmount : %d, minOrderPrice : %d");
 
 
     private final int status;

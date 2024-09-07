@@ -17,33 +17,28 @@ public class Coupon extends BaseEntity {
     @Column(name = "coupon_id")
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(nullable = false)
     private String name;
 
-    @Column(name = "discount_amount", nullable = false)
-    private Integer discountAmount;
+    private int discountAmount;
 
-    @Column(name = "min_order_price")
     private Integer minOrderPrice;
 
-    @Column(name = "max_count")
     private Integer maxCount;
 
-    @Column(name = "max_count_per_mem")
     private Integer maxCountPerMember;
 
-    @Column(name = "allocated_count")
-    private Integer allocatedCount;
+    private int allocatedCount;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "discount_type", nullable = false)
+    @Column(nullable = false)
     private DiscountType discountType;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "issuer_type", nullable = false)
+    @Column(nullable = false)
     private IssuerType issuerType;
 
-    @Column(name = "issuer_id")
+    @Column(nullable = false)
     private Long issuerId;
 
     @Embedded
@@ -53,8 +48,8 @@ public class Coupon extends BaseEntity {
     private TimeLimitPolicy timeLimitPolicy;
 
     @Builder
-    public Coupon(String name, Integer discountAmount, Integer minOrderPrice,
-                  Integer maxCount, Integer maxCountPerMember, Integer allocatedCount,
+    public Coupon(String name, int discountAmount, Integer minOrderPrice,
+                  Integer maxCount, Integer maxCountPerMember, int allocatedCount,
                   DiscountType discountType, IssuerType issuerType, Long issuerId,
                   ExpirationPolicy expirationPolicy, TimeLimitPolicy timeLimitPolicy) {
         this.name = name;

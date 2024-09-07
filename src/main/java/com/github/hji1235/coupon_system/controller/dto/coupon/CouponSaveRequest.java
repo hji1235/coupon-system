@@ -14,11 +14,11 @@ import java.time.LocalTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class CouponSaveRequest {
 
-    @NotEmpty
-    @Size(min = 2, max = 50)
+    @NotBlank
+    @Size(max = 30)
     private String name;
 
-    @Max(1000000)
+    @Max(10000000)
     @Min(1)
     private Integer maxCount;
 

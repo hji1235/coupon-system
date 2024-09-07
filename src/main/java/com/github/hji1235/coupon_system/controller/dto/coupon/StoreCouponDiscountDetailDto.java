@@ -8,16 +8,30 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Objects;
+
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StoreCouponDiscountDetailDto {
 
-    @NotNull
-    @Max(10000)
+    @Max(5000)
     @Min(5)
-    private Integer discountAmount;
+    private int discountAmount;
 
     @PositiveOrZero
     @Max(100000)
     private Integer minOrderPrice;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StoreCouponDiscountDetailDto that = (StoreCouponDiscountDetailDto) o;
+        return getDiscountAmount() == that.getDiscountAmount() && Objects.equals(getMinOrderPrice(), that.getMinOrderPrice());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDiscountAmount(), getMinOrderPrice());
+    }
 }
