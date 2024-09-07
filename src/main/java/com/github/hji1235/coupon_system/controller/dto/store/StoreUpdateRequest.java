@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 public class StoreUpdateRequest {
 
     @NotBlank
-    @Size(min = 2, max = 50)
+    @Size(max = 30)
     private String name;
 }

@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 public class StoreSaveRequest {
 
     @NotBlank
-    @Size(min = 2, max = 50)
+    @Size(max = 30)
     private String name;
 
     @NotNull

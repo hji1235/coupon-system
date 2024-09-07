@@ -10,4 +10,6 @@ public interface StoreRepository extends JpaRepository<Store, Long> {
 
     @Query("select s from Store s join fetch s.brand b where s.id = :storeId")
     Optional<Store> findByIdWithBrand(@Param("storeId") Long storeId);
+
+    boolean existsByName(String storeName);
 }
