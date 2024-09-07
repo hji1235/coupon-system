@@ -16,7 +16,7 @@ public class Brand extends BaseEntity {
     @Column(name = "brand_id")
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(nullable = false, unique = true, length = 30)
     private String name;
 
     private Brand(String name) {
@@ -27,7 +27,7 @@ public class Brand extends BaseEntity {
         return new Brand(brandName);
     }
 
-    public void updateName(String name) {
+    public void updateBrandInfo(String name) {
         this.name = name;
     }
 }

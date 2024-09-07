@@ -1,6 +1,6 @@
 package com.github.hji1235.coupon_system.controller.dto.store;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BrandUpdateRequest {
 
-    @NotEmpty
-    @Size(min = 1, max = 50)
+    @NotBlank
+    @Size(max = 30)
     private String name;
 }

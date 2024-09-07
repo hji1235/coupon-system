@@ -21,7 +21,8 @@ public enum ErrorCode {
     EXPIRED_COUPON(400, "TEST14", "이미 만료된 쿠폰입니다. expiredAt : %s"),
     COUPON_TIME_RESTRICTION(400, "TEST15", "해당 쿠폰을 사용할 수 없는 시간입니다. timeLimitStartAt : %s, timeLimitEndAt : %s"),
     COUPON_ISSUER_MISMATCH(400, " TEST16", "해당 쿠폰을 사용할 수 없는 매장입니다. currentStoreId: %d, memberCouponIssuerId: %d"),
-    ORDER_PRICE_BELOW_MINIMUM(400, "TEST17", "주문 금액이 최소 주문 가격 미만입니다. currentOrderPrice : %d, couponMinOrderPrice : %d");
+    ORDER_PRICE_BELOW_MINIMUM(400, "TEST17", "주문 금액이 최소 주문 가격 미만입니다. currentOrderPrice : %d, couponMinOrderPrice : %d"),
+    DUPLICATE_BRAND_NAME(400, "TEST18", "이미 존재하는 브랜드 이름입니다. brandName : %s");
 
 
     private final int status;
