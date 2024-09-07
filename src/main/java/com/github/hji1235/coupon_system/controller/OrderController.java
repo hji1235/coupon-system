@@ -1,8 +1,8 @@
 package com.github.hji1235.coupon_system.controller;
 
-import com.github.hji1235.coupon_system.controller.dto.OrderFindResponse;
-import com.github.hji1235.coupon_system.controller.dto.OrderSaveRequest;
-import com.github.hji1235.coupon_system.controller.dto.SimpleOrderResponse;
+import com.github.hji1235.coupon_system.controller.dto.order.OrderFindResponse;
+import com.github.hji1235.coupon_system.controller.dto.order.OrderSaveRequest;
+import com.github.hji1235.coupon_system.controller.dto.order.SimpleOrderResponse;
 import com.github.hji1235.coupon_system.global.ApiResponse;
 import com.github.hji1235.coupon_system.global.jwt.CustomUserDetails;
 import com.github.hji1235.coupon_system.service.OrderService;

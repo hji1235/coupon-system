@@ -16,7 +16,12 @@ public enum ErrorCode {
     PAYMENT_NOT_FOUND(400, "TEST9", "Can not find a Payment for id"),
     INVALID_MENU_ACCESS(400, "TEST10", "This Menu does not belong to the Store. storeId : %d, menuId : %d"),
     ALREADY_ALLOCATED_COUPON_CODE(400, "TEST11", "이미 할당된 쿠폰 코드입니다. couponCode : %s"),
-    MENU_NOT_BELONG_TO_STORE(400, "TEST12", "해당 메뉴가 매장에 속하지 않습니다. menuId : %d, storeId : %d");
+    MENU_NOT_BELONG_TO_STORE(400, "TEST12", "해당 메뉴가 매장에 속하지 않습니다. menuId : %d, storeId : %d"),
+    ALREADY_USED_COUPON(400, "TEST13", "이미 사용된 쿠폰입니다. MemberCouponId : %d"),
+    EXPIRED_COUPON(400, "TEST14", "이미 만료된 쿠폰입니다. expiredAt : %s"),
+    COUPON_TIME_RESTRICTION(400, "TEST15", "해당 쿠폰을 사용할 수 없는 시간입니다. timeLimitStartAt : %s, timeLimitEndAt : %s"),
+    COUPON_ISSUER_MISMATCH(400, " TEST16", "해당 쿠폰을 사용할 수 없는 매장입니다. currentStoreId: %d, memberCouponIssuerId: %d"),
+    ORDER_PRICE_BELOW_MINIMUM(400, "TEST17", "주문 금액이 최소 주문 가격 미만입니다. currentOrderPrice : %d, couponMinOrderPrice : %d");
 
 
     private final int status;

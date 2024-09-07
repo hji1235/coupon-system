@@ -1,8 +1,8 @@
 package com.github.hji1235.coupon_system.service;
 
-import com.github.hji1235.coupon_system.controller.dto.MenuFindResponse;
-import com.github.hji1235.coupon_system.controller.dto.MenuSaveRequest;
-import com.github.hji1235.coupon_system.controller.dto.MenuUpdateRequest;
+import com.github.hji1235.coupon_system.controller.dto.store.MenuFindResponse;
+import com.github.hji1235.coupon_system.controller.dto.store.MenuSaveRequest;
+import com.github.hji1235.coupon_system.controller.dto.store.MenuUpdateRequest;
 import com.github.hji1235.coupon_system.domain.store.Menu;
 import com.github.hji1235.coupon_system.domain.store.Store;
 import com.github.hji1235.coupon_system.global.exception.InvalidMenuAccessException;

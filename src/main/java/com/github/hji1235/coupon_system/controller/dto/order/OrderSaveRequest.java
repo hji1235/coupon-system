@@ -1,5 +1,6 @@
-package com.github.hji1235.coupon_system.controller.dto;
+package com.github.hji1235.coupon_system.controller.dto.order;
 
+import com.github.hji1235.coupon_system.controller.dto.order.OrderMenuDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

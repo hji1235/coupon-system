@@ -1,10 +1,9 @@
 package com.github.hji1235.coupon_system.service;
 
 import com.github.hji1235.coupon_system.controller.dto.CustomUserInfoDto;
-import com.github.hji1235.coupon_system.controller.dto.MemberLoginRequest;
-import com.github.hji1235.coupon_system.controller.dto.MemberSaveRequest;
+import com.github.hji1235.coupon_system.controller.dto.member.MemberLoginRequest;
+import com.github.hji1235.coupon_system.controller.dto.member.MemberSaveRequest;
 import com.github.hji1235.coupon_system.domain.member.Member;
-import com.github.hji1235.coupon_system.global.exception.MemberNotFoundException;
 import com.github.hji1235.coupon_system.global.jwt.JwtUtil;
 import com.github.hji1235.coupon_system.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.github.hji1235.coupon_system.controller.dto;
+package com.github.hji1235.coupon_system.controller.dto.order;
 
 import com.github.hji1235.coupon_system.domain.order.Order;
 import com.github.hji1235.coupon_system.domain.order.OrderStatus;
@@ -18,7 +18,7 @@ public class SimpleOrderResponse {
 
     public SimpleOrderResponse(Order order) {
         this.orderDate = order.getLastModifiedAt();
-        this.storeName = order.getOrderMenus().get(0).getMenu().getStore().getName();
+        this.storeName = order.getStore().getName();
         this.orderStatus = order.getOrderStatus();
     }
 }

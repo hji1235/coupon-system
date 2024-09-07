@@ -7,8 +7,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -43,7 +41,7 @@ public class Payment extends BaseEntity {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    public Payment(PaymentMethod paymentMethod, Integer paymentAmount, Integer discountAmount, Order order) {
+    private Payment(PaymentMethod paymentMethod, Integer paymentAmount, Integer discountAmount, Order order) {
         this.paymentMethod = paymentMethod;
         this.paymentAmount = paymentAmount;
         this.paymentStatus = PaymentStatus.PENDING;
@@ -51,12 +49,16 @@ public class Payment extends BaseEntity {
         this.order = order;
     }
 
-    public void completePaymentAndPrepareOrder() {
+    public static Payment of(PaymentMethod paymentMethod, Integer paymentAmount, Integer discountAmount, Order order) {
+        return new Payment(paymentMethod, paymentAmount, discountAmount, order);
+    }
+
+    public void completePaymentAndPendingOrder() {
         if (paymentStatus != PaymentStatus.COMPLETED) {
             paymentStatus = PaymentStatus.COMPLETED;
         }
-        if (order != null && order.getOrderStatus() != OrderStatus.PREPARING) {
-            order.prepareOrder();
+        if (order != null && order.getOrderStatus() != OrderStatus.PENDING) {
+            order.pendingOrder();
         }
     }
 

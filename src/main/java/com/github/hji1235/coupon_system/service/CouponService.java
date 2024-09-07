@@ -1,11 +1,10 @@
 package com.github.hji1235.coupon_system.service;
 
 import com.github.hji1235.coupon_system.controller.converter.CouponConverter;
-import com.github.hji1235.coupon_system.controller.dto.AdminCouponSaveRequest;
-import com.github.hji1235.coupon_system.controller.dto.StoreCouponDiscountDetailDto;
-import com.github.hji1235.coupon_system.controller.dto.StoreCouponSaveRequest;
+import com.github.hji1235.coupon_system.controller.dto.coupon.AdminCouponSaveRequest;
+import com.github.hji1235.coupon_system.controller.dto.coupon.StoreCouponDiscountDetailDto;
+import com.github.hji1235.coupon_system.controller.dto.coupon.StoreCouponSaveRequest;
 import com.github.hji1235.coupon_system.domain.coupon.Coupon;
-import com.github.hji1235.coupon_system.domain.coupon.ExpirationPolicy;
 import com.github.hji1235.coupon_system.repository.CouponRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package com.github.hji1235.coupon_system.controller.dto;
+package com.github.hji1235.coupon_system.controller.dto.coupon;
 
 import com.github.hji1235.coupon_system.domain.coupon.DiscountType;
 import com.github.hji1235.coupon_system.domain.coupon.MemberCoupon;
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class MemberCouponFindResponse {
+public class MemberCouponAvailableCheckResponse {
 
     private DiscountType discountType;
 
@@ -22,11 +22,14 @@ public class MemberCouponFindResponse {
 
     private int minOrderPrice;
 
-    public MemberCouponFindResponse(MemberCoupon memberCoupon) {
+    private boolean available;
+
+    public MemberCouponAvailableCheckResponse(MemberCoupon memberCoupon, boolean isAvailable) {
         this.discountType = memberCoupon.getCoupon().getDiscountType();
         this.discountAmount = memberCoupon.getDiscountAmount();
         this.couponName = memberCoupon.getCoupon().getName();
         this.expiredAt = memberCoupon.getExpirationPeriod().getExpiredAt();
         this.minOrderPrice = memberCoupon.getCoupon().getMinOrderPrice();
+        this.available = isAvailable;
     }
 }

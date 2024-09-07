@@ -1,7 +1,7 @@
 package com.github.hji1235.coupon_system.controller;
 
-import com.github.hji1235.coupon_system.controller.dto.AdminCouponSaveRequest;
-import com.github.hji1235.coupon_system.controller.dto.StoreCouponSaveRequest;
+import com.github.hji1235.coupon_system.controller.dto.coupon.AdminCouponSaveRequest;
+import com.github.hji1235.coupon_system.controller.dto.coupon.StoreCouponSaveRequest;
 import com.github.hji1235.coupon_system.global.ApiResponse;
 import com.github.hji1235.coupon_system.service.CouponService;
 import jakarta.validation.Valid;

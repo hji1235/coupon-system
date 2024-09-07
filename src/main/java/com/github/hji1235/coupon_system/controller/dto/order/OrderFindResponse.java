@@ -1,4 +1,4 @@
-package com.github.hji1235.coupon_system.controller.dto;
+package com.github.hji1235.coupon_system.controller.dto.order;
 
 import com.github.hji1235.coupon_system.domain.order.Order;
 import com.github.hji1235.coupon_system.domain.order.OrderMenu;
@@ -21,7 +21,7 @@ public class OrderFindResponse {
     private String couponName;
 
     public OrderFindResponse(Order order, List<OrderMenu> orderMenus) {
-        this.storeName = orderMenus.get(0).getMenu().getStore().getName();
+        this.storeName = order.getStore().getName();
         this.orderAt = order.getCreatedAt();
         this.orderMenus = orderMenus.stream().map(OrderMenuResponse::new).toList();
         this.paymentAmount = order.getPayment().getPaymentAmount();
