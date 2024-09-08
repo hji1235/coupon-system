@@ -19,7 +19,7 @@ public class OrderMenu extends BaseEntity {
 
     private int quantity;
 
-    private int orderPrice;
+    private int unitPrice;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
@@ -29,18 +29,18 @@ public class OrderMenu extends BaseEntity {
     @JoinColumn(name = "menu_id")
     private Menu menu;
 
-    private OrderMenu(int quantity, int orderPrice, Order order, Menu menu) {
+    private OrderMenu(int quantity, int unitPrice, Order order, Menu menu) {
         this.quantity = quantity;
-        this.orderPrice = orderPrice;
+        this.unitPrice = unitPrice;
         this.order = order;
         this.menu = menu;
     }
 
-    public static OrderMenu of(int quantity, int orderPrice, Order order, Menu menu) {
-        return new OrderMenu(quantity, orderPrice, order, menu);
+    public static OrderMenu of(int quantity, int unitPrice, Order order, Menu menu) {
+        return new OrderMenu(quantity, unitPrice, order, menu);
     }
 
-    public int menuPrice() {
-        return orderPrice * quantity;
+    public int totalPrice() {
+        return unitPrice * quantity;
     }
 }

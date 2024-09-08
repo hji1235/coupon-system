@@ -23,6 +23,7 @@ public class MemberCoupon extends BaseEntity {
     @Column(name = "member_coupon_id")
     private Long id;
 
+    @Column(nullable = false)
     private UUID couponCode;
 
     private boolean used;

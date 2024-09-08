@@ -15,6 +15,6 @@ public class OrderMenuResponse {
     public OrderMenuResponse(OrderMenu orderMenu) {
         this.menuName = orderMenu.getMenu().getName();
         this.quantity = orderMenu.getQuantity();
-        this.price = orderMenu.getOrderPrice();
+        this.price = orderMenu.getUnitPrice();
     }
 }

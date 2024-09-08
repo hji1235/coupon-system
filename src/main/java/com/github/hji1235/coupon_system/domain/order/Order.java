@@ -53,7 +53,7 @@ public class Order extends BaseEntity {
     public int calculateTotalPayment() {
         int paymentAmount = 0;
         for (OrderMenu orderMenu : orderMenus) {
-            paymentAmount += orderMenu.menuPrice();
+            paymentAmount += orderMenu.totalPrice();
         }
         return paymentAmount;
     }
