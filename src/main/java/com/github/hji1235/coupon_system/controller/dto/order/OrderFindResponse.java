@@ -10,14 +10,18 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderFindResponse {
 
     private String storeName;
+
     private LocalDateTime orderAt;
+
     private List<OrderMenuResponse> orderMenus;
+
     private int paymentAmount;
+
     private int discountAmount;
+
     private String couponName;
 
     public OrderFindResponse(Order order, List<OrderMenu> orderMenus) {
