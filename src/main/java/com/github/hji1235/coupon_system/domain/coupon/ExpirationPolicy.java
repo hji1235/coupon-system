@@ -17,16 +17,13 @@ import java.time.LocalDateTime;
 public class ExpirationPolicy {
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "expiration_policy_type", nullable = false)
+    @Column(nullable = false)
     private ExpirationPolicyType expirationPolicyType;
 
-    @Column(name = "start_at")
     private LocalDate startAt;
 
-    @Column(name = "expired_at")
     private LocalDate expiredAt;
 
-    @Column(name = "days_from_issuance")
     private Integer daysFromIssuance;
 
     private ExpirationPolicy(ExpirationPolicyType expirationPolicyType, LocalDate startAt, LocalDate expiredAt, Integer daysFromIssuance) {

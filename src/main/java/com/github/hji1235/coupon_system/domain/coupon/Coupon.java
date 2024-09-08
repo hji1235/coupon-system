@@ -49,15 +49,14 @@ public class Coupon extends BaseEntity {
 
     @Builder
     public Coupon(String name, int discountAmount, Integer minOrderPrice,
-                  Integer maxCount, Integer maxCountPerMember, int allocatedCount,
-                  DiscountType discountType, IssuerType issuerType, Long issuerId,
-                  ExpirationPolicy expirationPolicy, TimeLimitPolicy timeLimitPolicy) {
+                  Integer maxCount, Integer maxCountPerMember, DiscountType discountType,
+                  IssuerType issuerType, Long issuerId, ExpirationPolicy expirationPolicy,
+                  TimeLimitPolicy timeLimitPolicy) {
         this.name = name;
         this.discountAmount = discountAmount;
         this.minOrderPrice = minOrderPrice;
         this.maxCount = maxCount;
         this.maxCountPerMember = maxCountPerMember;
-        this.allocatedCount = allocatedCount;
         this.discountType = discountType;
         this.issuerType = issuerType;
         this.issuerId = issuerId;

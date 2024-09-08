@@ -14,10 +14,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ExpirationPeriod {
 
-    @Column(name = "start_at", nullable = false)
+    @Column(nullable = false)
     private LocalDate startAt;
 
-    @Column(name = "expired_at", nullable = false)
+    @Column(nullable = false)
     private LocalDate expiredAt;
 
     private ExpirationPeriod(LocalDate startAt, LocalDate expiredAt) {
