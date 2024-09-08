@@ -63,7 +63,9 @@ public class MemberCoupon extends BaseEntity {
         return coupon.getDiscountAmount();
     }
 
-    public void use(Store store, Integer paymentAmount) {
+    public void use() {
+        Store store = this.payment.getOrder().getStore();
+        int paymentAmount = this.payment.getPaymentAmount();
         validateCoupon(store, paymentAmount);
         this.used = true;
         this.usedAt = LocalDateTime.now();

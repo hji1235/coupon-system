@@ -58,7 +58,9 @@ public class Order extends BaseEntity {
         return paymentAmount;
     }
 
-    public void pendingOrder() {
-        orderStatus = OrderStatus.PENDING;
+    public void updateStatusToPending() {
+        if (orderStatus == OrderStatus.CREATED) {
+            orderStatus = OrderStatus.PENDING;
+        }
     }
 }
