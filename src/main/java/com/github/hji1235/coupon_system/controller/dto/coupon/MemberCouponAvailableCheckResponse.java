@@ -6,11 +6,14 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberCouponAvailableCheckResponse {
+
+    private Long id;
 
     private DiscountType discountType;
 
@@ -18,13 +21,14 @@ public class MemberCouponAvailableCheckResponse {
 
     private String couponName;
 
-    private LocalDateTime expiredAt;
+    private LocalDate expiredAt;
 
     private int minOrderPrice;
 
     private boolean available;
 
     public MemberCouponAvailableCheckResponse(MemberCoupon memberCoupon, boolean isAvailable) {
+        this.id = memberCoupon.getId();
         this.discountType = memberCoupon.getCoupon().getDiscountType();
         this.discountAmount = memberCoupon.getDiscountAmount();
         this.couponName = memberCoupon.getCoupon().getName();

@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -18,7 +19,7 @@ public class MemberCouponFindResponse {
 
     private String couponName;
 
-    private LocalDateTime expiredAt;
+    private LocalDate expiredAt;
 
     private int minOrderPrice;
 

@@ -7,6 +7,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -32,10 +33,10 @@ public class CouponSaveRequest {
     @NotNull
     private ExpirationPolicyType expirationPolicyType;
 
-    private LocalDateTime startAt;
+    private LocalDate startAt;
 
     @FutureOrPresent
-    private LocalDateTime expiredAt;
+    private LocalDate expiredAt;
 
     @Max(365)
     @Min(0)
