@@ -1,5 +1,7 @@
 package com.github.hji1235.coupon_system.controller.dto.coupon;
 
+import com.github.hji1235.coupon_system.controller.dto.coupon.annotation.ValidExpirationPolicy;
+import com.github.hji1235.coupon_system.controller.dto.coupon.annotation.ValidTimeLimitPolicy;
 import com.github.hji1235.coupon_system.domain.coupon.DiscountType;
 import com.github.hji1235.coupon_system.domain.coupon.ExpirationPolicyType;
 import jakarta.validation.constraints.*;
@@ -8,11 +10,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ValidExpirationPolicy
+@ValidTimeLimitPolicy
 public class CouponSaveRequest {
 
     @NotBlank

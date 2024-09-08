@@ -14,7 +14,6 @@ import java.util.Objects;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class StoreCouponDiscountDetailDto {
 
-    @Max(5000)
     @Min(5)
     private int discountAmount;
 
