@@ -60,6 +60,23 @@ public class OrderService {
                 .toList();
     }
 
+    @Transactional
+    public void updateOrderStatusToPreparing(Long orderId) {
+        Order order = findOrderById(orderId);
+        order.updateStatusToPreparing();
+    }
+
+    @Transactional
+    public void updateOrderStatusToComplete(Long orderId) {
+        Order order = findOrderById(orderId);
+        order.updateStatusToComplete();
+    }
+
+    private Order findOrderById(Long orderId) {
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
+    }
+
     private Member findMemberById(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberNotFoundException(memberId));

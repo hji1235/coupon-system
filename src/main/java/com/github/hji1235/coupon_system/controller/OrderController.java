@@ -64,9 +64,26 @@ public class OrderController {
     @GetMapping("/stores/{storeId}/orders")
     public ApiResponse<List<StoreOrderFindResponse>> getAllStoreOrders(@PathVariable Long storeId) {
         List<StoreOrderFindResponse> storeOrderFindResponses = orderService.findAllStoreOrders(storeId);
-        for (StoreOrderFindResponse s : storeOrderFindResponses) {
-            System.out.println(s.getId());
-        }
         return ApiResponse.success(storeOrderFindResponses);
     }
+
+    /*
+    가게의 주문 수락
+     */
+    @PatchMapping("/orders/{orderId}/accept")
+    public ApiResponse<Void> updateOrderStatusToPreparing(@PathVariable Long orderId) {
+        orderService.updateOrderStatusToPreparing(orderId);
+        return ApiResponse.success();
+    }
+
+    @PatchMapping("/orders/{orderId}/complete")
+    public ApiResponse<Void> updateOrderStatusToComplete(@PathVariable Long orderId) {
+        orderService.updateOrderStatusToComplete(orderId);
+        return ApiResponse.success();
+    }
+
+
+    /*
+    가게의 주문 완료
+     */
 }

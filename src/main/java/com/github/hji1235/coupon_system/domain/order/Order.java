@@ -3,6 +3,7 @@ package com.github.hji1235.coupon_system.domain.order;
 import com.github.hji1235.coupon_system.domain.BaseEntity;
 import com.github.hji1235.coupon_system.domain.member.Member;
 import com.github.hji1235.coupon_system.domain.store.Store;
+import com.github.hji1235.coupon_system.global.exception.InvalidOrderStatusException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -59,8 +60,23 @@ public class Order extends BaseEntity {
     }
 
     public void updateStatusToPending() {
-        if (orderStatus == OrderStatus.CREATED) {
-            orderStatus = OrderStatus.PENDING;
+        if (orderStatus != OrderStatus.CREATED) {
+            throw new InvalidOrderStatusException(this.orderStatus, OrderStatus.PENDING);
         }
+        orderStatus = OrderStatus.PENDING;
+    }
+
+    public void updateStatusToPreparing() {
+        if (orderStatus != OrderStatus.PENDING) {
+            throw new InvalidOrderStatusException(this.orderStatus, OrderStatus.PREPARING);
+        }
+        orderStatus = OrderStatus.PREPARING;
+    }
+
+    public void updateStatusToComplete() {
+        if (orderStatus != OrderStatus.PREPARING) {
+            throw new InvalidOrderStatusException(this.orderStatus, OrderStatus.COMPLETED);
+        }
+        orderStatus = OrderStatus.COMPLETED;
     }
 }

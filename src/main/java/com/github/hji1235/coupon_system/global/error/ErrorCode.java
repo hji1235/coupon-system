@@ -29,7 +29,9 @@ public enum ErrorCode {
     DUPLICATE_NICKNAME(400, "TEST22", "이미 존재하는 닉네임입니다. nickname : %s"),
     PASSWORD_MISMATCH(400, "TEST23", "패스워드가 일치하지 않습니다."),
     DUPLICATE_STORE_COUPON_CONDITION(400, "TEST24", "동일한 할인 금액과 최소 주문 가격으로 매장 내 쿠폰을 발행할 수 없습니다. discountAmount : %d, minOrderPrice : %d"),
-    INVALID_INPUT_VALUE(400, "TEST25", "입력값이 올바르지 않습니다.");
+    INVALID_INPUT_VALUE(400, "TEST25", "입력값이 올바르지 않습니다."),
+    INVALID_ORDER_STATUS(400, "TEST26", "주문의 상태가 올바르지 않아 변경할 수 없습니다. currentStatus : %s, targetStatus : %s"),
+    INVALID_PAYMENT_STATUS(400, "TEST27", "결제의 상태가 올바르지 않아 변경할 수 없습니다. currentStatus : %s, targetStatus : %s");
 
 
     private final int status;

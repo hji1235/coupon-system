@@ -3,6 +3,7 @@ package com.github.hji1235.coupon_system.domain.order;
 import com.github.hji1235.coupon_system.domain.BaseEntity;
 import com.github.hji1235.coupon_system.domain.coupon.DiscountType;
 import com.github.hji1235.coupon_system.domain.coupon.MemberCoupon;
+import com.github.hji1235.coupon_system.global.exception.InvalidPaymentStatusException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -49,10 +50,11 @@ public class Payment extends BaseEntity {
     }
 
     public void updateStatusToCompleted() {
-        if (order != null && paymentStatus == PaymentStatus.PENDING) {
-            paymentStatus = PaymentStatus.COMPLETED;
-            order.updateStatusToPending();
+        if (paymentStatus != PaymentStatus.PENDING) {
+            throw new InvalidPaymentStatusException(this.paymentStatus, PaymentStatus.COMPLETED);
         }
+        paymentStatus = PaymentStatus.COMPLETED;
+        order.updateStatusToPending();
     }
 
     public void applyCoupon(MemberCoupon memberCoupon) {
