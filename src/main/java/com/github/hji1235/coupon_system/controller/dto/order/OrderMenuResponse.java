@@ -8,11 +8,13 @@ import lombok.NoArgsConstructor;
 @Getter
 public class OrderMenuResponse {
 
+    private Long id;
     private String menuName;
     private int quantity;
     private int price;
 
     public OrderMenuResponse(OrderMenu orderMenu) {
+        this.id = orderMenu.getMenu().getId();
         this.menuName = orderMenu.getMenu().getName();
         this.quantity = orderMenu.getQuantity();
         this.price = orderMenu.getUnitPrice();

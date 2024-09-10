@@ -3,6 +3,7 @@ package com.github.hji1235.coupon_system.controller;
 import com.github.hji1235.coupon_system.controller.dto.order.OrderFindResponse;
 import com.github.hji1235.coupon_system.controller.dto.order.OrderSaveRequest;
 import com.github.hji1235.coupon_system.controller.dto.order.SimpleOrderResponse;
+import com.github.hji1235.coupon_system.controller.dto.order.StoreOrderFindResponse;
 import com.github.hji1235.coupon_system.global.ApiResponse;
 import com.github.hji1235.coupon_system.global.jwt.CustomUserDetails;
 import com.github.hji1235.coupon_system.service.OrderService;
@@ -55,5 +56,17 @@ public class OrderController {
         Long memberId = userDetails.getMemberId();
         List<SimpleOrderResponse> simpleOrderResponses = orderService.findAllOrders(memberId);
         return ApiResponse.success(simpleOrderResponses);
+    }
+
+    /*
+    가게의 주문 리스트 조회
+     */
+    @GetMapping("/stores/{storeId}/orders")
+    public ApiResponse<List<StoreOrderFindResponse>> getAllStoreOrders(@PathVariable Long storeId) {
+        List<StoreOrderFindResponse> storeOrderFindResponses = orderService.findAllStoreOrders(storeId);
+        for (StoreOrderFindResponse s : storeOrderFindResponses) {
+            System.out.println(s.getId());
+        }
+        return ApiResponse.success(storeOrderFindResponses);
     }
 }

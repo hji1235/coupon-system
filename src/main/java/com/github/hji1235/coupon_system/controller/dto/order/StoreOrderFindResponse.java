@@ -5,19 +5,22 @@ import com.github.hji1235.coupon_system.domain.order.OrderStatus;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
-public class SimpleOrderResponse {
+public class StoreOrderFindResponse {
 
     private Long id;
     private LocalDateTime orderAt;
-    private String storeName;
     private OrderStatus orderStatus;
+    private List<OrderMenuResponse> orderMenus;
 
-    public SimpleOrderResponse(Order order) {
+    public StoreOrderFindResponse(Order order) {
         this.id = order.getId();
         this.orderAt = order.getCreatedAt();
-        this.storeName = order.getStore().getName();
         this.orderStatus = order.getOrderStatus();
+        this.orderMenus = order.getOrderMenus().stream()
+                .map(OrderMenuResponse::new)
+                .toList();
     }
 }

@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class OrderMenuDto {
+public class OrderMenuRequest {
 
     @NotNull
     private Long menuId;
