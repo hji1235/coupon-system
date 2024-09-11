@@ -47,6 +47,9 @@ public class Coupon extends BaseEntity {
     @Embedded
     private TimeLimitPolicy timeLimitPolicy;
 
+    @Version
+    private int version;
+
     @Builder
     public Coupon(String name, int discountAmount, Integer minOrderPrice,
                   Integer maxCount, Integer maxCountPerMember, DiscountType discountType,
