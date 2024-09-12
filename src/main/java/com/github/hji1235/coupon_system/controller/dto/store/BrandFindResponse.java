@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class BrandFindResponse {
 
     private Long id;
@@ -16,5 +15,10 @@ public class BrandFindResponse {
     public BrandFindResponse(Brand brand) {
         this.id = brand.getId();
         this.name = brand.getName();
+    }
+
+    public BrandFindResponse(Long id, String name) {
+        this.id = id;
+        this.name = name;
     }
 }

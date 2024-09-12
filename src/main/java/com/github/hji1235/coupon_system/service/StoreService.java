@@ -6,6 +6,7 @@ import com.github.hji1235.coupon_system.controller.dto.store.StoreUpdateRequest;
 import com.github.hji1235.coupon_system.domain.store.Brand;
 import com.github.hji1235.coupon_system.domain.store.Store;
 import com.github.hji1235.coupon_system.global.exception.BrandNotFoundException;
+import com.github.hji1235.coupon_system.global.exception.DuplicateStoreNameException;
 import com.github.hji1235.coupon_system.global.exception.StoreNotFoundException;
 import com.github.hji1235.coupon_system.repository.BrandRepository;
 import com.github.hji1235.coupon_system.repository.StoreRepository;
@@ -25,6 +26,7 @@ public class StoreService {
 
     @Transactional
     public Long saveStore(StoreSaveRequest storeSaveRequest) {
+        validateDuplicateStoreName(storeSaveRequest.getName());
         Brand brand = findBrandById(storeSaveRequest.getBrandId());
         Store store = Store.of(storeSaveRequest.getName(), brand);
         return storeRepository.save(store).getId();
@@ -43,14 +45,21 @@ public class StoreService {
 
     @Transactional
     public void updateStore(Long storeId, StoreUpdateRequest storeUpdateRequest) {
+        validateDuplicateStoreName(storeUpdateRequest.getName());
         Store store = findStoreById(storeId);
-        store.updateName(storeUpdateRequest.getName());
+        store.updateStoreInfo(storeUpdateRequest.getName());
     }
 
     @Transactional
     public void deleteStore(Long storeId) {
         Store store = findStoreById(storeId);
         storeRepository.delete(store);
+    }
+
+    private void validateDuplicateStoreName(String storeName) {
+        if (storeRepository.existsByName(storeName)) {
+            throw new DuplicateStoreNameException(storeName);
+        }
     }
 
     private Store findStoreById(Long storeId) {

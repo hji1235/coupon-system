@@ -1,7 +1,9 @@
 package com.github.hji1235.coupon_system.domain.order;
 
 import com.github.hji1235.coupon_system.domain.BaseEntity;
+import com.github.hji1235.coupon_system.domain.coupon.DiscountType;
 import com.github.hji1235.coupon_system.domain.coupon.MemberCoupon;
+import com.github.hji1235.coupon_system.global.exception.InvalidPaymentStatusException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -18,21 +20,16 @@ public class Payment extends BaseEntity {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "payment_method", nullable = false)
+    @Column(nullable = false)
     private PaymentMethod paymentMethod;
 
-    @Column(name = "payment_amount", nullable = false)
-    private Integer paymentAmount;
-
-//    @Column(name = "payment_at")
-//    private LocalDateTime paymentAt;
+    private int paymentAmount;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "payment_status", nullable = false)
+    @Column(nullable = false)
     private PaymentStatus paymentStatus;
 
-    @Column(name = "discount_amount")
-    private Integer discountAmount;
+    private int discountAmount;
 
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "payment")
     private MemberCoupon memberCoupon;
@@ -41,35 +38,40 @@ public class Payment extends BaseEntity {
     @JoinColumn(name = "order_id")
     private Order order;
 
-    private Payment(PaymentMethod paymentMethod, Integer paymentAmount, Integer discountAmount, Order order) {
+    private Payment(PaymentMethod paymentMethod, int paymentAmount, Order order) {
         this.paymentMethod = paymentMethod;
         this.paymentAmount = paymentAmount;
         this.paymentStatus = PaymentStatus.PENDING;
-        this.discountAmount = discountAmount;
         this.order = order;
     }
 
-    public static Payment of(PaymentMethod paymentMethod, Integer paymentAmount, Integer discountAmount, Order order) {
-        return new Payment(paymentMethod, paymentAmount, discountAmount, order);
+    public static Payment of(PaymentMethod paymentMethod, int paymentAmount, Order order) {
+        return new Payment(paymentMethod, paymentAmount, order);
     }
 
-    public void completePaymentAndPendingOrder() {
-        if (paymentStatus != PaymentStatus.COMPLETED) {
-            paymentStatus = PaymentStatus.COMPLETED;
+    public void updateStatusToCompleted() {
+        if (paymentStatus != PaymentStatus.PENDING) {
+            throw new InvalidPaymentStatusException(this.paymentStatus, PaymentStatus.COMPLETED);
         }
-        if (order != null && order.getOrderStatus() != OrderStatus.PENDING) {
-            order.pendingOrder();
-        }
+        paymentStatus = PaymentStatus.COMPLETED;
+        order.updateStatusToPending();
     }
 
-    public void setMemberCoupon(MemberCoupon memberCoupon) {
-        if (memberCoupon == null) {
-            if (this.memberCoupon != null) {
-                this.memberCoupon.setPayment(null);
-            }
-        } else {
-            memberCoupon.setPayment(this);
-        }
+    public void applyCoupon(MemberCoupon memberCoupon) {
+        this.discountAmount = calculateDiscountAmount(memberCoupon, this.paymentAmount);
         this.memberCoupon = memberCoupon;
+        memberCoupon.setPayment(this);
+    }
+
+    public void removeCoupon() {
+        this.memberCoupon.setPayment(null);
+        this.memberCoupon = null;
+    }
+
+    private static int calculateDiscountAmount(MemberCoupon memberCoupon, int paymentAmount) {
+        if (memberCoupon.getCoupon().getDiscountType() == DiscountType.PERCENT) {
+            return (int) (paymentAmount * (memberCoupon.getDiscountAmount() / 100.0));
+        }
+        return memberCoupon.getDiscountAmount();
     }
 }

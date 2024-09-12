@@ -25,4 +25,13 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
             "left join fetch mc.coupon " +
             "where o.id = :orderId and o.member.id = :memberId")
     Optional<Order> findByOrderAndMemberWithPayment(@Param("orderId") Long orderId, @Param("memberId") Long memberId);
+
+    @Query("select o " +
+            "from Order o " +
+            "join fetch o.orderMenus om " +
+            "join fetch om.menu m " +
+            "where o.store.id = :storeId " +
+            "and (o.orderStatus = com.github.hji1235.coupon_system.domain.order.OrderStatus.PENDING " +
+            "or o.orderStatus = com.github.hji1235.coupon_system.domain.order.OrderStatus.PREPARING)")
+    List<Order> findAllByStoreId(@Param("storeId") Long storeId);
 }

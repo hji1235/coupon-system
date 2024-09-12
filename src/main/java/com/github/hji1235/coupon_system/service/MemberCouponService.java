@@ -47,7 +47,7 @@ public class MemberCouponService {
     @Transactional
     public void saveAndAllocateMemberCouponByClick(Long memberId, Long couponId) {
         Member member = findMemberById(memberId);
-        Coupon coupon = findCouponById(couponId);
+        Coupon coupon = findCouponByIdWithLock(couponId);
         int issuanceCount = 1;
         if (!coupon.canIssueCoupon(issuanceCount)) {
             throw new CouponMaxCountOverException(coupon.getMaxCount(), coupon.getAllocatedCount(), issuanceCount);
@@ -93,6 +93,11 @@ public class MemberCouponService {
 
     private Coupon findCouponById(Long couponId) {
         return couponRepository.findById(couponId)
+                .orElseThrow(() -> new CouponNotFoundException(couponId));
+    }
+
+    private Coupon findCouponByIdWithLock(Long couponId) {
+        return couponRepository.findByIdWithLock(couponId)
                 .orElseThrow(() -> new CouponNotFoundException(couponId));
     }
 

@@ -9,6 +9,7 @@ import com.github.hji1235.coupon_system.global.jwt.CustomUserDetails;
 import com.github.hji1235.coupon_system.service.MemberCouponService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,7 @@ public class MemberCouponController {
     /*
     미할당 쿠폰 생성
      */
+    @Secured("ROLE_ADMIN")
     @PostMapping("/coupons/{couponId}/member-coupons/issue-code")
     public ApiResponse<Void> issueCouponCodes(
             @PathVariable Long couponId,
@@ -36,6 +38,7 @@ public class MemberCouponController {
     /*
     쿠폰 할당(클릭)
      */
+    @Secured("ROLE_MEMBER")
     @PostMapping("/coupons/{couponId}/member-coupons/allocate-click")
     public ApiResponse<Void> allocateMemberCouponByClick(
             @PathVariable Long couponId,
@@ -49,6 +52,7 @@ public class MemberCouponController {
     /*
     쿠폰 할당(쿠폰 코드)
      */
+    @Secured("ROLE_MEMBER")
     @PatchMapping("/member-coupons/allocate-code")
     public ApiResponse<Void> allocateMemberCouponByCode(
             @AuthenticationPrincipal CustomUserDetails userDetails,
@@ -62,6 +66,7 @@ public class MemberCouponController {
     /*
     멤버 쿠폰 조회
      */
+    @Secured("ROLE_MEMBER")
     @GetMapping("/member-coupons")
     public ApiResponse<List<MemberCouponFindResponse>> getAllMemberCoupons(@AuthenticationPrincipal CustomUserDetails userDetails) {
         Long memberId = userDetails.getMemberId();
@@ -72,6 +77,7 @@ public class MemberCouponController {
     /*
     주문 중 사용 가능 쿠폰 조회
      */
+    @Secured("ROLE_MEMBER")
     @GetMapping("/stores/{storeId}/orders/{orderId}/member-coupons/check")
     public ApiResponse<List<MemberCouponAvailableCheckResponse>> getAllAvailableMemberCoupons(
             @PathVariable Long storeId,

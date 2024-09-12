@@ -12,9 +12,14 @@ import lombok.NoArgsConstructor;
 public class StoreSaveRequest {
 
     @NotBlank
-    @Size(min = 2, max = 50)
+    @Size(max = 30)
     private String name;
 
     @NotNull
     private Long brandId;
+
+    public StoreSaveRequest(String name, Long brandId) {
+        this.name = name;
+        this.brandId = brandId;
+    }
 }

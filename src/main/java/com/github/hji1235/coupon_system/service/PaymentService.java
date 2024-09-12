@@ -1,7 +1,6 @@
 package com.github.hji1235.coupon_system.service;
 
 import com.github.hji1235.coupon_system.controller.dto.payment.PaymentSaveRequest;
-import com.github.hji1235.coupon_system.domain.coupon.DiscountType;
 import com.github.hji1235.coupon_system.domain.coupon.MemberCoupon;
 import com.github.hji1235.coupon_system.domain.order.Order;
 import com.github.hji1235.coupon_system.domain.order.Payment;
@@ -28,41 +27,31 @@ public class PaymentService {
     public void savePayment(Long orderId, PaymentSaveRequest paymentSaveRequest) {
         Order order = findOrderByIdWithOrderMenus(orderId);
         int paymentAmount = order.calculateTotalPayment();
-        int discountAmount = 0;
-        MemberCoupon memberCoupon = null;
+        Payment payment = Payment.of(paymentSaveRequest.getPaymentMethod(), paymentAmount, order);
         if (paymentSaveRequest.getMemberCouponId() != null) {
-            memberCoupon = findMemberCouponByIdWithCoupon(paymentSaveRequest.getMemberCouponId());
-            discountAmount = calculateDiscountAmount(memberCoupon, paymentAmount);
+            MemberCoupon memberCoupon = findMemberCouponByIdWithCoupon(paymentSaveRequest.getMemberCouponId());
+            payment.applyCoupon(memberCoupon);
         }
-        Payment payment = Payment.of(paymentSaveRequest.getPaymentMethod(), paymentAmount, discountAmount, order);
-        payment.setMemberCoupon(memberCoupon);
         paymentRepository.save(payment);
     }
 
     @Transactional
     public void completePayment(Long paymentId) {
-        Payment payment = findPaymentByIdWIthOrderAndMemberCoupon(paymentId);
+        Payment payment = findPaymentByIdWithOrderAndMemberCoupon(paymentId);
         MemberCoupon memberCoupon = payment.getMemberCoupon();
         if (memberCoupon != null) {
-            memberCoupon.use(payment.getOrder().getStore(), payment.getPaymentAmount());
+            memberCoupon.use();
         }
-        payment.completePaymentAndPendingOrder();
+        payment.updateStatusToCompleted();
     }
 
     @Transactional
     public void cancelPayment(Long paymentId) {
-        Payment payment = findPaymentByIdWIthOrderAndMemberCoupon(paymentId);
-        payment.setMemberCoupon(null);
-        paymentRepository.delete(payment);
-    }
-
-    private static int calculateDiscountAmount(MemberCoupon memberCoupon, int paymentAmount) {
-        int discountAmount;
-        discountAmount = memberCoupon.getDiscountAmount();
-        if (memberCoupon.getCoupon().getDiscountType() == DiscountType.PERCENT) {
-            discountAmount = paymentAmount / memberCoupon.getDiscountAmount();
+        Payment payment = findPaymentByIdWithOrderAndMemberCoupon(paymentId);
+        if (payment.getMemberCoupon() != null) {
+            payment.removeCoupon();
         }
-        return discountAmount;
+        paymentRepository.delete(payment);
     }
 
     private Order findOrderByIdWithOrderMenus(Long orderId) {
@@ -75,7 +64,7 @@ public class PaymentService {
                 .orElseThrow(() -> new MemberCouponNotFoundException(memberCouponId));
     }
 
-    private Payment findPaymentByIdWIthOrderAndMemberCoupon(Long paymentId) {
+    private Payment findPaymentByIdWithOrderAndMemberCoupon(Long paymentId) {
         return paymentRepository.findByIdWithOrderAndMemberCoupon(paymentId)
                 .orElseThrow(() -> new PaymentNotFoundException(paymentId));
     }

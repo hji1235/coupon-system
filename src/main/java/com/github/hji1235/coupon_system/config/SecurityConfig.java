@@ -8,8 +8,10 @@ import com.github.hji1235.coupon_system.service.CustomUserDetailsService;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -19,7 +21,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, prePostEnabled = true)
+@EnableMethodSecurity(securedEnabled = true)
 @AllArgsConstructor
 public class SecurityConfig  {
     private final CustomUserDetailsService customUserDetailsService;
@@ -27,9 +29,8 @@ public class SecurityConfig  {
     private final CustomAccessDeniedHandler accessDeniedHandler;
     private final CustomAuthenticationEntryPoint authenticationEntryPoint;
 
-    private static final String[] AUTH_WHITELIST = {
-            "/api/v1/member/**", "/swagger-ui/**", "/api-docs", "/swagger-ui-custom.html",
-            "/v3/api-docs/**", "/api-docs/**", "/swagger-ui.html", "/api/v1/auth/**", "/api/v1/members/**", "/api/v1/login", "/api/v1/**"
+    private static final String[] PUBLIC_URLS = {
+            "/docs/**", "/api/v1/members", "/api/v1/login"
     };
 
     @Bean
@@ -57,10 +58,8 @@ public class SecurityConfig  {
 
         // 권한 규칙 작성
         http.authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(AUTH_WHITELIST).permitAll()
-                        //@PreAuthrization을 사용할 것이기 때문에 모든 경로에 대한 인증처리는 Pass
-//                        .anyRequest().permitAll()
-                        .anyRequest().authenticated()
+                .requestMatchers(PUBLIC_URLS).permitAll()
+                .anyRequest().authenticated()
         );
 
         return http.build();

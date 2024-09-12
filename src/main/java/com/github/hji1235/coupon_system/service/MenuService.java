@@ -5,6 +5,7 @@ import com.github.hji1235.coupon_system.controller.dto.store.MenuSaveRequest;
 import com.github.hji1235.coupon_system.controller.dto.store.MenuUpdateRequest;
 import com.github.hji1235.coupon_system.domain.store.Menu;
 import com.github.hji1235.coupon_system.domain.store.Store;
+import com.github.hji1235.coupon_system.global.exception.DuplicateMenuNameInStoreException;
 import com.github.hji1235.coupon_system.global.exception.InvalidMenuAccessException;
 import com.github.hji1235.coupon_system.global.exception.MenuNotFoundException;
 import com.github.hji1235.coupon_system.global.exception.StoreNotFoundException;
@@ -27,12 +28,13 @@ public class MenuService {
     @Transactional
     public Long saveMenu(Long storeId, MenuSaveRequest menuSaveRequest) {
         Store store = findStoreById(storeId);
+        validateDuplicateMenuNameInStore(storeId, menuSaveRequest.getName());
         Menu menu = Menu.of(menuSaveRequest.getName(), menuSaveRequest.getPrice(), store);
         return menuRepository.save(menu).getId();
     }
 
     public MenuFindResponse findMenu(Long storeId, Long menuId) {
-        Menu menu = findAndVerifyMenu(storeId, menuId);
+        Menu menu = findAndValidateMenu(storeId, menuId);
         return new MenuFindResponse(menu);
     }
 
@@ -45,21 +47,34 @@ public class MenuService {
 
     @Transactional
     public void updateMenu(Long storeId, Long menuId, MenuUpdateRequest menuUpdateRequest) {
-        Menu menu = findAndVerifyMenu(storeId, menuId);
-        menu.updateMenu(menuUpdateRequest.getName(), menuUpdateRequest.getPrice());
+        Menu menu = findAndValidateMenu(storeId, menuId);
+        validateDuplicateMenuNameInStore(storeId, menuUpdateRequest.getName());
+        menu.updateMenuInfo(menuUpdateRequest.getName(), menuUpdateRequest.getPrice());
     }
 
     @Transactional
     public void deleteMenu(Long storeId, Long menuId) {
-        Menu menu = findAndVerifyMenu(storeId, menuId);
+        Menu menu = findAndValidateMenu(storeId, menuId);
         menuRepository.delete(menu);
     }
 
-    private Menu findAndVerifyMenu(Long storeId, Long menuId) {
+    private Menu findAndValidateMenu(Long storeId, Long menuId) {
         Store store = findStoreById(storeId);
         Menu menu = findMenuById(menuId);
-        verifyMenuBelongsToStore(store, menu);
+        validateMenuBelongsToStore(store, menu);
         return menu;
+    }
+
+    private void validateMenuBelongsToStore(Store store, Menu menu) {
+        if (!store.equals(menu.getStore())) {
+            throw new InvalidMenuAccessException(store.getId(), menu.getId());
+        }
+    }
+
+    private void validateDuplicateMenuNameInStore(Long storeId, String menuName) {
+        if (menuRepository.existsByNameAndStoreId(menuName, storeId)) {
+            throw new DuplicateMenuNameInStoreException(menuName);
+        }
     }
 
     private Store findStoreById(Long storeId) {
@@ -70,11 +85,5 @@ public class MenuService {
     private Menu findMenuById(Long menuId) {
         return menuRepository.findById(menuId)
                 .orElseThrow(() -> new MenuNotFoundException(menuId));
-    }
-
-    private void verifyMenuBelongsToStore(Store store, Menu menu) {
-        if (!store.equals(menu.getStore())) {
-            throw new InvalidMenuAccessException(store.getId(), menu.getId());
-        }
     }
 }

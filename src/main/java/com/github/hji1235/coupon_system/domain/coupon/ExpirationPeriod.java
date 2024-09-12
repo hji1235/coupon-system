@@ -6,6 +6,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Embeddable
@@ -13,27 +14,27 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ExpirationPeriod {
 
-    @Column(name = "start_at", nullable = false)
-    private LocalDateTime startAt;
+    @Column(nullable = false)
+    private LocalDate startAt;
 
-    @Column(name = "expired_at", nullable = false)
-    private LocalDateTime expiredAt;
+    @Column(nullable = false)
+    private LocalDate expiredAt;
 
-    private ExpirationPeriod(LocalDateTime startAt, LocalDateTime expiredAt) {
+    private ExpirationPeriod(LocalDate startAt, LocalDate expiredAt) {
         this.startAt = startAt;
         this.expiredAt = expiredAt;
     }
 
     public static ExpirationPeriod ofAfterIssueDate(Integer daysFromIssuance) {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDate now = LocalDate.now();
         return new ExpirationPeriod(now, now.plusDays(daysFromIssuance));
     }
 
-    public static ExpirationPeriod ofPeriod(LocalDateTime startAt, LocalDateTime expiredAt) {
+    public static ExpirationPeriod ofPeriod(LocalDate startAt, LocalDate expiredAt) {
         return new ExpirationPeriod(startAt, expiredAt);
     }
 
     public boolean isExpired() {
-        return LocalDateTime.now().isAfter(expiredAt);
+        return LocalDate.now().isAfter(expiredAt);
     }
 }

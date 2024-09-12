@@ -1,9 +1,6 @@
 package com.github.hji1235.coupon_system.service;
 
-import com.github.hji1235.coupon_system.controller.dto.order.OrderFindResponse;
-import com.github.hji1235.coupon_system.controller.dto.order.OrderMenuDto;
-import com.github.hji1235.coupon_system.controller.dto.order.OrderSaveRequest;
-import com.github.hji1235.coupon_system.controller.dto.order.SimpleOrderResponse;
+import com.github.hji1235.coupon_system.controller.dto.order.*;
 import com.github.hji1235.coupon_system.domain.member.Member;
 import com.github.hji1235.coupon_system.domain.order.Order;
 import com.github.hji1235.coupon_system.domain.order.OrderMenu;
@@ -34,8 +31,8 @@ public class OrderService {
         Store store = findStoreById(storeId);
         Order order = Order.of(member, store);
         orderRepository.save(order);
-        List<OrderMenuDto> orderMenus = orderSaveRequest.getOrderMenus();
-        for (OrderMenuDto dto : orderMenus) {
+        List<OrderMenuRequest> orderMenus = orderSaveRequest.getOrderMenus();
+        for (OrderMenuRequest dto : orderMenus) {
             Menu menu = findMenuByIdWithStore(dto.getMenuId());
             if (!storeId.equals(menu.getStore().getId())) {
                 throw new MenuNotBelongToStoreException(menu.getId(), storeId);
@@ -55,6 +52,29 @@ public class OrderService {
         return orderRepository.findAllByMemberId(memberId).stream()
                 .map(SimpleOrderResponse::new)
                 .toList();
+    }
+
+    public List<StoreOrderFindResponse> findAllStoreOrders(Long storeId) {
+        return orderRepository.findAllByStoreId(storeId).stream()
+                .map(StoreOrderFindResponse::new)
+                .toList();
+    }
+
+    @Transactional
+    public void updateOrderStatusToPreparing(Long orderId) {
+        Order order = findOrderById(orderId);
+        order.updateStatusToPreparing();
+    }
+
+    @Transactional
+    public void updateOrderStatusToComplete(Long orderId) {
+        Order order = findOrderById(orderId);
+        order.updateStatusToComplete();
+    }
+
+    private Order findOrderById(Long orderId) {
+        return orderRepository.findById(orderId)
+                .orElseThrow(() -> new OrderNotFoundException(orderId));
     }
 
     private Member findMemberById(Long memberId) {

@@ -6,4 +6,8 @@ public class MemberNotFoundException extends EntityNotFoundException{
     public MemberNotFoundException(Long memberId) {
         super(String.valueOf(memberId), ErrorCode.MEMBER_NOT_FOUND);
     }
+
+    public MemberNotFoundException(String email) {
+        super(String.valueOf(email), ErrorCode.MEMBER_NOT_FOUND);
+    }
 }

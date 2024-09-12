@@ -8,6 +8,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Embeddable
@@ -16,19 +17,16 @@ import java.time.LocalDateTime;
 public class ExpirationPolicy {
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "expiration_policy_type", nullable = false)
+    @Column(nullable = false)
     private ExpirationPolicyType expirationPolicyType;
 
-    @Column(name = "start_at")
-    private LocalDateTime startAt;
+    private LocalDate startAt;
 
-    @Column(name = "expired_at")
-    private LocalDateTime expiredAt;
+    private LocalDate expiredAt;
 
-    @Column(name = "days_from_issuance")
     private Integer daysFromIssuance;
 
-    private ExpirationPolicy(ExpirationPolicyType expirationPolicyType, LocalDateTime startAt, LocalDateTime expiredAt, Integer daysFromIssuance) {
+    private ExpirationPolicy(ExpirationPolicyType expirationPolicyType, LocalDate startAt, LocalDate expiredAt, Integer daysFromIssuance) {
         this.expirationPolicyType = expirationPolicyType;
         this.startAt = startAt;
         this.expiredAt = expiredAt;
@@ -39,7 +37,7 @@ public class ExpirationPolicy {
         return new ExpirationPolicy(ExpirationPolicyType.AFTER_ISSUE_DATE, null, null, daysFromIssuance);
     }
 
-    public static ExpirationPolicy ofPeriod(LocalDateTime startAt, LocalDateTime expiredAt) {
+    public static ExpirationPolicy ofPeriod(LocalDate startAt, LocalDate expiredAt) {
         return new ExpirationPolicy(ExpirationPolicyType.PERIOD, startAt, expiredAt, null);
     }
 

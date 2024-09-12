@@ -7,6 +7,7 @@ import com.github.hji1235.coupon_system.global.ApiResponse;
 import com.github.hji1235.coupon_system.service.BrandService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -19,6 +20,7 @@ public class BrandController {
     /*
     브랜드 생성
      */
+    @Secured("ROLE_ADMIN")
     @PostMapping
     public ApiResponse<Long> createBrand(@Valid @RequestBody BrandSaveRequest brandSaveRequest) {
         Long savedBrandId = brandService.saveBrand(brandSaveRequest);
@@ -28,6 +30,7 @@ public class BrandController {
     /*
     브랜드 단일 조회
      */
+    @Secured("ROLE_ADMIN")
     @GetMapping("/{brandId}")
     public ApiResponse<BrandFindResponse> getBrand(@PathVariable Long brandId) {
         BrandFindResponse brandFindResponse = brandService.findBrand(brandId);
@@ -37,6 +40,7 @@ public class BrandController {
     /*
     브랜드 이름 수정
      */
+    @Secured("ROLE_ADMIN")
     @PatchMapping("/{brandId}")
     public ApiResponse<Void> updateBrand(
             @PathVariable Long brandId,
@@ -49,9 +53,9 @@ public class BrandController {
     /*
     브랜드 삭제
      */
-    @DeleteMapping("/{brandId}")
-    public ApiResponse<Void> deleteBrand(@PathVariable Long brandId) {
-        brandService.deleteBrand(brandId);
-        return ApiResponse.success();
-    }
+//    @DeleteMapping("/{brandId}")
+//    public ApiResponse<Void> deleteBrand(@PathVariable Long brandId) {
+//        brandService.deleteBrand(brandId);
+//        return ApiResponse.success();
+//    }
 }

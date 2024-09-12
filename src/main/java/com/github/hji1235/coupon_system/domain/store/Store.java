@@ -18,7 +18,7 @@ public class Store extends BaseEntity {
     @Column(name = "store_id")
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(nullable = false, unique = true, length = 30)
     private String name;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -34,7 +34,7 @@ public class Store extends BaseEntity {
         return new Store(storeName, brand);
     }
 
-    public void updateName(String name) {
+    public void updateStoreInfo(String name) {
         this.name = name;
     }
 

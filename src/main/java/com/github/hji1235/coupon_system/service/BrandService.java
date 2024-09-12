@@ -5,6 +5,7 @@ import com.github.hji1235.coupon_system.controller.dto.store.BrandSaveRequest;
 import com.github.hji1235.coupon_system.controller.dto.store.BrandUpdateRequest;
 import com.github.hji1235.coupon_system.domain.store.Brand;
 import com.github.hji1235.coupon_system.global.exception.BrandNotFoundException;
+import com.github.hji1235.coupon_system.global.exception.DuplicateBrandNameException;
 import com.github.hji1235.coupon_system.repository.BrandRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ public class BrandService {
 
     @Transactional
     public Long saveBrand(BrandSaveRequest brandSaveRequest) {
+        validateDuplicateBrandName(brandSaveRequest.getName());
         Brand brand = Brand.of(brandSaveRequest.getName());
         return brandRepository.save(brand).getId();
     }
@@ -30,14 +32,21 @@ public class BrandService {
 
     @Transactional
     public void updateBrand(Long brandId, BrandUpdateRequest brandUpdateRequest) {
+        validateDuplicateBrandName(brandUpdateRequest.getName());
         Brand brand = findBrandById(brandId);
-        brand.updateName(brandUpdateRequest.getName());
+        brand.updateBrandInfo(brandUpdateRequest.getName());
     }
 
     @Transactional
     public void deleteBrand(Long brandId) {
         Brand brand = findBrandById(brandId);
         brandRepository.delete(brand);
+    }
+
+    private void validateDuplicateBrandName(String brandName) {
+        if (brandRepository.existsByName(brandName)) {
+            throw new DuplicateBrandNameException(brandName);
+        }
     }
 
     private Brand findBrandById(Long brandId) {

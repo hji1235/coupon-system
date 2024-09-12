@@ -23,13 +23,11 @@ public class MemberCoupon extends BaseEntity {
     @Column(name = "member_coupon_id")
     private Long id;
 
-    @Column(name = "coupon_code")
+    @Column(nullable = false)
     private UUID couponCode;
 
-    @Column(name = "used", nullable = false)
-    private Boolean used;
+    private boolean used;
 
-    @Column(name = "used_at")
     private LocalDateTime usedAt;
 
     @Embedded
@@ -52,7 +50,6 @@ public class MemberCoupon extends BaseEntity {
         this.member = member;
         this.couponCode = UUID.randomUUID();
         this.expirationPeriod = coupon.getExpirationPolicy().newExpirationPeriod();
-        this.used = false;
     }
 
     public static MemberCoupon ofWithoutMember(Coupon coupon) {
@@ -67,7 +64,9 @@ public class MemberCoupon extends BaseEntity {
         return coupon.getDiscountAmount();
     }
 
-    public void use(Store store, Integer paymentAmount) {
+    public void use() {
+        Store store = this.payment.getOrder().getStore();
+        int paymentAmount = this.payment.getPaymentAmount();
         validateCoupon(store, paymentAmount);
         this.used = true;
         this.usedAt = LocalDateTime.now();

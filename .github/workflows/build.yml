@@ -43,3 +43,5 @@ jobs:
 
       - name: Gradle 빌드
         run: ./gradlew clean build
+        env:
+          SPRING_PROFILES_ACTIVE: test

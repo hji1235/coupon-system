@@ -5,6 +5,7 @@ import com.github.hji1235.coupon_system.global.ApiResponse;
 import com.github.hji1235.coupon_system.service.PaymentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,6 +18,7 @@ public class PaymentController {
     /*
     결제 생성
      */
+    @Secured("ROLE_MEMBER")
     @PostMapping("/orders/{orderId}/payments")
     public ApiResponse<Void> createPayment(
             @PathVariable Long orderId,
@@ -29,6 +31,7 @@ public class PaymentController {
     /*
     결제 완료
      */
+    @Secured("ROLE_MEMBER")
     @PatchMapping("/payments/{paymentId}")
     public ApiResponse<Void> completePayment(@PathVariable Long paymentId) {
         paymentService.completePayment(paymentId);
@@ -38,10 +41,9 @@ public class PaymentController {
     /*
     결제 취소
      */
-    @DeleteMapping("/payments/{paymentId}")
-    public ApiResponse<Void> cancelPayment(@PathVariable Long paymentId) {
-        paymentService.cancelPayment(paymentId);
-        return ApiResponse.success();
-    }
-
+//    @DeleteMapping("/payments/{paymentId}")
+//    public ApiResponse<Void> cancelPayment(@PathVariable Long paymentId) {
+//        paymentService.cancelPayment(paymentId);
+//        return ApiResponse.success();
+//    }
 }

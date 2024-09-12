@@ -16,23 +16,27 @@ public class Member extends BaseEntity {
     @Column(name = "member_id")
     private Long id;
 
-    @Column(name = "email", nullable = false)
+    @Column(nullable = false, unique = true, length = 254)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(nullable = false, length = 64)
     private String password;
 
-    @Column(name = "nickname", nullable = false)
+    @Column(nullable = false, unique = true, length = 15)
     private String nickname;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "role", nullable = false)
+    @Column(nullable = false)
     private Role role;
 
-    public Member(String email, String password, String nickname, Role role) {
+    private Member(String email, String password, String nickname, Role role) {
         this.email = email;
         this.password = password;
         this.nickname = nickname;
         this.role = role;
+    }
+
+    public static Member of(String email, String password, String nickname, Role role) {
+        return new Member(email, password, nickname, role);
     }
 }

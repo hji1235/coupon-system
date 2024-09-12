@@ -7,6 +7,7 @@ import com.github.hji1235.coupon_system.global.ApiResponse;
 import com.github.hji1235.coupon_system.service.MenuService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,6 +22,7 @@ public class MenuController {
     /*
     메뉴 생성
      */
+    @Secured("ROLE_STORE")
     @PostMapping
     public ApiResponse<Long> createMenu(
             @PathVariable Long storeId,
@@ -33,6 +35,7 @@ public class MenuController {
     /*
     메뉴 단일 조회
      */
+    @Secured("ROLE_MEMBER")
     @GetMapping("/{menuId}")
     public ApiResponse<MenuFindResponse> getMenu(
             @PathVariable Long storeId,
@@ -45,6 +48,7 @@ public class MenuController {
     /*
     메뉴 다중 조회
      */
+    @Secured("ROLE_MEMBER")
     @GetMapping
     public ApiResponse<List<MenuFindResponse>> getAllMenus(@PathVariable Long storeId) {
         List<MenuFindResponse> menuFindResponses = menuService.findAllMenus(storeId);
@@ -54,6 +58,7 @@ public class MenuController {
     /*
     메뉴 이름 및 가격 수정
      */
+    @Secured("ROLE_STORE")
     @PatchMapping("/{menuId}")
     public ApiResponse<Void> updateMenu(
             @PathVariable Long storeId,
@@ -67,12 +72,12 @@ public class MenuController {
     /*
     메뉴 삭제
      */
-    @DeleteMapping("/{menuId}")
-    public ApiResponse<Void> deleteMenu(
-            @PathVariable Long storeId,
-            @PathVariable Long menuId
-    ) {
-        menuService.deleteMenu(storeId, menuId);
-        return ApiResponse.success();
-    }
+//    @DeleteMapping("/{menuId}")
+//    public ApiResponse<Void> deleteMenu(
+//            @PathVariable Long storeId,
+//            @PathVariable Long menuId
+//    ) {
+//        menuService.deleteMenu(storeId, menuId);
+//        return ApiResponse.success();
+//    }
 }
