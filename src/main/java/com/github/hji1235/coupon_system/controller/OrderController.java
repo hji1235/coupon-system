@@ -9,6 +9,7 @@ import com.github.hji1235.coupon_system.global.jwt.CustomUserDetails;
 import com.github.hji1235.coupon_system.service.OrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +25,7 @@ public class OrderController {
     /*
     주문 생성
      */
+    @Secured("ROLE_MEMBER")
     @PostMapping("/stores/{storeId}/orders")
     public ApiResponse<Void> createOrder(
             @PathVariable Long storeId,
@@ -38,6 +40,7 @@ public class OrderController {
     /*
     주문 상세 조회
      */
+    @Secured("ROLE_MEMBER")
     @GetMapping("/orders/{orderId}")
     public ApiResponse<OrderFindResponse> getOrder(
             @PathVariable Long orderId,
@@ -51,6 +54,7 @@ public class OrderController {
     /*
     주문 리스트 조회
      */
+    @Secured("ROLE_MEMBER")
     @GetMapping("/orders")
     public ApiResponse<List<SimpleOrderResponse>> getAllOrders(@AuthenticationPrincipal CustomUserDetails userDetails) {
         Long memberId = userDetails.getMemberId();
@@ -61,6 +65,7 @@ public class OrderController {
     /*
     가게의 주문 리스트 조회
      */
+    @Secured("ROLE_STORE")
     @GetMapping("/stores/{storeId}/orders")
     public ApiResponse<List<StoreOrderFindResponse>> getAllStoreOrders(@PathVariable Long storeId) {
         List<StoreOrderFindResponse> storeOrderFindResponses = orderService.findAllStoreOrders(storeId);
@@ -70,20 +75,20 @@ public class OrderController {
     /*
     가게의 주문 수락
      */
+    @Secured("ROLE_STORE")
     @PatchMapping("/orders/{orderId}/accept")
     public ApiResponse<Void> updateOrderStatusToPreparing(@PathVariable Long orderId) {
         orderService.updateOrderStatusToPreparing(orderId);
         return ApiResponse.success();
     }
 
+    /*
+    가게의 주문 완료
+     */
+    @Secured("ROLE_STORE")
     @PatchMapping("/orders/{orderId}/complete")
     public ApiResponse<Void> updateOrderStatusToComplete(@PathVariable Long orderId) {
         orderService.updateOrderStatusToComplete(orderId);
         return ApiResponse.success();
     }
-
-
-    /*
-    가게의 주문 완료
-     */
 }
