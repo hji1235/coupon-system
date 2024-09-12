@@ -16,4 +16,9 @@ public class StoreFindResponse {
         this.id = store.getId();
         this.name = store.getName();
     }
+
+    public StoreFindResponse(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

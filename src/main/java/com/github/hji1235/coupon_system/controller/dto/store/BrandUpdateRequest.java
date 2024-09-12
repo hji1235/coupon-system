@@ -13,4 +13,8 @@ public class BrandUpdateRequest {
     @NotBlank
     @Size(max = 30)
     private String name;
+
+    public BrandUpdateRequest(String name) {
+        this.name = name;
+    }
 }

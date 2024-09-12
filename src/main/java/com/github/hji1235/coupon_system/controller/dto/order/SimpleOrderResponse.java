@@ -20,4 +20,11 @@ public class SimpleOrderResponse {
         this.storeName = order.getStore().getName();
         this.orderStatus = order.getOrderStatus();
     }
+
+    public SimpleOrderResponse(Long id, LocalDateTime orderAt, String storeName, OrderStatus orderStatus) {
+        this.id = id;
+        this.orderAt = orderAt;
+        this.storeName = storeName;
+        this.orderStatus = orderStatus;
+    }
 }

@@ -15,4 +15,8 @@ public class OrderSaveRequest {
     @Valid
     @Size(min = 1)
     private List<OrderMenuRequest> orderMenus;
+
+    public OrderSaveRequest(List<OrderMenuRequest> orderMenus) {
+        this.orderMenus = orderMenus;
+    }
 }

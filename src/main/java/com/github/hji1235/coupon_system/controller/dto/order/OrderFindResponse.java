@@ -34,4 +34,14 @@ public class OrderFindResponse {
             this.couponName = order.getPayment().getMemberCoupon().getCoupon().getName();
         }
     }
+
+    public OrderFindResponse(String storeName, LocalDateTime orderAt, List<OrderMenuResponse> orderMenus,
+                             int paymentAmount, int discountAmount, String couponName) {
+        this.storeName = storeName;
+        this.orderAt = orderAt;
+        this.orderMenus = orderMenus;
+        this.paymentAmount = paymentAmount;
+        this.discountAmount = discountAmount;
+        this.couponName = couponName;
+    }
 }

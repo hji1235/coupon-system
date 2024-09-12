@@ -6,6 +6,7 @@ import com.github.hji1235.coupon_system.domain.coupon.DiscountType;
 import com.github.hji1235.coupon_system.domain.coupon.ExpirationPolicyType;
 import jakarta.validation.constraints.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -50,4 +51,21 @@ public class CouponSaveRequest {
     private LocalTime timeLimitStartAt;
 
     private LocalTime timeLimitEndAt;
+
+    public CouponSaveRequest(String name, Integer maxCount, Integer maxCountPerMember,
+                             DiscountType discountType, ExpirationPolicyType expirationPolicyType,
+                             LocalDate startAt, LocalDate expiredAt, Integer daysFromIssuance,
+                             boolean timeLimit, LocalTime timeLimitStartAt, LocalTime timeLimitEndAt) {
+        this.name = name;
+        this.maxCount = maxCount;
+        this.maxCountPerMember = maxCountPerMember;
+        this.discountType = discountType;
+        this.expirationPolicyType = expirationPolicyType;
+        this.startAt = startAt;
+        this.expiredAt = expiredAt;
+        this.daysFromIssuance = daysFromIssuance;
+        this.timeLimit = timeLimit;
+        this.timeLimitStartAt = timeLimitStartAt;
+        this.timeLimitEndAt = timeLimitEndAt;
+    }
 }

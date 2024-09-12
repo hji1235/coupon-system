@@ -29,4 +29,12 @@ public class MemberCouponFindResponse {
         this.expiredAt = memberCoupon.getExpirationPeriod().getExpiredAt();
         this.minOrderPrice = memberCoupon.getCoupon().getMinOrderPrice();
     }
+
+    public MemberCouponFindResponse(DiscountType discountType, int discountAmount, String couponName, LocalDate expiredAt, int minOrderPrice) {
+        this.discountType = discountType;
+        this.discountAmount = discountAmount;
+        this.couponName = couponName;
+        this.expiredAt = expiredAt;
+        this.minOrderPrice = minOrderPrice;
+    }
 }

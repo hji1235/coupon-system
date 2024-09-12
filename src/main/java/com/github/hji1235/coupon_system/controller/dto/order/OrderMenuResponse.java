@@ -19,4 +19,11 @@ public class OrderMenuResponse {
         this.quantity = orderMenu.getQuantity();
         this.price = orderMenu.getUnitPrice();
     }
+
+    public OrderMenuResponse(Long id, String menuName, int quantity, int price) {
+        this.id = id;
+        this.menuName = menuName;
+        this.quantity = quantity;
+        this.price = price;
+    }
 }

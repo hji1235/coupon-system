@@ -15,4 +15,9 @@ public class MenuUpdateRequest {
 
     @PositiveOrZero
     private int price;
+
+    public MenuUpdateRequest(String name, int price) {
+        this.name = name;
+        this.price = price;
+    }
 }

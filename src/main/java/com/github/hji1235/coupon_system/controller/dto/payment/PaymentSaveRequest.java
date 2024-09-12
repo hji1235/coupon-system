@@ -14,4 +14,9 @@ public class PaymentSaveRequest {
     private PaymentMethod paymentMethod;
 
     private Long memberCouponId;
+
+    public PaymentSaveRequest(PaymentMethod paymentMethod, Long memberCouponId) {
+        this.paymentMethod = paymentMethod;
+        this.memberCouponId = memberCouponId;
+    }
 }

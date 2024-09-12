@@ -13,4 +13,8 @@ public class StoreUpdateRequest {
     @NotBlank
     @Size(max = 30)
     private String name;
+
+    public StoreUpdateRequest(String name) {
+        this.name = name;
+    }
 }

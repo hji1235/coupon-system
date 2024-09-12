@@ -23,4 +23,11 @@ public class StoreOrderFindResponse {
                 .map(OrderMenuResponse::new)
                 .toList();
     }
+
+    public StoreOrderFindResponse(Long id, LocalDateTime orderAt, OrderStatus orderStatus, List<OrderMenuResponse> orderMenus) {
+        this.id = id;
+        this.orderAt = orderAt;
+        this.orderStatus = orderStatus;
+        this.orderMenus = orderMenus;
+    }
 }

@@ -13,4 +13,8 @@ public class MemberCouponCodeSaveRequest {
     @Max(10000000)
     @Min(1)
     private int quantity;
+
+    public MemberCouponCodeSaveRequest(int quantity) {
+        this.quantity = quantity;
+    }
 }

@@ -13,4 +13,8 @@ public class MemberCouponAllocateRequest {
 
     @NotNull
     private UUID couponCode;
+
+    public MemberCouponAllocateRequest(UUID couponCode) {
+        this.couponCode = couponCode;
+    }
 }

@@ -21,6 +21,11 @@ public class StoreCouponDiscountDetailDto {
     @Max(100000)
     private Integer minOrderPrice;
 
+    public StoreCouponDiscountDetailDto(int discountAmount, Integer minOrderPrice) {
+        this.discountAmount = discountAmount;
+        this.minOrderPrice = minOrderPrice;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

@@ -16,4 +16,9 @@ public class BrandFindResponse {
         this.id = brand.getId();
         this.name = brand.getName();
     }
+
+    public BrandFindResponse(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }

@@ -17,4 +17,9 @@ public class StoreSaveRequest {
 
     @NotNull
     private Long brandId;
+
+    public StoreSaveRequest(String name, Long brandId) {
+        this.name = name;
+        this.brandId = brandId;
+    }
 }

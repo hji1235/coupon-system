@@ -15,4 +15,9 @@ public class MenuSaveRequest {
 
     @PositiveOrZero
     private int price;
+
+    public MenuSaveRequest(String name, int price) {
+        this.name = name;
+        this.price = price;
+    }
 }

@@ -15,4 +15,9 @@ public class OrderMenuRequest {
 
     @Min(1)
     private int quantity;
+
+    public OrderMenuRequest(Long menuId, int quantity) {
+        this.menuId = menuId;
+        this.quantity = quantity;
+    }
 }

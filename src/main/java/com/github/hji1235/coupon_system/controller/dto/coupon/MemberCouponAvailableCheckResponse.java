@@ -35,4 +35,14 @@ public class MemberCouponAvailableCheckResponse {
         this.minOrderPrice = memberCoupon.getCoupon().getMinOrderPrice();
         this.available = isAvailable;
     }
+
+    public MemberCouponAvailableCheckResponse(Long id, DiscountType discountType, int discountAmount, String couponName, LocalDate expiredAt, int minOrderPrice, boolean available) {
+        this.id = id;
+        this.discountType = discountType;
+        this.discountAmount = discountAmount;
+        this.couponName = couponName;
+        this.expiredAt = expiredAt;
+        this.minOrderPrice = minOrderPrice;
+        this.available = available;
+    }
 }

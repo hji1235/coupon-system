@@ -19,4 +19,10 @@ public class MenuFindResponse {
         this.name = menu.getName();
         this.price = menu.getPrice();
     }
+
+    public MenuFindResponse(Long id, String name, int price) {
+        this.id = id;
+        this.name = name;
+        this.price = price;
+    }
 }
