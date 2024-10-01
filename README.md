@@ -20,3 +20,7 @@
 4. GitHub Action
 
 # ERD
+
+
+# API 문서
+API 문서 링크 <http://coupon.cmhapp.click>
